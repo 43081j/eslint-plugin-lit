@@ -34,4 +34,10 @@ Configure your rules like so:
 
 # Supported Rules
 
-None!
+* lit/template-no-literal
+* lit/template-no-bind
+
+* lit/template-binding-syntax
+* lit/template-no-ternary
+* lit/template-no-map
+* lit/property-type
