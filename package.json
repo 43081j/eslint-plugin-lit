@@ -6,6 +6,7 @@
   "scripts": {
     "lint": "eslint \"src/**/*.ts\"",
     "build": "npm run lint && tsc",
+    "build:watch": "tsc -w",
     "test": "mocha \"lib/test/**/*_test.js\""
   },
   "repository": {
@@ -14,6 +15,7 @@
   },
   "keywords": [
     "eslint",
+    "eslintplugin",
     "lit-html",
     "lit-element"
   ],
