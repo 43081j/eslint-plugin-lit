@@ -1,0 +1,22 @@
+{
+    "extends": "google",
+    "parser": "typescript-eslint-parser",
+    "plugins": [
+      "typescript"
+    ],
+    "rules": {
+      "typescript/class-name-casing": "error",
+      "typescript/explicit-function-return-type": "error",
+      "typescript/explicit-member-accessibility": "error",
+      "typescript/member-delimiter-style": "error",
+      "typescript/member-naming": ["error", {
+        "private": "^__",
+        "protected": "^_"
+      }],
+      "typescript/no-angle-bracket-type-assertion": "error",
+      "typescript/no-array-constructor": "error",
+      "typescript/no-empty-interface": "error",
+      "typescript/no-explicit-any": "error",
+      "typescript/no-parameter-properties": "error"
+    }
+}

@@ -1,0 +1,35 @@
+{
+  "name": "eslint-plugin-lit",
+  "version": "1.0.0",
+  "description": "lit-html support for ESLint",
+  "main": "lib/index.js",
+  "scripts": {
+    "lint": "eslint \"src/**/*.ts\"",
+    "build": "npm run lint && tsc",
+    "test": "mocha \"lib/test/**/*_test.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/43081j/eslint-plugin-lit.git"
+  },
+  "keywords": [
+    "eslint",
+    "lit-html",
+    "lit-element"
+  ],
+  "author": "James Garbutt <https://github.com/43081j>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/43081j/eslint-plugin-lit/issues"
+  },
+  "homepage": "https://github.com/43081j/eslint-plugin-lit#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "eslint": "^5.3.0",
+    "eslint-config-google": "^0.9.1",
+    "eslint-plugin-typescript": "^0.12.0",
+    "mocha": "^5.2.0",
+    "typescript": "^3.0.1",
+    "typescript-eslint-parser": "^18.0.0"
+  }
+}
