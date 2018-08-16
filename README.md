@@ -37,6 +37,7 @@ Configure your rules like so:
 * lit/template-no-literal
 * lit/template-no-bind
 
+* lit/template-duplicate-bindings
 * lit/template-binding-syntax
 * lit/template-no-ternary
 * lit/template-no-map
