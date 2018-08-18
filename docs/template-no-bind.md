@@ -4,6 +4,18 @@ Passing function expressions into templates will result in them
 being created every time a render occurs, resulting in performance
 loss.
 
+Instead, you should do something like so:
+
+```ts
+constructor() {
+  this._boundOnClick = this._onClick.bind(this);
+}
+
+_render() {
+  return html`<x-foo @event=${this._boundOnClick}>`;
+}
+```
+
 ## Rule Details
 
 This rule disallows using function expressions and `.bind` in templates.
