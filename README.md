@@ -34,11 +34,14 @@ Configure your rules like so:
 
 # Supported Rules
 
-* lit/template-no-literal
-* lit/template-no-bind
-* lit/template-duplicate-bindings
-* lit/template-legacy-binding-syntax
+* [lit/template-no-literal](docs/template-no-literal.md)
+* [lit/template-no-bind](docs/template-no-bind.md)
+* [lit/template-duplicate-bindings](docs/template-duplicate-bindings.md)
+* [lit/template-legacy-binding-syntax](docs/template-legacy-binding-syntax.md)
 
+# To-do
+
+* lit/template-binding-types
 * lit/template-no-ternary
 * lit/template-no-map
 * lit/property-type
