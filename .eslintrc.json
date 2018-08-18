@@ -9,6 +9,10 @@
       "typescript"
     ],
     "rules": {
+      "max-len": ["error", {
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true
+      }],
       "no-unused-vars": "off",
       "spaced-comment": "off",
       "comma-dangle": ["error", "never"],
