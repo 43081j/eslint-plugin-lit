@@ -21,7 +21,7 @@ const rule: Rule.RuleModule = {
 
   create(context): Rule.RuleListener {
     // variables should be defined here
-    const legacyPropertyPattern = /\b(on\-([\w\-]+)|([\w\-]+)([\$\?]))=/;
+    const legacyPropertyPattern = /\b(on\-([\w\-]+)|([\w\-]+)([\$\?]))=$/;
 
     //----------------------------------------------------------------------
     // Helpers
@@ -39,17 +39,14 @@ const rule: Rule.RuleModule = {
 
           for (const quasi of node.quasi.quasis) {
             const val = quasi.value.raw;
-            const propPattern = new RegExp(legacyPropertyPattern.source, 'g');
-            let propMatch: RegExpExecArray|null;
+            const match = val.match(legacyPropertyPattern);
 
-            // todo: this is pretty dumb, it will complain
-            // about prop-like strings which are not in tags
-            while ((propMatch = propPattern.exec(val)) !== null) {
-              if (propMatch[3]) {
-                let replacement = `${propMatch[3]}=`;
+            if (match) {
+              if (match[3]) {
+                let replacement = `${match[3]}=`;
 
-                if (propMatch[4] === '?') {
-                  replacement = `?${propMatch[3]}=`;
+                if (match[4] === '?') {
+                  replacement = `?${match[3]}=`;
                 }
 
                 context.report({
@@ -59,7 +56,7 @@ const rule: Rule.RuleModule = {
               } else {
                 context.report({
                   node: quasi,
-                  message: `Legacy lit-extended syntax is unsupported, did you mean to use "@${propMatch[2]}="?`
+                  message: `Legacy lit-extended syntax is unsupported, did you mean to use "@${match[2]}="?`
                 });
               }
             }
