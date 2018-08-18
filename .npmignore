@@ -1,4 +1,5 @@
 node_modules
 .editorconfig
-lib/
-src/test/
+src/
+lib/test/
+tsconfig.json
