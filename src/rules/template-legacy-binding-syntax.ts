@@ -36,7 +36,6 @@ const rule: Rule.RuleModule = {
         if (node.type === 'TaggedTemplateExpression' &&
             node.tag.type === 'Identifier' &&
             node.tag.name === 'html') {
-
           for (const quasi of node.quasi.quasis) {
             const val = quasi.value.raw;
             const match = val.match(legacyPropertyPattern);

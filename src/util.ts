@@ -1,11 +1,21 @@
 import * as ESTree from 'estree';
 
+/**
+ * Determines whether a node is a declaration or not
+ * @param {ESTree.Node} node
+ * @return {boolean}
+ */
 export function isDeclaration(node: ESTree.Node): node is ESTree.Declaration {
   return node.type === 'FunctionDeclaration' ||
     node.type === 'VariableDeclaration' ||
     node.type === 'ClassDeclaration';
 }
 
+/**
+ * Determines whether a node is a statement or not
+ * @param {ESTree.Node} node
+ * @return {boolean}
+ */
 export function isStatement(node: ESTree.Node): node is ESTree.Statement {
   return node.type === 'ExpressionStatement' ||
     node.type === 'BlockStatement' ||
@@ -28,6 +38,11 @@ export function isStatement(node: ESTree.Node): node is ESTree.Statement {
     isDeclaration(node);
 }
 
+/**
+ * Determines whether a node is an expression or not
+ * @param {ESTree.Node} node
+ * @return {boolean}
+ */
 export function isExpression(node: ESTree.Node): node is ESTree.Expression {
   return node.type === 'ThisExpression' ||
     node.type === 'ArrayExpression' ||

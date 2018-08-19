@@ -26,6 +26,13 @@ const rule: Rule.RuleModule = {
     // Helpers
     //----------------------------------------------------------------------
 
+    /**
+     * Determines whether a node is a disallowed expression
+     * or not.
+     *
+     * @param {ESTree.Node} node
+     * @return {boolean}
+     */
     function isDisallowedExpr(node: ESTree.Node): boolean {
       if (node.type === 'ArrowFunctionExpression' ||
           node.type === 'FunctionExpression') {

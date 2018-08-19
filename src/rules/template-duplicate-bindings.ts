@@ -37,9 +37,8 @@ const rule: Rule.RuleModule = {
         if (node.type === 'TaggedTemplateExpression' &&
             node.tag.type === 'Identifier' &&
             node.tag.name === 'html') {
-
           const html = node.quasi.quasis
-            .map((q) => q.value.raw)
+            .map((q): string => q.value.raw)
             .join('{{__lint__}}');
 
           const tags = html.match(tagPattern);
