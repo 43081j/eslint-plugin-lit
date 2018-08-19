@@ -38,10 +38,10 @@ Configure your rules like so:
 * [lit/template-no-bind](docs/template-no-bind.md)
 * [lit/template-duplicate-bindings](docs/template-duplicate-bindings.md)
 * [lit/template-legacy-binding-syntax](docs/template-legacy-binding-syntax.md)
+* [lit/template-no-map](docs/template-no-map.md)
 
 # To-do
 
 * lit/template-binding-types
 * lit/template-no-ternary
-* lit/template-no-map
 * lit/property-type

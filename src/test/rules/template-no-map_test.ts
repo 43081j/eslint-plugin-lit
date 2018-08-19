@@ -1,0 +1,72 @@
+/**
+ * @fileoverview Disallows array `.map` in templates
+ * @author James Garbutt <htttps://github.com/43081j>
+ */
+
+//------------------------------------------------------------------------------
+// Requirements
+//------------------------------------------------------------------------------
+
+import rule = require('../../rules/template-no-map');
+import {RuleTester} from 'eslint';
+
+//------------------------------------------------------------------------------
+// Tests
+//------------------------------------------------------------------------------
+
+const ruleTester = new RuleTester({
+  parserOptions: {
+    sourceType: 'module'
+  }
+});
+
+ruleTester.run('template-no-map', rule, {
+  valid: [
+    {code: 'html`foo ${someVar} bar`'},
+    {code: 'html`foo bar`'},
+    {code: 'const m = a.map(i => html`foo ${i}`); html`<div>${m}</div>`;'}
+  ],
+
+  invalid: [
+    {
+      code: 'html`foo ${a.map(i => i)}`',
+      errors: [
+        {
+          message: '`.map` is disallowed in templates, move the expression out of the template instead',
+          line: 1,
+          column: 12
+        }
+      ]
+    },
+    {
+      code: 'html`foo ${a.map(i => html`bar ${i}`)}`',
+      errors: [
+        {
+          message: '`.map` is disallowed in templates, move the expression out of the template instead',
+          line: 1,
+          column: 12
+        }
+      ]
+    },
+    {
+      code: 'html`foo ${a.b.c.map(i => i)}`',
+      errors: [
+        {
+          message: '`.map` is disallowed in templates, move the expression out of the template instead',
+          line: 1,
+          column: 12
+        }
+      ]
+    },
+    {
+      code: 'html`foo ${[1, 2, 3].map(i => i)}`',
+      errors: [
+        {
+          message: '`.map` is disallowed in templates, move the expression out of the template instead',
+          line: 1,
+          column: 12
+        }
+      ]
+    }
+  ]
+});
