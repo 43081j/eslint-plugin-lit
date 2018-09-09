@@ -1,4 +1,4 @@
-# Disallows array `.map` in templates (template-no-map)
+# Disallows array `.map` in templates (no-template-map)
 
 Mapping arrays in templates can be difficult to read.
 

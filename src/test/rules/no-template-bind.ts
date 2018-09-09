@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/template-no-bind');
+import rule = require('../../rules/no-template-bind');
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ const ruleTester = new RuleTester({
   }
 });
 
-ruleTester.run('template-no-bind', rule, {
+ruleTester.run('no-template-bind', rule, {
   valid: [
     {code: 'html`foo ${someVar} bar`'},
     {code: 'html`foo bar`'}

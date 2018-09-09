@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/template-duplicate-bindings');
+import rule = require('../../rules/no-duplicate-template-bindings');
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ const ruleTester = new RuleTester({
   }
 });
 
-ruleTester.run('template-duplicate-bindings', rule, {
+ruleTester.run('no-duplicate-template-bindings', rule, {
   valid: [
     {code: 'html`<x-foo .bar=${true}>`'},
     {code: 'html`foo bar`'},

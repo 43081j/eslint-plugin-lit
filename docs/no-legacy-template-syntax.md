@@ -1,4 +1,4 @@
-# Detects usages of legacy binding syntax (template-legacy-binding-syntax)
+# Detects usages of legacy binding syntax (no-legacy-template-syntax)
 
 Legacy lit-extended syntax is no longer supported so any uses of it
 are likely to be mistakes.
