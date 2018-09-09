@@ -39,3 +39,5 @@ Configure your rules like so:
 * [lit/no-template-bind](docs/no-template-bind.md)
 * [lit/no-template-map](docs/no-template-map.md)
 * [lit/no-useless-template-literals](docs/no-useless-template-literals.md)
+* [lit/attribute-value-entities](docs/attribute-value-entities.md)
+* [lit/binding-positions](docs/binding-positions.md)
