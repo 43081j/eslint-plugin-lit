@@ -34,14 +34,8 @@ Configure your rules like so:
 
 # Supported Rules
 
-* [lit/template-no-literal](docs/template-no-literal.md)
-* [lit/template-no-bind](docs/template-no-bind.md)
-* [lit/template-duplicate-bindings](docs/template-duplicate-bindings.md)
-* [lit/template-legacy-binding-syntax](docs/template-legacy-binding-syntax.md)
-* [lit/template-no-map](docs/template-no-map.md)
-
-# To-do
-
-* lit/template-binding-types
-* lit/template-no-ternary
-* lit/property-type
+* [lit/no-duplicate-template-bindings](docs/no-duplicate-template-bindings.md)
+* [lit/no-legacy-template-syntax](docs/no-legacy-template-syntax.md)
+* [lit/no-template-bind](docs/no-template-bind.md)
+* [lit/no-template-map](docs/no-template-map.md)
+* [lit/no-useless-template-literals](docs/no-useless-template-literals.md)

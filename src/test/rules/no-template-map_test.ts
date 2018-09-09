@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/template-no-map');
+import rule = require('../../rules/no-template-map');
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ const ruleTester = new RuleTester({
   }
 });
 
-ruleTester.run('template-no-map', rule, {
+ruleTester.run('no-template-map', rule, {
   valid: [
     {code: 'html`foo ${someVar} bar`'},
     {code: 'html`foo bar`'},

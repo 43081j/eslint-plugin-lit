@@ -1,4 +1,4 @@
-# Disallows literal values in templates (template-no-literal)
+# Disallows redundant literal values in templates (no-useless-template-literals)
 
 Literal values being interpolated into templates are redundant.
 

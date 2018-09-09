@@ -1,4 +1,4 @@
-# Disallows duplicate names in template bindings (template-duplicate-bindings)
+# Disallows duplicate names in template bindings (no-duplicate-template-bindings)
 
 Binding a property or attribute multiple times results in the previous
 values being overwritten, thus making them useless.

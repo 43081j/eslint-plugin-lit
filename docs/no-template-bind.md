@@ -1,4 +1,4 @@
-# Disallows arrow functions and `.bind` in templates (template-no-bind)
+# Disallows arrow functions and `.bind` in templates (no-template-bind)
 
 Passing function expressions into templates will result in them
 being created every time a render occurs, resulting in performance

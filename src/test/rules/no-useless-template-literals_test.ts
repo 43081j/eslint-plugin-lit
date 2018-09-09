@@ -1,5 +1,5 @@
 /**
- * @fileoverview Disallows literal values in templates
+ * @fileoverview Disallows redundant literal values in templates
  * @author James Garbutt <htttps://github.com/43081j>
  */
 
@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/template-no-literal');
+import rule = require('../../rules/no-useless-template-literals');
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ const ruleTester = new RuleTester({
   }
 });
 
-ruleTester.run('template-no-literal', rule, {
+ruleTester.run('no-useless-template-literals', rule, {
   valid: [
     {code: 'html`foo ${someVar} bar`'},
     {code: 'html`foo bar`'}

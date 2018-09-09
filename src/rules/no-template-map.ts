@@ -1,5 +1,5 @@
 /**
- * @fileoverview Disallows arrow functions and `.bind` in templates
+ * @fileoverview Disallows array `.map` in templates
  * @author James Garbutt <htttps://github.com/43081j>
  */
 
@@ -13,9 +13,9 @@ import * as ESTree from 'estree';
 const rule: Rule.RuleModule = {
   meta: {
     docs: {
-      description: 'Disallows arrow functions and `.bind` in templates',
+      description: 'Disallows array `.map` in templates',
       category: 'Best Practices',
-      url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/template-no-bind.md'
+      url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-template-map.md'
     }
   },
 
@@ -25,35 +25,6 @@ const rule: Rule.RuleModule = {
     //----------------------------------------------------------------------
     // Helpers
     //----------------------------------------------------------------------
-
-    /**
-     * Determines whether a node is a disallowed expression
-     * or not.
-     *
-     * @param {ESTree.Node} node
-     * @return {boolean}
-     */
-    function isDisallowedExpr(node: ESTree.Node): boolean {
-      if (node.type === 'ArrowFunctionExpression' ||
-          node.type === 'FunctionExpression') {
-        return true;
-      }
-
-      if (node.type === 'CallExpression' &&
-          node.callee.type === 'MemberExpression' &&
-          node.callee.property.type === 'Identifier' &&
-          node.callee.property.name === 'bind') {
-        return true;
-      }
-
-      if (node.type === 'ConditionalExpression') {
-        return isDisallowedExpr(node.test) ||
-          isDisallowedExpr(node.consequent) ||
-          isDisallowedExpr(node.alternate);
-      }
-
-      return false;
-    }
 
     //----------------------------------------------------------------------
     // Public
@@ -65,10 +36,13 @@ const rule: Rule.RuleModule = {
           node.tag.type === 'Identifier' &&
           node.tag.name === 'html') {
           for (const expr of node.quasi.expressions) {
-            if (isDisallowedExpr(expr)) {
+            if (expr.type === 'CallExpression' &&
+              expr.callee.type === 'MemberExpression' &&
+              expr.callee.property.type === 'Identifier' &&
+              expr.callee.property.name === 'map') {
               context.report({
                 node: expr,
-                message: 'Arrow functions and `.bind` must not be used in templates'
+                message: '`.map` is disallowed in templates, move the expression out of the template instead'
               });
             }
           }

@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/template-legacy-binding-syntax');
+import rule = require('../../rules/no-legacy-template-syntax');
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ const ruleTester = new RuleTester({
   }
 });
 
-ruleTester.run('template-legacy-binding-syntax', rule, {
+ruleTester.run('no-legacy-template-syntax', rule, {
   valid: [
     {code: 'html`<x-foo .bar=${true} ?foo=${true} @baz=${fn}>`'},
     {code: 'html`<x-foo>`'},
