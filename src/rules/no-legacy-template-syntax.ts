@@ -5,6 +5,7 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
+import {TemplateAnalyzer} from '../template-analyzer';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -16,12 +17,15 @@ const rule: Rule.RuleModule = {
       description: 'Detects usages of legacy binding syntax',
       category: 'Best Practices',
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-legacy-template-syntax.md'
+    },
+    messages: {
+      unsupported: 'Legacy lit-extended syntax is unsupported, did you mean to use "{{replacement}}"?'
     }
   },
 
   create(context): Rule.RuleListener {
     // variables should be defined here
-    const legacyPropertyPattern = /\b(on\-([\w\-]+)|([\w\-]+)([\$\?]))=$/;
+    const legacyEventPattern = /^on-./;
 
     //----------------------------------------------------------------------
     // Helpers
@@ -36,30 +40,43 @@ const rule: Rule.RuleModule = {
         if (node.type === 'TaggedTemplateExpression' &&
             node.tag.type === 'Identifier' &&
             node.tag.name === 'html') {
-          for (const quasi of node.quasi.quasis) {
-            const val = quasi.value.raw;
-            const match = val.match(legacyPropertyPattern);
+          const analyzer = new TemplateAnalyzer(node);
 
-            if (match) {
-              if (match[3]) {
-                let replacement = `${match[3]}=`;
+          analyzer.traverse({
+            enterElement: (element): void => {
+              // eslint-disable-next-line guard-for-in
+              for (const attr in element.attribs) {
+                const loc = analyzer.getLocationForAttribute(element, attr);
 
-                if (match[4] === '?') {
-                  replacement = `?${match[3]}=`;
+                if (!loc) {
+                  continue;
                 }
 
-                context.report({
-                  node: quasi,
-                  message: `Legacy lit-extended syntax is unsupported, did you mean to use "${replacement}"?`
-                });
-              } else {
-                context.report({
-                  node: quasi,
-                  message: `Legacy lit-extended syntax is unsupported, did you mean to use "@${match[2]}="?`
-                });
+                const lastChar = attr.slice(-1);
+
+                if (legacyEventPattern.test(attr)) {
+                  const replacement = `@${attr.substr(3)}=`;
+                  context.report({
+                    loc: loc,
+                    messageId: 'unsupported',
+                    data: {
+                      replacement: replacement
+                    }
+                  });
+                } else if (lastChar === '?' || lastChar === '$') {
+                  const prefix = lastChar === '?' ? '?' : '';
+                  const replacement = `${prefix}${attr.slice(0, -1)}=`;
+                  context.report({
+                    loc: loc,
+                    messageId: 'unsupported',
+                    data: {
+                      replacement: replacement
+                    }
+                  });
+                }
               }
             }
-          }
+          });
         }
       }
     };
