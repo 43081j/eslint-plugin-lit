@@ -5,6 +5,7 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
+import {TemplateAnalyzer} from '../template-analyzer';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -17,12 +18,16 @@ const rule: Rule.RuleModule = {
       category: 'Best Practices',
       recommended: true,
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/attribute-value-entities.md'
+    },
+    messages: {
+      unencoded: 'Attribute values may not contain unencoded HTML ' +
+        'entities, e.g. use `&gt;` instead of `>`'
     }
   },
 
   create(context): Rule.RuleListener {
     // variables should be defined here
-    const disallowedPattern = /[^\s=]+=('[^"']*"|("[^&<>"]*|'[^&<>']*)[&<>]+)/;
+    const disallowedPattern = /[&<>"]/;
 
     //----------------------------------------------------------------------
     // Helpers
@@ -37,15 +42,27 @@ const rule: Rule.RuleModule = {
         if (node.type === 'TaggedTemplateExpression' &&
           node.tag.type === 'Identifier' &&
           node.tag.name === 'html') {
-          for (const quasi of node.quasi.quasis) {
-            if (disallowedPattern.test(quasi.value.raw)) {
-              context.report({
-                node: quasi,
-                message: 'Attribute values may not contain unencoded HTML ' +
-                  'entities, e.g. use `&gt;` instead of `>`'
-              });
+          const analyzer = new TemplateAnalyzer(node);
+
+          analyzer.traverse({
+            enterElement: (element): void => {
+              // eslint-disable-next-line guard-for-in
+              for (const attr in element.attribs) {
+                const loc = analyzer.getLocationForAttribute(element, attr);
+
+                if (!loc) {
+                  continue;
+                }
+
+                if (disallowedPattern.test(element.attribs[attr])) {
+                  context.report({
+                    loc: loc,
+                    messageId: 'unencoded'
+                  });
+                }
+              }
             }
-          }
+          });
         }
       }
     };
