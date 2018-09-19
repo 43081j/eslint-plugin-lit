@@ -13,7 +13,7 @@ The following patterns are considered warnings:
 static get properties() {
   return { prop: { type: Number } };
 }
-updated() {
+update() {
   this.prop = 5;
 }
 ```
@@ -24,7 +24,7 @@ The following patterns are not warnings:
 static get properties() {
   return {};
 }
-updated() {
+update() {
   this.unobserved = 5;
 }
 ```
