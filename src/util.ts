@@ -1,70 +1,79 @@
 import * as ESTree from 'estree';
 
-/**
- * Determines whether a node is a declaration or not
- * @param {ESTree.Node} node
- * @return {boolean}
- */
-export function isDeclaration(node: ESTree.Node): node is ESTree.Declaration {
-  return node.type === 'FunctionDeclaration' ||
-    node.type === 'VariableDeclaration' ||
-    node.type === 'ClassDeclaration';
+interface BabelDecorator extends ESTree.BaseNode {
+  type: 'Decorator';
+  expression: ESTree.Expression;
+}
+
+interface BabelProperty extends ESTree.MethodDefinition {
+  decorators?: BabelDecorator[];
 }
 
 /**
- * Determines whether a node is a statement or not
- * @param {ESTree.Node} node
- * @return {boolean}
+ * Get the name of a node
+ *
+ * @param {ESTree.Node} node Node to retrieve name of
+ * @return {?string}
  */
-export function isStatement(node: ESTree.Node): node is ESTree.Statement {
-  return node.type === 'ExpressionStatement' ||
-    node.type === 'BlockStatement' ||
-    node.type === 'EmptyStatement' ||
-    node.type === 'DebuggerStatement' ||
-    node.type === 'WithStatement' ||
-    node.type === 'ReturnStatement' ||
-    node.type === 'LabeledStatement' ||
-    node.type === 'BreakStatement' ||
-    node.type === 'ContinueStatement' ||
-    node.type === 'IfStatement' ||
-    node.type === 'SwitchStatement' ||
-    node.type === 'ThrowStatement' ||
-    node.type === 'TryStatement' ||
-    node.type === 'WhileStatement' ||
-    node.type === 'DoWhileStatement' ||
-    node.type === 'ForStatement' ||
-    node.type === 'ForInStatement' ||
-    node.type === 'ForOfStatement' ||
-    isDeclaration(node);
+export function getIdentifierName(node: ESTree.Node): string|undefined {
+  if (node.type === 'Identifier') {
+    return node.name;
+  }
+  if (node.type === 'Literal') {
+    return node.raw;
+  }
+  return undefined;
 }
 
 /**
- * Determines whether a node is an expression or not
- * @param {ESTree.Node} node
- * @return {boolean}
+ * Get the properties object of an element class
+ *
+ * @param {ESTree.Class} node Class to retrieve map from
+ * @return {ReadonlyMap<string, ESTreeObjectExpression>}
  */
-export function isExpression(node: ESTree.Node): node is ESTree.Expression {
-  return node.type === 'ThisExpression' ||
-    node.type === 'ArrayExpression' ||
-    node.type === 'ObjectExpression' ||
-    node.type === 'FunctionExpression' ||
-    node.type === 'ArrowFunctionExpression' ||
-    node.type === 'YieldExpression' ||
-    node.type === 'Literal' ||
-    node.type === 'UnaryExpression' ||
-    node.type === 'UpdateExpression' ||
-    node.type === 'BinaryExpression' ||
-    node.type === 'AssignmentExpression' ||
-    node.type === 'LogicalExpression' ||
-    node.type === 'MemberExpression' ||
-    node.type === 'ConditionalExpression' ||
-    node.type === 'CallExpression' ||
-    node.type === 'NewExpression' ||
-    node.type === 'SequenceExpression' ||
-    node.type === 'TemplateLiteral' ||
-    node.type === 'TaggedTemplateExpression' ||
-    node.type === 'ClassExpression' ||
-    node.type === 'MetaProperty' ||
-    node.type === 'Identifier' ||
-    node.type === 'AwaitExpression';
+export function getPropertyMap(
+    node: ESTree.Class): ReadonlyMap<string, ESTree.ObjectExpression> {
+  const result = new Map<string, ESTree.ObjectExpression>();
+
+  for (const member of node.body.body) {
+    if (member.static &&
+        member.kind === 'get' &&
+        member.key.type === 'Identifier' &&
+        member.key.name === 'properties' &&
+        member.value.body) {
+      const ret = member.value.body.body.find((m): boolean =>
+        m.type === 'ReturnStatement' &&
+        m.argument != undefined &&
+        m.argument.type === 'ObjectExpression') as ESTree.ReturnStatement;
+      if (ret) {
+        const arg = ret.argument as ESTree.ObjectExpression;
+        for (const prop of arg.properties) {
+          const name = getIdentifierName(prop.key);
+
+          if (name && prop.value.type === 'ObjectExpression') {
+            result.set(name, prop.value);
+          }
+        }
+      }
+    }
+
+    const babelProp = member as BabelProperty;
+    const memberName = getIdentifierName(member.key);
+
+    if (memberName && babelProp.decorators) {
+      for (const decorator of babelProp.decorators) {
+        if (decorator.expression.type === 'CallExpression' &&
+            decorator.expression.callee.type === 'Identifier' &&
+            decorator.expression.callee.name === 'property' &&
+            decorator.expression.arguments.length > 0) {
+          const dArg = decorator.expression.arguments[0];
+          if (dArg.type === 'ObjectExpression') {
+            result.set(memberName, dArg);
+          }
+        }
+      }
+    }
+  }
+
+  return result;
 }
