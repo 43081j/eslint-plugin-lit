@@ -49,6 +49,16 @@ ruleTester.run('no-property-change-update', rule, {
           this.prop2 = 5;
         }
       }`
+    },
+    {
+      parser: 'babel-eslint',
+      code: `class Foo extends LitElement {
+        @property({ type: String })
+        prop = 'test';
+        update() {
+          this.prop2 = 5;
+        }
+      }`
     }
   ],
 
@@ -66,6 +76,23 @@ ruleTester.run('no-property-change-update', rule, {
         {
           message: 'Properties should not be changed in the update lifecycle method as they will not trigger re-renders',
           line: 6,
+          column: 11
+        }
+      ]
+    },
+    {
+      parser: 'babel-eslint',
+      code: `class Foo extends LitElement {
+        @property({ type: String })
+        prop = 'foo';
+        update() {
+          this.prop = 'bar';
+        }
+      }`,
+      errors: [
+        {
+          message: 'Properties should not be changed in the update lifecycle method as they will not trigger re-renders',
+          line: 5,
           column: 11
         }
       ]

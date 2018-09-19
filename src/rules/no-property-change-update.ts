@@ -6,6 +6,15 @@
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
 
+interface BabelDecorator extends ESTree.BaseNode {
+  type: 'Decorator';
+  expression: ESTree.Expression;
+}
+
+interface BabelProperty extends ESTree.MethodDefinition {
+  decorators?: BabelDecorator[];
+}
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -59,8 +68,6 @@ const rule: Rule.RuleModule = {
       const result = new Map<string, ESTree.ObjectExpression>();
 
       for (const member of node.body.body) {
-        let props: ESTree.ObjectExpression|null = null;
-
         if (member.static &&
             member.kind === 'get' &&
             member.key.type === 'Identifier' &&
@@ -71,16 +78,30 @@ const rule: Rule.RuleModule = {
             m.argument != undefined &&
             m.argument.type === 'ObjectExpression') as ESTree.ReturnStatement;
           if (ret) {
-            props = ret.argument as ESTree.ObjectExpression;
+            const arg = ret.argument as ESTree.ObjectExpression;
+            for (const prop of arg.properties) {
+              const name = getIdentifierName(prop.key);
+
+              if (name && prop.value.type === 'ObjectExpression') {
+                result.set(name, prop.value);
+              }
+            }
           }
         }
 
-        if (props) {
-          for (const prop of props.properties) {
-            const name = getIdentifierName(prop.key);
+        const babelProp = member as BabelProperty;
+        const memberName = getIdentifierName(member.key);
 
-            if (name && prop.value.type === 'ObjectExpression') {
-              result.set(name, prop.value);
+        if (memberName && babelProp.decorators) {
+          for (const decorator of babelProp.decorators) {
+            if (decorator.expression.type === 'CallExpression' &&
+                decorator.expression.callee.type === 'Identifier' &&
+                decorator.expression.callee.name === 'property' &&
+                decorator.expression.arguments.length > 0) {
+              const dArg = decorator.expression.arguments[0];
+              if (dArg.type === 'ObjectExpression') {
+                result.set(memberName, dArg);
+              }
             }
           }
         }
@@ -103,6 +124,7 @@ const rule: Rule.RuleModule = {
       }
 
       const props = getPropertyMap(node);
+
       if (props) {
         propertyMap = props;
       }
