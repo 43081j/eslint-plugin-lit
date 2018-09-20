@@ -49,8 +49,12 @@ export class TemplateAnalyzer {
    */
   public static create(
       node: ESTree.TaggedTemplateExpression): TemplateAnalyzer {
-    const cached = analyzerCache.get(node);
-    return cached ? cached : new TemplateAnalyzer(node);
+    let cached = analyzerCache.get(node);
+    if (!cached) {
+      cached = new TemplateAnalyzer(node);
+      analyzerCache.set(node, cached);
+    }
+    return cached;
   }
 
   /**
