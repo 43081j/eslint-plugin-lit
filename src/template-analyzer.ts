@@ -1,6 +1,10 @@
 import * as ESTree from 'estree';
 import * as parse5 from 'parse5';
 import treeAdapter = require('parse5-htmlparser2-tree-adapter');
+import {
+  templateExpressionToHtml,
+  getExpressionPlaceholder
+} from './util';
 
 export interface Visitor {
   enter: (node: treeAdapter.Node,
@@ -17,11 +21,20 @@ export interface Visitor {
     parent: treeAdapter.Node|null) => void;
 }
 
+export interface ParseError extends parse5.Location {
+  code: string;
+}
+
+type ParserOptionsWithError = parse5.ParserOptions & {
+  onParseError?: (err: ParseError) => void;
+};
+
 /**
  * Analyzes a given template expression for traversing its contained
  * HTML tree.
  */
 export class TemplateAnalyzer {
+  public errors: ReadonlyArray<ParseError> = [];
   protected _node: ESTree.TaggedTemplateExpression;
   protected _ast: treeAdapter.DocumentFragment;
 
@@ -33,22 +46,18 @@ export class TemplateAnalyzer {
   public constructor(node: ESTree.TaggedTemplateExpression) {
     this._node = node;
 
-    let html = '';
+    const html = templateExpressionToHtml(node);
 
-    for (let i = 0; i < node.quasi.quasis.length; i++) {
-      const quasi = node.quasi.quasis[i];
-      const expr = node.quasi.expressions[i];
-      html += quasi.value.raw;
-      if (expr) {
-        html += this._getExpressionPlaceholder(node, quasi);
+    const opts: ParserOptionsWithError = {
+      treeAdapter: treeAdapter,
+      sourceCodeLocationInfo: true,
+      onParseError: (err): void => {
+        (this.errors as ParseError[]).push(err);
       }
-    }
+    };
 
     this._ast =
-      parse5.parseFragment(html, {
-        treeAdapter: treeAdapter,
-        sourceCodeLocationInfo: true
-      }) as treeAdapter.DocumentFragment;
+      parse5.parseFragment(html, opts) as treeAdapter.DocumentFragment;
   }
 
   /**
@@ -63,7 +72,7 @@ export class TemplateAnalyzer {
       const loc = (node as treeAdapter.Element).sourceCodeLocation;
 
       if (loc) {
-        return this._resolveLocation(loc.startTag);
+        return this.resolveLocation(loc.startTag);
       }
     } else if (treeAdapter.isCommentNode(node) ||
         treeAdapter.isTextNode(node)) {
@@ -71,7 +80,7 @@ export class TemplateAnalyzer {
         .sourceCodeLocation;
 
       if (loc) {
-        return this._resolveLocation(loc);
+        return this.resolveLocation(loc);
       }
     }
 
@@ -93,25 +102,7 @@ export class TemplateAnalyzer {
 
     const loc = element.sourceCodeLocation.startTag.attrs[attr];
 
-    return loc ? this._resolveLocation(loc) : null;
-  }
-
-  /**
-   * Generates a placeholder string for a given quasi
-   *
-   * @param {ESTree.TaggedTemplateExpression} node Root node
-   * @param {ESTree.TemplateElement} quasi Quasi to generate placeholder
-   * for
-   * @return {string}
-   */
-  protected _getExpressionPlaceholder(node: ESTree.TaggedTemplateExpression,
-      quasi: ESTree.TemplateElement): string {
-    const i = node.quasi.quasis.indexOf(quasi);
-
-    if (/=$/.test(quasi.value.raw)) {
-      return `"{{__Q:${i}__}}"`;
-    }
-    return `{{__Q:${i}__}}`;
+    return loc ? this.resolveLocation(loc) : null;
   }
 
   /**
@@ -120,12 +111,12 @@ export class TemplateAnalyzer {
    * @param {parse5.Location} loc Location to convert
    * @return {ESTree.SourceLocation}
    */
-  protected _resolveLocation(
+  public resolveLocation(
       loc: parse5.Location): ESTree.SourceLocation|null|undefined {
     let offset = 0;
 
     for (const quasi of this._node.quasi.quasis) {
-      const placeholder = this._getExpressionPlaceholder(this._node, quasi);
+      const placeholder = getExpressionPlaceholder(this._node, quasi);
       offset += quasi.value.raw.length + placeholder.length;
 
       if (loc.startOffset < offset) {

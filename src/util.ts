@@ -77,3 +77,44 @@ export function getPropertyMap(
 
   return result;
 }
+
+/**
+ * Generates a placeholder string for a given quasi
+ *
+ * @param {ESTree.TaggedTemplateExpression} node Root node
+ * @param {ESTree.TemplateElement} quasi Quasi to generate placeholder
+ * for
+ * @return {string}
+ */
+export function getExpressionPlaceholder(
+    node: ESTree.TaggedTemplateExpression,
+    quasi: ESTree.TemplateElement): string {
+  const i = node.quasi.quasis.indexOf(quasi);
+
+  if (/=$/.test(quasi.value.raw)) {
+    return `"{{__Q:${i}__}}"`;
+  }
+  return `{{__Q:${i}__}}`;
+}
+
+/**
+ * Converts a template expression into HTML
+ *
+ * @param {ESTree.TaggedTemplateExpression} node Node to convert
+ * @return {string}
+ */
+export function templateExpressionToHtml(
+    node: ESTree.TaggedTemplateExpression): string {
+  let html = '';
+
+  for (let i = 0; i < node.quasi.quasis.length; i++) {
+    const quasi = node.quasi.quasis[i];
+    const expr = node.quasi.expressions[i];
+    html += quasi.value.raw;
+    if (expr) {
+      html += getExpressionPlaceholder(node, quasi);
+    }
+  }
+
+  return html;
+}
