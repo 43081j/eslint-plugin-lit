@@ -23,14 +23,14 @@ const ruleTester = new RuleTester({
 ruleTester.run('attribute-value-entities', rule, {
   valid: [
     {code: 'html`foo bar`'},
-    {code: 'html`<x-foo attr="bar" />`'},
-    {code: 'html`<x-foo attr=${\'>\'} />`'},
-    {code: 'html`<x-foo attr="()" />`'}
+    {code: 'html`<x-foo attr="bar"></x-foo>`'},
+    {code: 'html`<x-foo attr=${\'>\'}></x-foo>`'},
+    {code: 'html`<x-foo attr="()"></x-foo>`'}
   ],
 
   invalid: [
     {
-      code: 'html`<x-foo attr=">" />`',
+      code: 'html`<x-foo attr=">"></x-foo>`',
       errors: [
         {
           message: 'Attribute values may not contain unencoded HTML ' +
@@ -41,7 +41,7 @@ ruleTester.run('attribute-value-entities', rule, {
       ]
     },
     {
-      code: 'html`<x-foo attr="<" />`',
+      code: 'html`<x-foo attr="<"></x-foo>`',
       errors: [
         {
           message: 'Attribute values may not contain unencoded HTML ' +
@@ -52,7 +52,7 @@ ruleTester.run('attribute-value-entities', rule, {
       ]
     },
     {
-      code: 'html`<x-foo attr="&" />`',
+      code: 'html`<x-foo attr="&"></x-foo>`',
       errors: [
         {
           message: 'Attribute values may not contain unencoded HTML ' +
@@ -63,7 +63,7 @@ ruleTester.run('attribute-value-entities', rule, {
       ]
     },
     {
-      code: 'html`<x-foo attr=\'"\' />`',
+      code: 'html`<x-foo attr=\'"\'></x-foo>`',
       errors: [
         {
           message: 'Attribute values may not contain unencoded HTML ' +
@@ -74,7 +74,7 @@ ruleTester.run('attribute-value-entities', rule, {
       ]
     },
     {
-      code: 'html`<x-foo attr=\'>\' />`',
+      code: 'html`<x-foo attr=\'>\'></x-foo>`',
       errors: [
         {
           message: 'Attribute values may not contain unencoded HTML ' +
