@@ -29,6 +29,9 @@ type ParserOptionsWithError = parse5.ParserOptions & {
   onParseError?: (err: ParseError) => void;
 };
 
+const analyzerCache =
+  new WeakMap<ESTree.TaggedTemplateExpression, TemplateAnalyzer>();
+
 /**
  * Analyzes a given template expression for traversing its contained
  * HTML tree.
@@ -37,6 +40,18 @@ export class TemplateAnalyzer {
   public errors: ReadonlyArray<ParseError> = [];
   protected _node: ESTree.TaggedTemplateExpression;
   protected _ast: treeAdapter.DocumentFragment;
+
+  /**
+   * Create an analyzer instance for a given node
+   *
+   * @param {ESTree.TaggedTemplateExpression} node Node to use
+   * @return {!TemplateAnalyzer}
+   */
+  public static create(
+      node: ESTree.TaggedTemplateExpression): TemplateAnalyzer {
+    const cached = analyzerCache.get(node);
+    return cached ? cached : new TemplateAnalyzer(node);
+  }
 
   /**
    * Constructor

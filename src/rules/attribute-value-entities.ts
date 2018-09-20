@@ -42,7 +42,7 @@ const rule: Rule.RuleModule = {
         if (node.type === 'TaggedTemplateExpression' &&
           node.tag.type === 'Identifier' &&
           node.tag.name === 'html') {
-          const analyzer = new TemplateAnalyzer(node);
+          const analyzer = TemplateAnalyzer.create(node);
 
           analyzer.traverse({
             enterElement: (element): void => {
