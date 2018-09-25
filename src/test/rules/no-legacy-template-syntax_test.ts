@@ -22,15 +22,15 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-legacy-template-syntax', rule, {
   valid: [
-    {code: 'html`<x-foo .bar=${true} ?foo=${true} @baz=${fn}>`'},
-    {code: 'html`<x-foo>`'},
-    {code: 'html`<x-foo bar baz>`'},
-    {code: 'html`<x-foo bar baz=${true}>`'}
+    {code: 'html`<x-foo .bar=${true} ?foo=${true} @baz=${fn}></x-foo>`'},
+    {code: 'html`<x-foo></x-foo>`'},
+    {code: 'html`<x-foo bar baz></x-foo>`'},
+    {code: 'html`<x-foo bar baz=${true}></x-foo>`'}
   ],
 
   invalid: [
     {
-      code: 'html`<x-foo bar$=${x}>`',
+      code: 'html`<x-foo bar$=${x}></x-foo>`',
       errors: [
         {
           message: 'Legacy lit-extended syntax is unsupported, did you mean to use "bar="?',
@@ -40,7 +40,7 @@ ruleTester.run('no-legacy-template-syntax', rule, {
       ]
     },
     {
-      code: 'html`<x-foo bar?=${x}>`',
+      code: 'html`<x-foo bar?=${x}></x-foo>`',
       errors: [
         {
           message: 'Legacy lit-extended syntax is unsupported, did you mean to use "?bar="?',
@@ -50,7 +50,7 @@ ruleTester.run('no-legacy-template-syntax', rule, {
       ]
     },
     {
-      code: 'html`<x-foo on-bar=${fn}>`',
+      code: 'html`<x-foo on-bar=${fn}></x-foo>`',
       errors: [
         {
           message: 'Legacy lit-extended syntax is unsupported, did you mean to use "@bar="?',
@@ -60,7 +60,7 @@ ruleTester.run('no-legacy-template-syntax', rule, {
       ]
     },
     {
-      code: 'html`<x-foo><x-bar ?bar=${bool} baz?=${bool}/></x-foo>`',
+      code: 'html`<x-foo><x-bar ?bar=${bool} baz?=${bool}></x-bar></x-foo>`',
       errors: [
         {
           message: 'Legacy lit-extended syntax is unsupported, did you mean to use "?baz="?',

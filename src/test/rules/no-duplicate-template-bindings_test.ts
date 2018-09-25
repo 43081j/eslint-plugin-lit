@@ -26,6 +26,7 @@ ruleTester.run('no-duplicate-template-bindings', rule, {
     {code: 'html`foo bar`'},
     {code: 'html`<x-foo ?bar=${true} baz>`'},
     {code: 'html`<x-foo foo=${true}><x-bar foo=${true}></x-bar></x-foo>`'},
+    {code: 'html`<x-foo @foo=${v} .foo=${v}></x-foo>`'},
     {code: 'html`<x-foo @bar=${true}>`'}
   ],
 
@@ -34,9 +35,9 @@ ruleTester.run('no-duplicate-template-bindings', rule, {
       code: 'html`<x-foo bar bar>`',
       errors: [
         {
-          message: 'Duplicate bindings are not allowed, "bar" was set multiple times.',
+          message: 'Duplicate bindings are not allowed.',
           line: 1,
-          column: 1
+          column: 5
         }
       ]
     },
@@ -44,9 +45,9 @@ ruleTester.run('no-duplicate-template-bindings', rule, {
       code: 'html`<x-foo bar bar=${true}>`',
       errors: [
         {
-          message: 'Duplicate bindings are not allowed, "bar" was set multiple times.',
+          message: 'Duplicate bindings are not allowed.',
           line: 1,
-          column: 1
+          column: 5
         }
       ]
     },
@@ -54,19 +55,9 @@ ruleTester.run('no-duplicate-template-bindings', rule, {
       code: 'html`<x-foo><x-bar x=${true} y x=${true}></x-bar></x-foo>`',
       errors: [
         {
-          message: 'Duplicate bindings are not allowed, "x" was set multiple times.',
+          message: 'Duplicate bindings are not allowed.',
           line: 1,
-          column: 1
-        }
-      ]
-    },
-    {
-      code: 'html`<x-foo ?foo=${true} @foo=${true} />`',
-      errors: [
-        {
-          message: 'Duplicate bindings are not allowed, "foo" was set multiple times.',
-          line: 1,
-          column: 1
+          column: 28
         }
       ]
     }
