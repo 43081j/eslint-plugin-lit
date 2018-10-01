@@ -7,14 +7,14 @@ loss.
 Instead, you should do something like so:
 
 ```ts
-constructor() {
-  this._boundOnClick = this._onClick.bind(this);
+_render() {
+  return html`<x-foo @event=${this._onClick}>`;
 }
 
-_render() {
-  return html`<x-foo @event=${this._boundOnClick}>`;
-}
+_onClick() { ... }
 ```
+
+As lit will automatically bind it to the correct context.
 
 ## Rule Details
 
