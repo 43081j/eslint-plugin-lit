@@ -1,3 +1,8 @@
+import recommended from './configs/recommended';
 const requireIndex = require('requireindex');
 
-module.exports.rules = requireIndex(`${__dirname}/rules`);
+export const rules = requireIndex(`${__dirname}/rules`);
+
+export const configs = {
+  'recommended': recommended
+};
