@@ -30,6 +30,9 @@
     "parse5-htmlparser2-tree-adapter": "^5.1.0",
     "requireindex": "^1.2.0"
   },
+  "peerDependencies": {
+    "eslint": ">= 5"
+  },
   "devDependencies": {
     "@types/eslint": "^4.16.3",
     "@types/estree": "0.0.39",
