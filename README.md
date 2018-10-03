@@ -43,3 +43,4 @@ Configure your rules like so:
 * [lit/binding-positions](docs/binding-positions.md)
 * [lit/no-property-change-update](docs/no-property-change-update.md)
 * [lit/no-invalid-html](docs/no-invalid-html.md)
+* [lit/no-object-property-type](docs/no-object-property-type.md)
