@@ -1,5 +1,5 @@
 import recommended from './configs/recommended';
-const requireIndex = require('requireindex');
+import requireIndex = require('requireindex');
 
 export const rules = requireIndex(`${__dirname}/rules`);
 
