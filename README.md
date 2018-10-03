@@ -42,3 +42,4 @@ Configure your rules like so:
 * [lit/attribute-value-entities](docs/attribute-value-entities.md)
 * [lit/binding-positions](docs/binding-positions.md)
 * [lit/no-property-change-update](docs/no-property-change-update.md)
+* [lit/no-invalid-html](docs/no-invalid-html.md)
