@@ -16,6 +16,11 @@ const rule: Rule.RuleModule = {
       description: 'Disallows arrow functions and `.bind` in templates',
       category: 'Best Practices',
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-template-bind.md'
+    },
+    messages: {
+      noBind: 'Arrow functions and `.bind` must not be used in templates, ' +
+        'a method should be passed directly like `${this.myMethod}` as it ' +
+        'will be bound automatically.'
     }
   },
 
@@ -68,7 +73,7 @@ const rule: Rule.RuleModule = {
             if (isDisallowedExpr(expr)) {
               context.report({
                 node: expr,
-                message: 'Arrow functions and `.bind` must not be used in templates'
+                messageId: 'noBind'
               });
             }
           }
