@@ -1,5 +1,5 @@
 const config = {
-  plugins: ['import'],
+  plugins: ['lit'],
 
   rules: {
     'lit/no-duplicate-template-bindings': 'error',
