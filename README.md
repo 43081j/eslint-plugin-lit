@@ -1,5 +1,7 @@
 # eslint-plugin-lit
 
+[![Build Status](https://travis-ci.org/43081j/eslint-plugin-lit.svg?branch=master)](https://travis-ci.org/43081j/eslint-plugin-lit)
+
 [lit-html](https://github.com/polymer/lit-html) support for ESLint.
 
 **Note:** experimental, may change quite a bit.
