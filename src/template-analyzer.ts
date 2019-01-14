@@ -96,7 +96,7 @@ export class TemplateAnalyzer {
     } else if (treeAdapter.isCommentNode(node) ||
         treeAdapter.isTextNode(node)) {
       const loc = (node as treeAdapter.CommentNode|treeAdapter.TextNode)
-        .sourceCodeLocation;
+          .sourceCodeLocation;
 
       if (loc) {
         return this.resolveLocation(loc);
