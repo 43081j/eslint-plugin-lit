@@ -98,6 +98,16 @@ export function getExpressionPlaceholder(
 }
 
 /**
+ * Tests whether a string is a placeholder or not
+ *
+ * @param {string} value Value to test
+ * @return {boolean}
+ */
+export function isExpressionPlaceholder(value: string): boolean {
+  return /^\{\{__Q:\d+__\}\}$/.test(value);
+}
+
+/**
  * Converts a template expression into HTML
  *
  * @param {ESTree.TaggedTemplateExpression} node Node to convert
