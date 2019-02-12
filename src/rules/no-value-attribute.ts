@@ -1,6 +1,6 @@
 /**
  * @fileoverview Detects usages of the `value` attribute
- * @author James Garbutt <htttps://github.com/43081j>
+ * @author James Garbutt <https://github.com/43081j>
  */
 
 import {Rule} from 'eslint';

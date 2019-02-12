@@ -1,6 +1,6 @@
 /**
  * @fileoverview Disallows property changes in the `update` lifecycle method
- * @author James Garbutt <htttps://github.com/43081j>
+ * @author James Garbutt <https://github.com/43081j>
  */
 
 import {Rule} from 'eslint';
