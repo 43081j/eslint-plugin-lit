@@ -13,14 +13,16 @@ The following patterns are considered warnings:
 html`<x-foo bar?=${x}>`;
 html`<x-foo on-bar=${x}>`;
 html`<x-foo bar$=${x}>`;
+html`<x-foo bar=${x}>`;
 ```
 
 The following patterns are not warnings:
 
 ```ts
 html`<x-foo ?bar=${x}>`;
-html`<x-foo .bar=${x}>`;
+html`<x-foo @bar=${x}>`;
 html`<x-foo bar=${x}>`;
+html`<x-foo .bar=${x}>`;
 ```
 
 ## When Not To Use It
