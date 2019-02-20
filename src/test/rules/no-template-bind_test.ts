@@ -21,17 +21,15 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-template-bind', rule, {
-  valid: [
-    {code: 'html`foo ${someVar} bar`'},
-    {code: 'html`foo bar`'}
-  ],
+  valid: [{code: 'html`foo ${someVar} bar`'}, {code: 'html`foo bar`'}],
 
   invalid: [
     {
       code: 'html`foo ${() => {}} bar`',
       errors: [
         {
-          message: 'Arrow functions and `.bind` must not be used in templates, a method should be passed directly like `${this.myMethod}` as it will be bound automatically.',
+          message:
+            'Arrow functions and `.bind` must not be used in templates, a method should be passed directly like `${this.myMethod}` as it will be bound automatically.',
           line: 1,
           column: 12
         }
@@ -41,7 +39,8 @@ ruleTester.run('no-template-bind', rule, {
       code: 'html`foo ${() => true} bar`',
       errors: [
         {
-          message: 'Arrow functions and `.bind` must not be used in templates, a method should be passed directly like `${this.myMethod}` as it will be bound automatically.',
+          message:
+            'Arrow functions and `.bind` must not be used in templates, a method should be passed directly like `${this.myMethod}` as it will be bound automatically.',
           line: 1,
           column: 12
         }
@@ -51,7 +50,8 @@ ruleTester.run('no-template-bind', rule, {
       code: 'html`foo ${function() { }} bar`',
       errors: [
         {
-          message: 'Arrow functions and `.bind` must not be used in templates, a method should be passed directly like `${this.myMethod}` as it will be bound automatically.',
+          message:
+            'Arrow functions and `.bind` must not be used in templates, a method should be passed directly like `${this.myMethod}` as it will be bound automatically.',
           line: 1,
           column: 12
         }
@@ -61,7 +61,8 @@ ruleTester.run('no-template-bind', rule, {
       code: 'html`foo ${this.foo.bind(this)} bar`',
       errors: [
         {
-          message: 'Arrow functions and `.bind` must not be used in templates, a method should be passed directly like `${this.myMethod}` as it will be bound automatically.',
+          message:
+            'Arrow functions and `.bind` must not be used in templates, a method should be passed directly like `${this.myMethod}` as it will be bound automatically.',
           line: 1,
           column: 12
         }
@@ -71,7 +72,8 @@ ruleTester.run('no-template-bind', rule, {
       code: 'html`foo ${foo ? function() { } : bar} bar`',
       errors: [
         {
-          message: 'Arrow functions and `.bind` must not be used in templates, a method should be passed directly like `${this.myMethod}` as it will be bound automatically.',
+          message:
+            'Arrow functions and `.bind` must not be used in templates, a method should be passed directly like `${this.myMethod}` as it will be bound automatically.',
           line: 1,
           column: 12
         }
@@ -81,7 +83,8 @@ ruleTester.run('no-template-bind', rule, {
       code: 'html`foo ${foo ? bar : function() { }} bar`',
       errors: [
         {
-          message: 'Arrow functions and `.bind` must not be used in templates, a method should be passed directly like `${this.myMethod}` as it will be bound automatically.',
+          message:
+            'Arrow functions and `.bind` must not be used in templates, a method should be passed directly like `${this.myMethod}` as it will be bound automatically.',
           line: 1,
           column: 12
         }
@@ -91,7 +94,8 @@ ruleTester.run('no-template-bind', rule, {
       code: 'html`foo ${foo ? (() => {}) : bar} bar`',
       errors: [
         {
-          message: 'Arrow functions and `.bind` must not be used in templates, a method should be passed directly like `${this.myMethod}` as it will be bound automatically.',
+          message:
+            'Arrow functions and `.bind` must not be used in templates, a method should be passed directly like `${this.myMethod}` as it will be bound automatically.',
           line: 1,
           column: 12
         }
@@ -101,7 +105,8 @@ ruleTester.run('no-template-bind', rule, {
       code: 'html`foo ${foo ? bar : (() => {})} bar`',
       errors: [
         {
-          message: 'Arrow functions and `.bind` must not be used in templates, a method should be passed directly like `${this.myMethod}` as it will be bound automatically.',
+          message:
+            'Arrow functions and `.bind` must not be used in templates, a method should be passed directly like `${this.myMethod}` as it will be bound automatically.',
           line: 1,
           column: 12
         }

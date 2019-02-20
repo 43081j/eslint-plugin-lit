@@ -32,7 +32,8 @@ ruleTester.run('no-invalid-html', rule, {
       code: 'html`<x-foo />`',
       errors: [
         {
-          message: 'Template contained invalid HTML syntax, error was: non-void-html-element-start-tag-with-trailing-solidus',
+          message:
+            'Template contained invalid HTML syntax, error was: non-void-html-element-start-tag-with-trailing-solidus',
           line: 1,
           column: 5
         }
@@ -42,7 +43,8 @@ ruleTester.run('no-invalid-html', rule, {
       code: 'html`<x-foo attr=">`',
       errors: [
         {
-          message: 'Template contained invalid HTML syntax, error was: eof-in-tag',
+          message:
+            'Template contained invalid HTML syntax, error was: eof-in-tag',
           line: 1,
           column: 5
         }
@@ -52,7 +54,8 @@ ruleTester.run('no-invalid-html', rule, {
       code: 'html`<x-foo invalid"attr=${true}></x-foo>`',
       errors: [
         {
-          message: 'Template contained invalid HTML syntax, error was: unexpected-character-in-attribute-name',
+          message:
+            'Template contained invalid HTML syntax, error was: unexpected-character-in-attribute-name',
           line: 1,
           column: 5
         }
@@ -62,7 +65,8 @@ ruleTester.run('no-invalid-html', rule, {
       code: 'html`<x-foo></x-foo attr>`',
       errors: [
         {
-          message: 'Template contained invalid HTML syntax, error was: end-tag-with-attributes',
+          message:
+            'Template contained invalid HTML syntax, error was: end-tag-with-attributes',
           line: 1,
           column: 5
         }
@@ -72,7 +76,8 @@ ruleTester.run('no-invalid-html', rule, {
       code: 'html`<x-foo attr=${true}><x-bar foo="${true}></x-bar></x-foo>`',
       errors: [
         {
-          message: 'Template contained invalid HTML syntax, error was: eof-in-tag',
+          message:
+            'Template contained invalid HTML syntax, error was: eof-in-tag',
           line: 1,
           column: 44
         }
@@ -82,7 +87,8 @@ ruleTester.run('no-invalid-html', rule, {
       code: 'html`<x-foo x=5y=6></x-foo>`',
       errors: [
         {
-          message: 'Template contained invalid HTML syntax, error was: unexpected-character-in-unquoted-attribute-value',
+          message:
+            'Template contained invalid HTML syntax, error was: unexpected-character-in-unquoted-attribute-value',
           line: 1,
           column: 5
         }

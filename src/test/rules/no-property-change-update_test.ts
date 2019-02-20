@@ -74,7 +74,8 @@ ruleTester.run('no-property-change-update', rule, {
       }`,
       errors: [
         {
-          message: 'Properties should not be changed in the update lifecycle method as they will not trigger re-renders',
+          message:
+            'Properties should not be changed in the update lifecycle method as they will not trigger re-renders',
           line: 6,
           column: 11
         }
@@ -91,7 +92,8 @@ ruleTester.run('no-property-change-update', rule, {
       }`,
       errors: [
         {
-          message: 'Properties should not be changed in the update lifecycle method as they will not trigger re-renders',
+          message:
+            'Properties should not be changed in the update lifecycle method as they will not trigger re-renders',
           line: 5,
           column: 11
         }
@@ -108,7 +110,8 @@ ruleTester.run('no-property-change-update', rule, {
       }`,
       errors: [
         {
-          message: 'Properties should not be changed in the update lifecycle method as they will not trigger re-renders',
+          message:
+            'Properties should not be changed in the update lifecycle method as they will not trigger re-renders',
           line: 6,
           column: 11
         }

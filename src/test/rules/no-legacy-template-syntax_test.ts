@@ -33,7 +33,8 @@ ruleTester.run('no-legacy-template-syntax', rule, {
       code: 'html`<x-foo bar$=${x}></x-foo>`',
       errors: [
         {
-          message: 'Legacy lit-extended syntax is unsupported, did you mean to use "bar="?',
+          message:
+            'Legacy lit-extended syntax is unsupported, did you mean to use "bar="?',
           line: 1,
           column: 5
         }
@@ -43,7 +44,8 @@ ruleTester.run('no-legacy-template-syntax', rule, {
       code: 'html`<x-foo bar?=${x}></x-foo>`',
       errors: [
         {
-          message: 'Legacy lit-extended syntax is unsupported, did you mean to use "?bar="?',
+          message:
+            'Legacy lit-extended syntax is unsupported, did you mean to use "?bar="?',
           line: 1,
           column: 5
         }
@@ -53,7 +55,8 @@ ruleTester.run('no-legacy-template-syntax', rule, {
       code: 'html`<x-foo on-bar=${fn}></x-foo>`',
       errors: [
         {
-          message: 'Legacy lit-extended syntax is unsupported, did you mean to use "@bar="?',
+          message:
+            'Legacy lit-extended syntax is unsupported, did you mean to use "@bar="?',
           line: 1,
           column: 5
         }
@@ -63,7 +66,8 @@ ruleTester.run('no-legacy-template-syntax', rule, {
       code: 'html`<x-foo><x-bar ?bar=${bool} baz?=${bool}></x-bar></x-foo>`',
       errors: [
         {
-          message: 'Legacy lit-extended syntax is unsupported, did you mean to use "?baz="?',
+          message:
+            'Legacy lit-extended syntax is unsupported, did you mean to use "?baz="?',
           line: 1,
           column: 31
         }

@@ -16,7 +16,8 @@ const rule: Rule.RuleModule = {
     docs: {
       description: 'Disallows invalid HTML in templates',
       category: 'Best Practices',
-      url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-invalid-html.md'
+      url:
+        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-invalid-html.md'
     },
     messages: {
       parseError: 'Template contained invalid HTML syntax, error was: {{ err }}'
@@ -35,10 +36,12 @@ const rule: Rule.RuleModule = {
     //----------------------------------------------------------------------
 
     return {
-      'TaggedTemplateExpression': (node: ESTree.Node): void => {
-        if (node.type === 'TaggedTemplateExpression' &&
-            node.tag.type === 'Identifier' &&
-            node.tag.name === 'html') {
+      TaggedTemplateExpression: (node: ESTree.Node): void => {
+        if (
+          node.type === 'TaggedTemplateExpression' &&
+          node.tag.type === 'Identifier' &&
+          node.tag.name === 'html'
+        ) {
           const analyzer = TemplateAnalyzer.create(node);
 
           for (const err of analyzer.errors) {

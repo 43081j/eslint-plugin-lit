@@ -16,7 +16,8 @@ const rule: Rule.RuleModule = {
       description: 'Disallows invalid binding positions in templates',
       category: 'Best Practices',
       recommended: true,
-      url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/binding-positions.md'
+      url:
+        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/binding-positions.md'
     }
   },
 
@@ -34,14 +35,16 @@ const rule: Rule.RuleModule = {
     //----------------------------------------------------------------------
 
     return {
-      'TaggedTemplateExpression': (node: ESTree.Node): void => {
-        if (node.type === 'TaggedTemplateExpression' &&
+      TaggedTemplateExpression: (node: ESTree.Node): void => {
+        if (
+          node.type === 'TaggedTemplateExpression' &&
           node.tag.type === 'Identifier' &&
-          node.tag.name === 'html') {
+          node.tag.name === 'html'
+        ) {
           for (let i = 0; i < node.quasi.expressions.length; i++) {
             const expr = node.quasi.expressions[i];
             const prev = node.quasi.quasis[i];
-            const next = node.quasi.quasis[i+1];
+            const next = node.quasi.quasis[i + 1];
             if (tagPattern.test(prev.value.raw)) {
               context.report({
                 node: expr,

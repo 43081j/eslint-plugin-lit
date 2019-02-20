@@ -1,24 +1,27 @@
 import * as ESTree from 'estree';
 import * as parse5 from 'parse5';
 import treeAdapter = require('parse5-htmlparser2-tree-adapter');
-import {
-  templateExpressionToHtml,
-  getExpressionPlaceholder
-} from './util';
+import {templateExpressionToHtml, getExpressionPlaceholder} from './util';
 
 export interface Visitor {
-  enter: (node: treeAdapter.Node,
-    parent: treeAdapter.Node|null) => void;
-  exit: (node: treeAdapter.Node,
-    parent: treeAdapter.Node|null) => void;
-  enterElement: (node: treeAdapter.Element,
-    parent: treeAdapter.Node|null) => void;
-  enterDocumentFragment: (node: treeAdapter.DocumentFragment,
-    parent: treeAdapter.Node|null) => void;
-  enterCommentNode: (node: treeAdapter.CommentNode,
-    parent: treeAdapter.Node|null) => void;
-  enterTextNode: (node: treeAdapter.TextNode,
-    parent: treeAdapter.Node|null) => void;
+  enter: (node: treeAdapter.Node, parent: treeAdapter.Node | null) => void;
+  exit: (node: treeAdapter.Node, parent: treeAdapter.Node | null) => void;
+  enterElement: (
+    node: treeAdapter.Element,
+    parent: treeAdapter.Node | null
+  ) => void;
+  enterDocumentFragment: (
+    node: treeAdapter.DocumentFragment,
+    parent: treeAdapter.Node | null
+  ) => void;
+  enterCommentNode: (
+    node: treeAdapter.CommentNode,
+    parent: treeAdapter.Node | null
+  ) => void;
+  enterTextNode: (
+    node: treeAdapter.TextNode,
+    parent: treeAdapter.Node | null
+  ) => void;
 }
 
 export interface ParseError extends parse5.Location {
@@ -29,8 +32,10 @@ type ParserOptionsWithError = parse5.ParserOptions & {
   onParseError?: (err: ParseError) => void;
 };
 
-const analyzerCache =
-  new WeakMap<ESTree.TaggedTemplateExpression, TemplateAnalyzer>();
+const analyzerCache = new WeakMap<
+  ESTree.TaggedTemplateExpression,
+  TemplateAnalyzer
+>();
 
 /**
  * Analyzes a given template expression for traversing its contained
@@ -48,7 +53,8 @@ export class TemplateAnalyzer {
    * @return {!TemplateAnalyzer}
    */
   public static create(
-      node: ESTree.TaggedTemplateExpression): TemplateAnalyzer {
+    node: ESTree.TaggedTemplateExpression
+  ): TemplateAnalyzer {
     let cached = analyzerCache.get(node);
     if (!cached) {
       cached = new TemplateAnalyzer(node);
@@ -75,8 +81,10 @@ export class TemplateAnalyzer {
       }
     };
 
-    this._ast =
-      parse5.parseFragment(html, opts) as treeAdapter.DocumentFragment;
+    this._ast = parse5.parseFragment(
+      html,
+      opts
+    ) as treeAdapter.DocumentFragment;
   }
 
   /**
@@ -86,17 +94,20 @@ export class TemplateAnalyzer {
    * @return {?ESTree.SourceLocation}
    */
   public getLocationFor(
-      node: treeAdapter.Node): ESTree.SourceLocation|null|undefined {
+    node: treeAdapter.Node
+  ): ESTree.SourceLocation | null | undefined {
     if (treeAdapter.isElementNode(node)) {
       const loc = (node as treeAdapter.Element).sourceCodeLocation;
 
       if (loc) {
         return this.resolveLocation(loc.startTag);
       }
-    } else if (treeAdapter.isCommentNode(node) ||
-        treeAdapter.isTextNode(node)) {
-      const loc = (node as treeAdapter.CommentNode|treeAdapter.TextNode)
-          .sourceCodeLocation;
+    } else if (
+      treeAdapter.isCommentNode(node) ||
+      treeAdapter.isTextNode(node)
+    ) {
+      const loc = (node as treeAdapter.CommentNode | treeAdapter.TextNode)
+        .sourceCodeLocation;
 
       if (loc) {
         return this.resolveLocation(loc);
@@ -113,8 +124,10 @@ export class TemplateAnalyzer {
    * @param {string} attr Attribute name to retrieve
    * @return {?ESTree.SourceLocation}
    */
-  public getLocationForAttribute(element: treeAdapter.Element,
-      attr: string): ESTree.SourceLocation|null|undefined {
+  public getLocationForAttribute(
+    element: treeAdapter.Element,
+    attr: string
+  ): ESTree.SourceLocation | null | undefined {
     if (!element.sourceCodeLocation) {
       return null;
     }
@@ -131,7 +144,8 @@ export class TemplateAnalyzer {
    * @return {ESTree.SourceLocation}
    */
   public resolveLocation(
-      loc: parse5.Location): ESTree.SourceLocation|null|undefined {
+    loc: parse5.Location
+  ): ESTree.SourceLocation | null | undefined {
     let offset = 0;
 
     for (const quasi of this._node.quasi.quasis) {
@@ -153,8 +167,10 @@ export class TemplateAnalyzer {
    * @return {void}
    */
   public traverse(visitor: Partial<Visitor>): void {
-    const visit = (node: treeAdapter.Node,
-        parent: treeAdapter.Node|null): void => {
+    const visit = (
+      node: treeAdapter.Node,
+      parent: treeAdapter.Node | null
+    ): void => {
       if (!node) {
         return;
       }
@@ -166,7 +182,9 @@ export class TemplateAnalyzer {
       if (node.type === 'root') {
         if (visitor.enterDocumentFragment) {
           visitor.enterDocumentFragment(
-            node as treeAdapter.DocumentFragment, parent);
+            node as treeAdapter.DocumentFragment,
+            parent
+          );
         }
       } else if (treeAdapter.isCommentNode(node)) {
         if (visitor.enterCommentNode) {
@@ -186,9 +204,11 @@ export class TemplateAnalyzer {
         const children = (node as treeAdapter.ParentNode).childNodes;
 
         if (children && children.length > 0) {
-          children.forEach((child): void => {
-            visit(child, node);
-          });
+          children.forEach(
+            (child): void => {
+              visit(child, node);
+            }
+          );
         }
       }
 

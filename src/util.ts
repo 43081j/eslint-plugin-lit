@@ -15,7 +15,7 @@ interface BabelProperty extends ESTree.MethodDefinition {
  * @param {ESTree.Node} node Node to retrieve name of
  * @return {?string}
  */
-export function getIdentifierName(node: ESTree.Node): string|undefined {
+export function getIdentifierName(node: ESTree.Node): string | undefined {
   if (node.type === 'Identifier') {
     return node.name;
   }
@@ -32,19 +32,24 @@ export function getIdentifierName(node: ESTree.Node): string|undefined {
  * @return {ReadonlyMap<string, ESTreeObjectExpression>}
  */
 export function getPropertyMap(
-    node: ESTree.Class): ReadonlyMap<string, ESTree.ObjectExpression> {
+  node: ESTree.Class
+): ReadonlyMap<string, ESTree.ObjectExpression> {
   const result = new Map<string, ESTree.ObjectExpression>();
 
   for (const member of node.body.body) {
-    if (member.static &&
-        member.kind === 'get' &&
-        member.key.type === 'Identifier' &&
-        member.key.name === 'properties' &&
-        member.value.body) {
-      const ret = member.value.body.body.find((m): boolean =>
-        m.type === 'ReturnStatement' &&
-        m.argument != undefined &&
-        m.argument.type === 'ObjectExpression') as ESTree.ReturnStatement;
+    if (
+      member.static &&
+      member.kind === 'get' &&
+      member.key.type === 'Identifier' &&
+      member.key.name === 'properties' &&
+      member.value.body
+    ) {
+      const ret = member.value.body.body.find(
+        (m): boolean =>
+          m.type === 'ReturnStatement' &&
+          m.argument != undefined &&
+          m.argument.type === 'ObjectExpression'
+      ) as ESTree.ReturnStatement;
       if (ret) {
         const arg = ret.argument as ESTree.ObjectExpression;
         for (const prop of arg.properties) {
@@ -62,10 +67,12 @@ export function getPropertyMap(
 
     if (memberName && babelProp.decorators) {
       for (const decorator of babelProp.decorators) {
-        if (decorator.expression.type === 'CallExpression' &&
-            decorator.expression.callee.type === 'Identifier' &&
-            decorator.expression.callee.name === 'property' &&
-            decorator.expression.arguments.length > 0) {
+        if (
+          decorator.expression.type === 'CallExpression' &&
+          decorator.expression.callee.type === 'Identifier' &&
+          decorator.expression.callee.name === 'property' &&
+          decorator.expression.arguments.length > 0
+        ) {
           const dArg = decorator.expression.arguments[0];
           if (dArg.type === 'ObjectExpression') {
             result.set(memberName, dArg);
@@ -87,8 +94,9 @@ export function getPropertyMap(
  * @return {string}
  */
 export function getExpressionPlaceholder(
-    node: ESTree.TaggedTemplateExpression,
-    quasi: ESTree.TemplateElement): string {
+  node: ESTree.TaggedTemplateExpression,
+  quasi: ESTree.TemplateElement
+): string {
   const i = node.quasi.quasis.indexOf(quasi);
 
   if (/=$/.test(quasi.value.raw)) {
@@ -114,7 +122,8 @@ export function isExpressionPlaceholder(value: string): boolean {
  * @return {string}
  */
 export function templateExpressionToHtml(
-    node: ESTree.TaggedTemplateExpression): string {
+  node: ESTree.TaggedTemplateExpression
+): string {
   let html = '';
 
   for (let i = 0; i < node.quasi.quasis.length; i++) {

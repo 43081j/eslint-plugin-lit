@@ -32,7 +32,8 @@ ruleTester.run('no-template-map', rule, {
       code: 'html`foo ${a.map(i => i)}`',
       errors: [
         {
-          message: '`.map` is disallowed in templates, move the expression out of the template instead',
+          message:
+            '`.map` is disallowed in templates, move the expression out of the template instead',
           line: 1,
           column: 12
         }
@@ -42,7 +43,8 @@ ruleTester.run('no-template-map', rule, {
       code: 'html`foo ${a.map(i => html`bar ${i}`)}`',
       errors: [
         {
-          message: '`.map` is disallowed in templates, move the expression out of the template instead',
+          message:
+            '`.map` is disallowed in templates, move the expression out of the template instead',
           line: 1,
           column: 12
         }
@@ -52,7 +54,8 @@ ruleTester.run('no-template-map', rule, {
       code: 'html`foo ${a.b.c.map(i => i)}`',
       errors: [
         {
-          message: '`.map` is disallowed in templates, move the expression out of the template instead',
+          message:
+            '`.map` is disallowed in templates, move the expression out of the template instead',
           line: 1,
           column: 12
         }
@@ -62,7 +65,8 @@ ruleTester.run('no-template-map', rule, {
       code: 'html`foo ${[1, 2, 3].map(i => i)}`',
       errors: [
         {
-          message: '`.map` is disallowed in templates, move the expression out of the template instead',
+          message:
+            '`.map` is disallowed in templates, move the expression out of the template instead',
           line: 1,
           column: 12
         }
