@@ -1,5 +1,5 @@
 /**
- * @fileoverview Detects usages of "non-public" properties
+ * @fileoverview Disallows usages of "non-public" property bindings
  * @author Michael Stramel <https://github.com/stramel>
  */
 

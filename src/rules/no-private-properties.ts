@@ -1,5 +1,5 @@
 /**
- * @fileoverview Detects usages of "non-public" properties
+ * @fileoverview Disallows usages of "non-public" property bindings
  * @author Michael Stramel <https://github.com/stramel>
  */
 
@@ -14,7 +14,7 @@ import {TemplateAnalyzer} from '../template-analyzer';
 const rule: Rule.RuleModule = {
   meta: {
     docs: {
-      description: 'Detects usages of "non-public" properties',
+      description: 'Disallows usages of "non-public" property bindings',
       category: 'Best Practices',
       url:
         'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-private-properties.md'
