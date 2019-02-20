@@ -36,13 +36,13 @@ Configure your rules like so:
 
 # Supported Rules
 
-* [lit/no-duplicate-template-bindings](docs/no-duplicate-template-bindings.md)
-* [lit/no-legacy-template-syntax](docs/no-legacy-template-syntax.md)
-* [lit/no-template-bind](docs/no-template-bind.md)
-* [lit/no-template-map](docs/no-template-map.md)
-* [lit/no-useless-template-literals](docs/no-useless-template-literals.md)
-* [lit/attribute-value-entities](docs/attribute-value-entities.md)
-* [lit/binding-positions](docs/binding-positions.md)
-* [lit/no-property-change-update](docs/no-property-change-update.md)
-* [lit/no-invalid-html](docs/no-invalid-html.md)
-* [lit/no-value-attribute](docs/no-value-attribute.md)
+* [lit/no-duplicate-template-bindings](docs/rules/no-duplicate-template-bindings.md)
+* [lit/no-legacy-template-syntax](docs/rules/no-legacy-template-syntax.md)
+* [lit/no-template-bind](docs/rules/no-template-bind.md)
+* [lit/no-template-map](docs/rules/no-template-map.md)
+* [lit/no-useless-template-literals](docs/rules/no-useless-template-literals.md)
+* [lit/attribute-value-entities](docs/rules/attribute-value-entities.md)
+* [lit/binding-positions](docs/rules/binding-positions.md)
+* [lit/no-property-change-update](docs/rules/no-property-change-update.md)
+* [lit/no-invalid-html](docs/rules/no-invalid-html.md)
+* [lit/no-value-attribute](docs/rules/no-value-attribute.md)
