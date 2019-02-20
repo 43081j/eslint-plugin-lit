@@ -25,42 +25,46 @@ ruleTester.run('no-private-properties', rule, {
     {code: 'html`<x-foo .bar=${true} ?foo=${true} @baz=${fn}></x-foo>`'},
     {code: 'html`<x-foo></x-foo>`'},
     {code: 'html`<x-foo bar baz></x-foo>`'},
-    {code: 'html`<x-foo bar baz=${true}></x-foo>`'}
-  ],
-
-  invalid: [
+    {code: 'html`<x-foo bar baz=${true}></x-foo>`'},
+    {code: 'html`<x-foo ._bar=${x} .__baz=${y}></x-foo>`'},
     {
       code: 'html`<x-foo _bar=${x} __baz=${y}></x-foo>`',
-      errors: [
+      options: [
         {
-          messageId: 'unsupported',
-          line: 1,
-          column: 5
-        },
-        {
-          messageId: 'unsupported',
-          line: 1,
-          column: 21
-        }
-      ]
-    },
-    {
-      code: 'html`<x-foo ._bar=${x} .__baz=${y}></x-foo>`',
-      errors: [
-        {
-          messageId: 'unsupported',
-          line: 1,
-          column: 5
-        },
-        {
-          messageId: 'unsupported',
-          line: 1,
-          column: 22
+          private: '^__',
+          protected: '^_'
         }
       ]
     },
     {
       code: 'html`<x-foo ?_bar=${x} ?__baz=${y}></x-foo>`',
+      options: [
+        {
+          private: '^__',
+          protected: '^_'
+        }
+      ]
+    },
+    {
+      code: 'html`<x-foo @_bar=${x} @__baz=${y}></x-foo>`',
+      options: [
+        {
+          private: '^__',
+          protected: '^_'
+        }
+      ]
+    }
+  ],
+
+  invalid: [
+    {
+      code: 'html`<x-foo ._bar=${x} .__baz=${y}></x-foo>`',
+      options: [
+        {
+          private: '^__',
+          protected: '^_'
+        }
+      ],
       errors: [
         {
           messageId: 'unsupported',
@@ -75,7 +79,13 @@ ruleTester.run('no-private-properties', rule, {
       ]
     },
     {
-      code: 'html`<x-foo @_bar=${x} @__baz=${y}></x-foo>`',
+      code: 'html`<x-foo ._protected_bar=${x} .__private__baz=${y}></x-foo>`',
+      options: [
+        {
+          private: '^__private__',
+          protected: '^_protected_'
+        }
+      ],
       errors: [
         {
           messageId: 'unsupported',
@@ -85,7 +95,7 @@ ruleTester.run('no-private-properties', rule, {
         {
           messageId: 'unsupported',
           line: 1,
-          column: 22
+          column: 32
         }
       ]
     }

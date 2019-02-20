@@ -26,21 +26,29 @@ const rule: Rule.RuleModule = {
       {
         type: 'object',
         properties: {
-          prefix: {type: 'string'}
+          private: {type: 'string', minLength: 1, format: 'regex'},
+          protected: {type: 'string', minLength: 1, format: 'regex'}
         },
-        additionalProperties: false
+        additionalProperties: false,
+        minProperties: 1
       }
     ]
   },
 
   create(context): Rule.RuleListener {
     // variables should be defined here
-    const options = {
-      prefix: '_',
-      ...context.options[0]
-    };
-
-    const bindings = ['.', '?', '@'];
+    const config: {private?: string; protected?: string} =
+      context.options[0] || {};
+    const conventions = Object.entries(config).reduce(
+      (acc, [key, value]) => {
+        if (value) {
+          acc[key] = new RegExp(value);
+        }
+        return acc;
+      },
+      {} as {[key: string]: RegExp}
+    );
+    const conventionRegexes = Object.values(conventions);
 
     //----------------------------------------------------------------------
     // Helpers
@@ -69,12 +77,16 @@ const rule: Rule.RuleModule = {
                   continue;
                 }
 
-                const hasBinding = bindings.includes(attr.slice(0, 1));
-                const normalizedAttr = hasBinding ? attr.slice(1) : attr;
+                const hasPropertyBinding = '.' === attr.slice(0, 1);
+                if (!hasPropertyBinding) {
+                  continue;
+                }
 
-                console.log(attr, hasBinding, normalizedAttr);
+                const invalidPropertyName = conventionRegexes.some(
+                  (convention) => convention.test(attr.slice(1))
+                );
 
-                if (normalizedAttr.startsWith(options.prefix)) {
+                if (invalidPropertyName) {
                   context.report({
                     loc,
                     messageId: 'unsupported'
