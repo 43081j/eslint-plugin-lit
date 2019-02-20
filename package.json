@@ -8,8 +8,8 @@
     "lint": "eslint \"src/**/*.ts\"",
     "prebuild": "npm run clean",
     "build": "tsc",
-    "start": "watch 'npm run dev' src",
-    "dev": "npm run lint && npm run build && npm run test",
+    "start": "npm run env npm_config_loglevel=silent -- watch \"npm run dev\" src",
+    "dev": "npm run lint && npm run build && npm run test ",
     "test": "nyc --reporter=html --reporter=text-summary mocha \"lib/test/**/*_test.js\"",
     "test:coverage": "nyc report --reporter=text-lcov | coveralls",
     "format": "prettier --write \"src/**/*.ts\"",
@@ -54,6 +54,7 @@
     "eslint-config-google": "^0.12.0",
     "mocha": "^5.2.0",
     "nyc": "^13.3.0",
+    "prettier": "^1.16.4",
     "rimraf": "^2.6.3",
     "typescript": "^3.3.3",
     "watch": "^1.0.2"
