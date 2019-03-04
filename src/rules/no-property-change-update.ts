@@ -22,7 +22,8 @@ const rule: Rule.RuleModule = {
     },
     messages: {
       propertyChange:
-        'Properties should not be changed in the update lifecycle method as they will not trigger re-renders'
+        'Properties should not be changed in the update lifecycle method as' +
+        ' they will not trigger re-renders'
     }
   },
 

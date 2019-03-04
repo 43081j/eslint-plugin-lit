@@ -17,6 +17,11 @@ const rule: Rule.RuleModule = {
       category: 'Best Practices',
       url:
         'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-template-map.md'
+    },
+    messages: {
+      noMap:
+        '`.map` is disallowed in templates, move the expression out' +
+        ' of the template instead'
     }
   },
 
@@ -47,8 +52,7 @@ const rule: Rule.RuleModule = {
             ) {
               context.report({
                 node: expr,
-                message:
-                  '`.map` is disallowed in templates, move the expression out of the template instead'
+                messageId: 'noMap'
               });
             }
           }

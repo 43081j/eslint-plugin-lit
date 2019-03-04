@@ -21,7 +21,8 @@ const rule: Rule.RuleModule = {
     },
     messages: {
       unsupported:
-        'Legacy lit-extended syntax is unsupported, did you mean to use "{{replacement}}"?'
+        'Legacy lit-extended syntax is unsupported, did you mean to use ' +
+        '"{{replacement}}"?'
     }
   },
 
