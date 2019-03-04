@@ -10,17 +10,18 @@ This rule disallows use of legacy lit-extended syntax in templates.
 The following patterns are considered warnings:
 
 ```ts
-html`<x-foo bar?=${x}>`;
-html`<x-foo on-bar=${x}>`;
-html`<x-foo bar$=${x}>`;
+html`<x-foo bar?=${x}>`; // boolean
+html`<x-foo on-bar=${x}>`; // event listener
+html`<x-foo bar$=${x}>`; // attribute
 ```
 
 The following patterns are not warnings:
 
 ```ts
-html`<x-foo ?bar=${x}>`;
-html`<x-foo .bar=${x}>`;
-html`<x-foo bar=${x}>`;
+html`<x-foo ?bar=${x}>`; // boolean
+html`<x-foo @bar=${x}>`; // event listener
+html`<x-foo bar=${x}>`; // attribute (Previously, property)
+html`<x-foo .bar=${x}>`; // property
 ```
 
 ## When Not To Use It
