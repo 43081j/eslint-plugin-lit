@@ -1,8 +1,8 @@
 {
-  "extends": ["plugin:prettier/recommended", "google"],
+  "extends": "google",
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": "2017",
+    "ecmaVersion": 2018,
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint"],
@@ -24,7 +24,7 @@
       "single",
       {
         "avoidEscape": true,
-        "allowTemplateLiterals": false
+        "allowTemplateLiterals": true
       }
     ],
     "@typescript-eslint/class-name-casing": "error",
