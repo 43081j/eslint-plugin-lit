@@ -4,5 +4,5 @@ import requireIndex = require('requireindex');
 export const rules = requireIndex(`${__dirname}/rules`);
 
 export const configs = {
-  'recommended': recommended
+  recommended
 };

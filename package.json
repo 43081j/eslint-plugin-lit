@@ -4,10 +4,17 @@
   "description": "lit-html support for ESLint",
   "main": "lib/index.js",
   "scripts": {
+    "clean": "rimraf ./lib",
     "lint": "eslint \"src/**/*.ts\"",
-    "build": "npm run lint && tsc",
-    "build:watch": "tsc -w",
-    "test": "mocha \"lib/test/**/*_test.js\""
+    "prebuild": "npm run clean",
+    "build": "tsc",
+    "start": "npm run env npm_config_loglevel=silent -- watch \"npm run dev\" src",
+    "dev": "npm run lint && npm run build && npm run test ",
+    "test": "nyc --reporter=html --reporter=text-summary mocha \"lib/test/**/*_test.js\"",
+    "test:coverage": "nyc report --reporter=text-lcov | coveralls",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run lint && npm run test"
   },
   "repository": {
     "type": "git",
@@ -46,6 +53,10 @@
     "eslint": "^5.13.0",
     "eslint-config-google": "^0.12.0",
     "mocha": "^5.2.0",
-    "typescript": "^3.3.3"
+    "nyc": "^13.3.0",
+    "prettier": "^1.16.4",
+    "rimraf": "^2.6.3",
+    "typescript": "^3.3.3",
+    "watch": "^1.0.2"
   }
 }

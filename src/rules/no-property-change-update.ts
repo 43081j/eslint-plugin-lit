@@ -17,16 +17,19 @@ const rule: Rule.RuleModule = {
       description:
         'Disallows property changes in the `update` lifecycle method',
       category: 'Best Practices',
-      url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-property-change-update.md'
+      url:
+        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-property-change-update.md'
     },
     messages: {
-      propertyChange: `Properties should not be changed in the update lifecycle method as they will not trigger re-renders`
+      propertyChange:
+        'Properties should not be changed in the update lifecycle method as' +
+        ' they will not trigger re-renders'
     }
   },
 
   create(context): Rule.RuleListener {
     // variables should be defined here
-    let propertyMap: ReadonlyMap<string, ESTree.ObjectExpression>|null = null;
+    let propertyMap: ReadonlyMap<string, ESTree.ObjectExpression> | null = null;
     let inUpdate = false;
 
     //----------------------------------------------------------------------
@@ -40,9 +43,11 @@ const rule: Rule.RuleModule = {
      * @return {void}
      */
     function classEnter(node: ESTree.Class): void {
-      if (!node.superClass ||
-          node.superClass.type !== 'Identifier' ||
-          node.superClass.name !== 'LitElement') {
+      if (
+        !node.superClass ||
+        node.superClass.type !== 'Identifier' ||
+        node.superClass.name !== 'LitElement'
+      ) {
         return;
       }
 
@@ -69,10 +74,12 @@ const rule: Rule.RuleModule = {
      * @return {void}
      */
     function methodEnter(node: ESTree.MethodDefinition): void {
-      if (!propertyMap ||
-          node.kind !== 'method' ||
-          node.key.type !== 'Identifier' ||
-          node.key.name !== 'update') {
+      if (
+        !propertyMap ||
+        node.kind !== 'method' ||
+        node.key.type !== 'Identifier' ||
+        node.key.name !== 'update'
+      ) {
         return;
       }
 
@@ -95,11 +102,13 @@ const rule: Rule.RuleModule = {
      * @return {void}
      */
     function assignmentFound(node: ESTree.AssignmentExpression): void {
-      if (!propertyMap ||
-          !inUpdate ||
-          node.left.type !== 'MemberExpression' ||
-          node.left.object.type !== 'ThisExpression' ||
-          node.left.property.type !== 'Identifier') {
+      if (
+        !propertyMap ||
+        !inUpdate ||
+        node.left.type !== 'MemberExpression' ||
+        node.left.object.type !== 'ThisExpression' ||
+        node.left.property.type !== 'Identifier'
+      ) {
         return;
       }
 
@@ -120,16 +129,16 @@ const rule: Rule.RuleModule = {
     //----------------------------------------------------------------------
 
     return {
-      'ClassExpression': (node: ESTree.Node): void =>
+      ClassExpression: (node: ESTree.Node): void =>
         classEnter(node as ESTree.Class),
-      'ClassDeclaration': (node: ESTree.Node): void =>
+      ClassDeclaration: (node: ESTree.Node): void =>
         classEnter(node as ESTree.Class),
       'ClassExpression:exit': classExit,
       'ClassDeclaration:exit': classExit,
-      'MethodDefinition': (node: ESTree.Node): void =>
+      MethodDefinition: (node: ESTree.Node): void =>
         methodEnter(node as ESTree.MethodDefinition),
       'MethodDefinition:exit': methodExit,
-      'AssignmentExpression': (node: ESTree.Node): void =>
+      AssignmentExpression: (node: ESTree.Node): void =>
         assignmentFound(node as ESTree.AssignmentExpression)
     };
   }

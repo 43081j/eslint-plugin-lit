@@ -17,10 +17,12 @@ const rule: Rule.RuleModule = {
       description: 'Disallows unencoded HTML entities in attribute values',
       category: 'Best Practices',
       recommended: true,
-      url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/attribute-value-entities.md'
+      url:
+        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/attribute-value-entities.md'
     },
     messages: {
-      unencoded: 'Attribute values may not contain unencoded HTML ' +
+      unencoded:
+        'Attribute values may not contain unencoded HTML ' +
         'entities, e.g. use `&gt;` instead of `>`'
     }
   },
@@ -38,10 +40,12 @@ const rule: Rule.RuleModule = {
     //----------------------------------------------------------------------
 
     return {
-      'TaggedTemplateExpression': (node: ESTree.Node): void => {
-        if (node.type === 'TaggedTemplateExpression' &&
+      TaggedTemplateExpression: (node: ESTree.Node): void => {
+        if (
+          node.type === 'TaggedTemplateExpression' &&
           node.tag.type === 'Identifier' &&
-          node.tag.name === 'html') {
+          node.tag.name === 'html'
+        ) {
           const analyzer = TemplateAnalyzer.create(node);
 
           analyzer.traverse({

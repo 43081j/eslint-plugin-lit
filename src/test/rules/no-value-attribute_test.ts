@@ -35,7 +35,8 @@ ruleTester.run('no-value-attribute', rule, {
       code: 'html`<input value=${val} />`',
       errors: [
         {
-          message: 'The `value` attribute only defines the initial value ' +
+          message:
+            'The `value` attribute only defines the initial value ' +
             'rather than permanently binding; you should set the `value` ' +
             'property instead via `.value`',
           line: 1,
@@ -47,7 +48,8 @@ ruleTester.run('no-value-attribute', rule, {
       code: 'html`<input type="text" value=${val} />`',
       errors: [
         {
-          message: 'The `value` attribute only defines the initial value ' +
+          message:
+            'The `value` attribute only defines the initial value ' +
             'rather than permanently binding; you should set the `value` ' +
             'property instead via `.value`',
           line: 1,

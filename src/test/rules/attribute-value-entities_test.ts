@@ -24,7 +24,7 @@ ruleTester.run('attribute-value-entities', rule, {
   valid: [
     {code: 'html`foo bar`'},
     {code: 'html`<x-foo attr="bar"></x-foo>`'},
-    {code: 'html`<x-foo attr=${\'>\'}></x-foo>`'},
+    {code: "html`<x-foo attr=${'>'}></x-foo>`"},
     {code: 'html`<x-foo attr="()"></x-foo>`'}
   ],
 
@@ -33,7 +33,8 @@ ruleTester.run('attribute-value-entities', rule, {
       code: 'html`<x-foo attr=">"></x-foo>`',
       errors: [
         {
-          message: 'Attribute values may not contain unencoded HTML ' +
+          message:
+            'Attribute values may not contain unencoded HTML ' +
             'entities, e.g. use `&gt;` instead of `>`',
           line: 1,
           column: 5
@@ -44,7 +45,8 @@ ruleTester.run('attribute-value-entities', rule, {
       code: 'html`<x-foo attr="<"></x-foo>`',
       errors: [
         {
-          message: 'Attribute values may not contain unencoded HTML ' +
+          message:
+            'Attribute values may not contain unencoded HTML ' +
             'entities, e.g. use `&gt;` instead of `>`',
           line: 1,
           column: 5
@@ -55,7 +57,8 @@ ruleTester.run('attribute-value-entities', rule, {
       code: 'html`<x-foo attr="&"></x-foo>`',
       errors: [
         {
-          message: 'Attribute values may not contain unencoded HTML ' +
+          message:
+            'Attribute values may not contain unencoded HTML ' +
             'entities, e.g. use `&gt;` instead of `>`',
           line: 1,
           column: 5
@@ -63,10 +66,11 @@ ruleTester.run('attribute-value-entities', rule, {
       ]
     },
     {
-      code: 'html`<x-foo attr=\'"\'></x-foo>`',
+      code: "html`<x-foo attr='\"'></x-foo>`",
       errors: [
         {
-          message: 'Attribute values may not contain unencoded HTML ' +
+          message:
+            'Attribute values may not contain unencoded HTML ' +
             'entities, e.g. use `&gt;` instead of `>`',
           line: 1,
           column: 5
@@ -74,10 +78,11 @@ ruleTester.run('attribute-value-entities', rule, {
       ]
     },
     {
-      code: 'html`<x-foo attr=\'>\'></x-foo>`',
+      code: "html`<x-foo attr='>'></x-foo>`",
       errors: [
         {
-          message: 'Attribute values may not contain unencoded HTML ' +
+          message:
+            'Attribute values may not contain unencoded HTML ' +
             'entities, e.g. use `&gt;` instead of `>`',
           line: 1,
           column: 5

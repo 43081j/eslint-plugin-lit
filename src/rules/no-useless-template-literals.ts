@@ -16,7 +16,8 @@ const rule: Rule.RuleModule = {
       description: 'Disallows redundant literal values in templates',
       category: 'Best Practices',
       recommended: true,
-      url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-useless-template-literals.md'
+      url:
+        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-useless-template-literals.md'
     }
   },
 
@@ -32,7 +33,7 @@ const rule: Rule.RuleModule = {
     //----------------------------------------------------------------------
 
     return {
-      'TaggedTemplateExpression': (node: ESTree.Node): void => {
+      TaggedTemplateExpression: (node: ESTree.Node): void => {
         if (node.type === 'TaggedTemplateExpression') {
           for (const expr of node.quasi.expressions) {
             if (expr.type === 'Literal') {

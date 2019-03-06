@@ -21,10 +21,7 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-useless-template-literals', rule, {
-  valid: [
-    {code: 'html`foo ${someVar} bar`'},
-    {code: 'html`foo bar`'}
-  ],
+  valid: [{code: 'html`foo ${someVar} bar`'}, {code: 'html`foo bar`'}],
 
   invalid: [
     {
