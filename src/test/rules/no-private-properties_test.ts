@@ -54,6 +54,16 @@ ruleTester.run('no-private-properties', rule, {
           protected: '^_'
         }
       ]
+    },
+    {code: 'css`foo bar`'},
+    {
+      code: 'html`<x-foo @__baz=${y}></x-foo>`',
+      options: [
+        {
+          private: '^__',
+          protected: undefined
+        }
+      ]
     }
   ],
 

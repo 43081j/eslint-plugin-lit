@@ -99,6 +99,7 @@ export class TemplateAnalyzer {
     if (treeAdapter.isElementNode(node)) {
       const loc = (node as treeAdapter.Element).sourceCodeLocation;
 
+      /* istanbul ignore else */
       if (loc) {
         return this.resolveLocation(loc.startTag);
       }
@@ -109,6 +110,7 @@ export class TemplateAnalyzer {
       const loc = (node as treeAdapter.CommentNode | treeAdapter.TextNode)
         .sourceCodeLocation;
 
+      /* istanbul ignore else */
       if (loc) {
         return this.resolveLocation(loc);
       }
@@ -128,6 +130,7 @@ export class TemplateAnalyzer {
     element: treeAdapter.Element,
     attr: string
   ): ESTree.SourceLocation | null | undefined {
+    /* istanbul ignore if */
     if (!element.sourceCodeLocation) {
       return null;
     }
@@ -148,6 +151,7 @@ export class TemplateAnalyzer {
     element: treeAdapter.Element,
     attr: string
   ): string | null {
+    /* istanbul ignore if */
     if (!element.sourceCodeLocation) {
       return null;
     }
@@ -164,6 +168,10 @@ export class TemplateAnalyzer {
     }
 
     const loc = element.sourceCodeLocation.attrs[originalAttr];
+    if (!loc) {
+      return null;
+    }
+
     let str = '';
 
     for (const quasi of this._node.quasi.quasis) {
@@ -174,7 +182,7 @@ export class TemplateAnalyzer {
 
       if (loc.endOffset < str.length) {
         const fullAttr = str.substring(
-          loc.startOffset + attr.length + 1,
+          loc.startOffset + originalAttr.length + 1,
           loc.endOffset
         );
         if (fullAttr.startsWith('"') && fullAttr.endsWith('"')) {
@@ -187,6 +195,7 @@ export class TemplateAnalyzer {
       }
     }
 
+    /* istanbul ignore next */
     return null;
   }
 
@@ -210,6 +219,7 @@ export class TemplateAnalyzer {
       }
     }
 
+    /* istanbul ignore next */
     return null;
   }
 
@@ -224,6 +234,7 @@ export class TemplateAnalyzer {
       node: treeAdapter.Node,
       parent: treeAdapter.Node | null
     ): void => {
+      /* istanbul ignore if */
       if (!node) {
         return;
       }
@@ -247,9 +258,12 @@ export class TemplateAnalyzer {
         if (visitor.enterTextNode) {
           visitor.enterTextNode(node as treeAdapter.TextNode, parent);
         }
-      } else if (treeAdapter.isElementNode(node)) {
-        if (visitor.enterElement) {
-          visitor.enterElement(node as treeAdapter.Element, parent);
+      } else {
+        /* istanbul ignore else */
+        if (treeAdapter.isElementNode(node)) {
+          if (visitor.enterElement) {
+            visitor.enterElement(node as treeAdapter.Element, parent);
+          }
         }
       }
 
@@ -257,11 +271,9 @@ export class TemplateAnalyzer {
         const children = (node as treeAdapter.ParentNode).childNodes;
 
         if (children && children.length > 0) {
-          children.forEach(
-            (child): void => {
-              visit(child, node);
-            }
-          );
+          children.forEach((child): void => {
+            visit(child, node);
+          });
         }
       }
 

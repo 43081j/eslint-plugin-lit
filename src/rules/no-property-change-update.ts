@@ -51,11 +51,7 @@ const rule: Rule.RuleModule = {
         return;
       }
 
-      const props = getPropertyMap(node);
-
-      if (props) {
-        propertyMap = props;
-      }
+      propertyMap = getPropertyMap(node);
     }
 
     /**
@@ -119,7 +115,7 @@ const rule: Rule.RuleModule = {
       }
 
       context.report({
-        node: node,
+        node,
         messageId: 'propertyChange'
       });
     }

@@ -26,7 +26,8 @@ ruleTester.run('no-invalid-html', rule, {
     // Duplicate attrs rule handles this
     {code: 'html`<x-foo bar bar></x-foo>`'},
     {code: 'html`foo bar`'},
-    {code: 'html`<x-foo bar=${true}></x-foo>`'}
+    {code: 'html`<x-foo bar=${true}></x-foo>`'},
+    {code: 'css`foo bar`'}
   ],
 
   invalid: [

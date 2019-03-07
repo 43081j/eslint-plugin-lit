@@ -5,6 +5,9 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
+  "env": {
+    "mocha": true
+  },
   "plugins": ["@typescript-eslint"],
   "rules": {
     "indent": "off",
@@ -28,9 +31,12 @@
       }
     ],
     "@typescript-eslint/class-name-casing": "error",
-    "@typescript-eslint/explicit-function-return-type": ["error", {
-      "allowExpressions": true
-    }],
+    "@typescript-eslint/explicit-function-return-type": [
+      "error",
+      {
+        "allowExpressions": true
+      }
+    ],
     "@typescript-eslint/explicit-member-accessibility": "error",
     "@typescript-eslint/member-delimiter-style": "error",
     "@typescript-eslint/member-naming": [

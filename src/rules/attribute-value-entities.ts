@@ -61,7 +61,7 @@ const rule: Rule.RuleModule = {
 
                 if (disallowedPattern.test(rawValue)) {
                   context.report({
-                    loc: loc,
+                    loc,
                     messageId: 'unencoded'
                   });
                 }

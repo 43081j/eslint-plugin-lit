@@ -26,7 +26,8 @@ ruleTester.run('no-legacy-template-syntax', rule, {
     {code: 'html`<x-foo .bar=${true} ?foo=${true} @baz=${fn}></x-foo>`'},
     {code: 'html`<x-foo></x-foo>`'},
     {code: 'html`<x-foo bar baz></x-foo>`'},
-    {code: 'html`<x-foo bar baz=${true}></x-foo>`'}
+    {code: 'html`<x-foo bar baz=${true}></x-foo>`'},
+    {code: 'css`foo bar`'}
   ],
 
   invalid: [

@@ -73,6 +73,7 @@ const rule: Rule.RuleModule = {
               for (const attr in element.attribs) {
                 const loc = analyzer.getLocationForAttribute(element, attr);
 
+                /* istanbul ignore if */
                 if (!loc) {
                   continue;
                 }

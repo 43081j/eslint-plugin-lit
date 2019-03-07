@@ -1,12 +1,11 @@
 # eslint-plugin-lit
 
+ESLint plugin for [lit-html](https://github.com/polymer/lit-html).
+
 [![npm version](https://img.shields.io/npm/v/eslint-plugin-lit.svg?style=flat)](https://npmjs.org/package/eslint-plugin-lit 'View this project on npm')
 [![Build Status](https://travis-ci.org/43081j/eslint-plugin-lit.svg?branch=master)](https://travis-ci.org/43081j/eslint-plugin-lit)
 [![Coverage Status](https://coveralls.io/repos/github/43081j/eslint-plugin-lit/badge.svg?branch=master)](https://coveralls.io/github/43081j/eslint-plugin-lit?branch=master)
-
-[lit-html](https://github.com/polymer/lit-html) support for ESLint.
-
-**Note:** experimental, may change quite a bit.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Install
 

@@ -52,13 +52,16 @@ const rule: Rule.RuleModule = {
 
             const loc = analyzer.resolveLocation(err);
 
-            if (loc) {
-              context.report({
-                loc: loc,
-                messageId: 'parseError',
-                data: {err: err.code}
-              });
+            /* istanbul ignore if */
+            if (!loc) {
+              continue;
             }
+
+            context.report({
+              loc,
+              messageId: 'parseError',
+              data: {err: err.code}
+            });
           }
         }
       }

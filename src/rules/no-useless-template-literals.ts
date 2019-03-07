@@ -18,6 +18,9 @@ const rule: Rule.RuleModule = {
       recommended: true,
       url:
         'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-useless-template-literals.md'
+    },
+    messages: {
+      useless: 'Literals must not be substituted into templates'
     }
   },
 
@@ -34,12 +37,13 @@ const rule: Rule.RuleModule = {
 
     return {
       TaggedTemplateExpression: (node: ESTree.Node): void => {
+        /* istanbul ignore else */
         if (node.type === 'TaggedTemplateExpression') {
           for (const expr of node.quasi.expressions) {
             if (expr.type === 'Literal') {
               context.report({
                 node: expr,
-                message: 'Literals must not be substituted into templates'
+                messageId: 'useless'
               });
             }
           }

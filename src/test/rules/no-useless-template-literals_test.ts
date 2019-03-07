@@ -29,7 +29,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       code: 'html`foo ${123} bar`',
       errors: [
         {
-          message: 'Literals must not be substituted into templates',
+          messageId: 'useless',
           line: 1,
           column: 12
         }
@@ -39,12 +39,12 @@ ruleTester.run('no-useless-template-literals', rule, {
       code: 'html`foo ${"abc"} ${true} bar`',
       errors: [
         {
-          message: 'Literals must not be substituted into templates',
+          messageId: 'useless',
           line: 1,
           column: 12
         },
         {
-          message: 'Literals must not be substituted into templates',
+          messageId: 'useless',
           line: 1,
           column: 21
         }

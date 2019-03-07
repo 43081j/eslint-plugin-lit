@@ -18,6 +18,9 @@ const rule: Rule.RuleModule = {
       recommended: true,
       url:
         'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/binding-positions.md'
+    },
+    messages: {
+      names: 'Bindings cannot be used in place of {{type}} names.'
     }
   },
 
@@ -65,12 +68,14 @@ const rule: Rule.RuleModule = {
             if (tagPattern.test(prev.value.raw)) {
               context.report({
                 node: expr,
-                message: 'Bindings cannot be used in place of tag names.'
+                messageId: 'names',
+                data: {type: 'tag'}
               });
             } else if (next && attrPattern.test(next.value.raw)) {
               context.report({
                 node: expr,
-                message: 'Bindings cannot be used in place of attribute names.'
+                messageId: 'names',
+                data: {type: 'attribute'}
               });
             } else if (next && selfClosingPattern.test(next.value.raw)) {
               context.report({

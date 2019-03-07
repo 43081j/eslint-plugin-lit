@@ -26,7 +26,8 @@ ruleTester.run('no-template-bind', rule, {
     {code: 'html`foo ${someVar} bar`'},
     {code: 'html`foo bar`'},
     {code: 'html`foo ${() => {}} bar`'},
-    {code: 'html`foo ${function () { }} bar`'}
+    {code: 'html`foo ${function () { }} bar`'},
+    {code: 'css`foo bar`'}
   ],
 
   invalid: [

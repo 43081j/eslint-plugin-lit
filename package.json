@@ -48,6 +48,7 @@
   "devDependencies": {
     "@types/eslint": "^4.16.6",
     "@types/estree": "0.0.39",
+    "@types/mocha": "^5.2.6",
     "@types/node": "^12.0.10",
     "@types/parse5": "^5.0.0",
     "@types/parse5-htmlparser2-tree-adapter": "^5.0.1",
@@ -55,6 +56,7 @@
     "@typescript-eslint/parser": "^1.11.0",
     "babel-eslint": "^10.0.2",
     "chai": "^4.2.0",
+    "coveralls": "^3.0.3",
     "eslint": "^6.0.1",
     "eslint-config-google": "^0.13.0",
     "mocha": "^6.1.4",
@@ -63,5 +65,34 @@
     "rimraf": "^2.6.3",
     "typescript": "^3.5.2",
     "watch": "^1.0.2"
+  },
+  "nyc": {
+    "check-coverage": true,
+    "per-file": true,
+    "lines": 100,
+    "statements": 100,
+    "functions": 100,
+    "branches": 100,
+    "watermarks": {
+      "lines": [
+        100,
+        100
+      ],
+      "statements": [
+        100,
+        100
+      ],
+      "functions": [
+        100,
+        100
+      ],
+      "branches": [
+        90,
+        100
+      ]
+    },
+    "exclude": [
+      "lib/**/*_test.js"
+    ]
   }
 }

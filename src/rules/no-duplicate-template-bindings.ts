@@ -50,12 +50,15 @@ const rule: Rule.RuleModule = {
           for (const err of dupeErrors) {
             const loc = analyzer.resolveLocation(err);
 
-            if (loc) {
-              context.report({
-                loc: loc,
-                messageId: 'duplicateBinding'
-              });
+            /* istanbul ignore if */
+            if (!loc) {
+              continue;
             }
+
+            context.report({
+              loc,
+              messageId: 'duplicateBinding'
+            });
           }
         }
       }

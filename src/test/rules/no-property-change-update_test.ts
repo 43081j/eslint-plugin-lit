@@ -62,7 +62,8 @@ ruleTester.run('no-property-change-update', rule, {
           this.prop2 = 5;
         }
       }`
-    }
+    },
+    {code: 'const F = class Foo { }'}
   ],
 
   invalid: [

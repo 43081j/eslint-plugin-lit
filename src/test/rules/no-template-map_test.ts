@@ -25,7 +25,8 @@ ruleTester.run('no-template-map', rule, {
   valid: [
     {code: 'html`foo ${someVar} bar`'},
     {code: 'html`foo bar`'},
-    {code: 'const m = a.map(i => html`foo ${i}`); html`<div>${m}</div>`;'}
+    {code: 'const m = a.map(i => html`foo ${i}`); html`<div>${m}</div>`;'},
+    {code: 'css`foo bar`'}
   ],
 
   invalid: [

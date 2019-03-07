@@ -28,7 +28,8 @@ ruleTester.run('no-duplicate-template-bindings', rule, {
     {code: 'html`<x-foo ?bar=${true} baz>`'},
     {code: 'html`<x-foo foo=${true}><x-bar foo=${true}></x-bar></x-foo>`'},
     {code: 'html`<x-foo @foo=${v} .foo=${v}></x-foo>`'},
-    {code: 'html`<x-foo @bar=${true}>`'}
+    {code: 'html`<x-foo @bar=${true}>`'},
+    {code: 'css`foo bar`'}
   ],
 
   invalid: [
@@ -36,7 +37,7 @@ ruleTester.run('no-duplicate-template-bindings', rule, {
       code: 'html`<x-foo bar bar>`',
       errors: [
         {
-          message: 'Duplicate bindings are not allowed.',
+          messageId: 'duplicateBinding',
           line: 1,
           column: 5
         }
@@ -46,7 +47,7 @@ ruleTester.run('no-duplicate-template-bindings', rule, {
       code: 'html`<x-foo bar bar=${true}>`',
       errors: [
         {
-          message: 'Duplicate bindings are not allowed.',
+          messageId: 'duplicateBinding',
           line: 1,
           column: 5
         }
@@ -56,7 +57,7 @@ ruleTester.run('no-duplicate-template-bindings', rule, {
       code: 'html`<x-foo><x-bar x=${true} y x=${true}></x-bar></x-foo>`',
       errors: [
         {
-          message: 'Duplicate bindings are not allowed.',
+          messageId: 'duplicateBinding',
           line: 1,
           column: 28
         }

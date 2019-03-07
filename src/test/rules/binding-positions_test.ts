@@ -30,7 +30,8 @@ ruleTester.run('binding-positions', rule, {
     {code: 'html`<!-- \\${expr} -->`'},
     {code: 'html`<!-- foo -->${something}<!-- bar -->`'},
     {code: 'html`<self-closing foo=${bar} />`'},
-    {code: 'html`<self-closing foo="${bar}"/>`'}
+    {code: 'html`<self-closing foo="${bar}"/>`'},
+    {code: 'css`foo bar`'}
   ],
 
   invalid: [
@@ -38,7 +39,8 @@ ruleTester.run('binding-positions', rule, {
       code: 'html`<x-foo ${expr}="foo">`',
       errors: [
         {
-          message: 'Bindings cannot be used in place of attribute names.',
+          messageId: 'names',
+          data: {type: 'attribute'},
           line: 1,
           column: 15
         }
@@ -48,7 +50,8 @@ ruleTester.run('binding-positions', rule, {
       code: 'html`<${expr}>`',
       errors: [
         {
-          message: 'Bindings cannot be used in place of tag names.',
+          messageId: 'names',
+          data: {type: 'tag'},
           line: 1,
           column: 9
         }
@@ -58,7 +61,8 @@ ruleTester.run('binding-positions', rule, {
       code: 'html`<${expr} foo="bar">`',
       errors: [
         {
-          message: 'Bindings cannot be used in place of tag names.',
+          messageId: 'names',
+          data: {type: 'tag'},
           line: 1,
           column: 9
         }
@@ -68,7 +72,8 @@ ruleTester.run('binding-positions', rule, {
       code: 'html`<x-foo></${expr}>`',
       errors: [
         {
-          message: 'Bindings cannot be used in place of tag names.',
+          messageId: 'names',
+          data: {type: 'tag'},
           line: 1,
           column: 17
         }

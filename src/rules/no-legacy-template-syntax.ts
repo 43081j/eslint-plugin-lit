@@ -53,6 +53,7 @@ const rule: Rule.RuleModule = {
               for (const attr in element.attribs) {
                 const loc = analyzer.getLocationForAttribute(element, attr);
 
+                /* istanbul ignore if */
                 if (!loc) {
                   continue;
                 }
@@ -62,20 +63,20 @@ const rule: Rule.RuleModule = {
                 if (legacyEventPattern.test(attr)) {
                   const replacement = `@${attr.substr(3)}=`;
                   context.report({
-                    loc: loc,
+                    loc,
                     messageId: 'unsupported',
                     data: {
-                      replacement: replacement
+                      replacement
                     }
                   });
                 } else if (lastChar === '?' || lastChar === '$') {
                   const prefix = lastChar === '?' ? '?' : '';
                   const replacement = `${prefix}${attr.slice(0, -1)}=`;
                   context.report({
-                    loc: loc,
+                    loc,
                     messageId: 'unsupported',
                     data: {
-                      replacement: replacement
+                      replacement
                     }
                   });
                 }

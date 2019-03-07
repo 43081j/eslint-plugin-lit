@@ -60,12 +60,15 @@ const rule: Rule.RuleModule = {
               ) {
                 const loc = analyzer.getLocationForAttribute(element, 'value');
 
-                if (loc) {
-                  context.report({
-                    loc: loc,
-                    messageId: 'preferProperty'
-                  });
+                /* istanbul ignore if */
+                if (!loc) {
+                  return;
                 }
+
+                context.report({
+                  loc,
+                  messageId: 'preferProperty'
+                });
               }
             }
           });

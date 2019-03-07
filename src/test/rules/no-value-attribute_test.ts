@@ -28,7 +28,8 @@ ruleTester.run('no-value-attribute', rule, {
     {code: 'html`<x-foo value=${5}></x-foo>`'},
     {code: 'html`<input .value="foo" />`'},
     {code: 'html`<input .value=${val} />`'},
-    {code: 'html`<input value="foo" />`'}
+    {code: 'html`<input value="foo" />`'},
+    {code: 'css`foo bar`'}
   ],
 
   invalid: [
