@@ -37,16 +37,16 @@ const rule: Rule.RuleModule = {
 
   create(context): Rule.RuleListener {
     // variables should be defined here
-    const config: {private?: string; protected?: string} =
+    const config: Partial<{private: string; protected: string}> =
       context.options[0] || {};
-    const conventions = Object.entries(config).reduce(
+    const conventions = Object.entries(config).reduce<Record<string, RegExp>>(
       (acc, [key, value]) => {
         if (value) {
           acc[key] = new RegExp(value);
         }
         return acc;
       },
-      {} as {[key: string]: RegExp}
+      {}
     );
     const conventionRegexes = Object.values(conventions);
 
