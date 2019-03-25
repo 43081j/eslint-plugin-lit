@@ -8,13 +8,13 @@
 
 **Note:** experimental, may change quite a bit.
 
-# Install
+## Install
 
 ```
 $ npm i -D eslint eslint-plugin-lit
 ```
 
-# Usage
+## Usage
 
 Add `lit` to the plugins section of your `.eslintrc` file:
 
@@ -34,7 +34,18 @@ Configure your rules like so:
 }
 ```
 
-# Supported Rules
+## Configuration
+
+You may also extend the recommended configuration like so:
+
+```json
+{
+  "extends": ["plugin:wc/recommended"],
+  "env": {"browser": true}
+}
+```
+
+## Supported Rules
 
 - [lit/attribute-value-entities](docs/rules/attribute-value-entities.md)
 - [lit/binding-positions](docs/rules/binding-positions.md)
