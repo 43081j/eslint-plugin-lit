@@ -40,7 +40,7 @@ You may also extend the recommended configuration like so:
 
 ```json
 {
-  "extends": ["plugin:wc/recommended"],
+  "extends": ["plugin:lit/recommended"],
   "env": {"browser": true}
 }
 ```
