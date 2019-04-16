@@ -1,5 +1,5 @@
 /**
- * @fileoverview Disallows `.bind` in templates
+ * @fileoverview Disallows arrow functions in templates
  * @author James Garbutt <https://github.com/43081j>
  */
 
@@ -13,14 +13,14 @@ import * as ESTree from 'estree';
 const rule: Rule.RuleModule = {
   meta: {
     docs: {
-      description: 'Disallows `.bind` in templates',
+      description: 'Disallows arrow functions in templates',
       category: 'Best Practices',
       url:
-        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-template-bind.md'
+        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-template-arrow.md'
     },
     messages: {
-      noBind:
-        '`.bind` must not be used in templates, ' +
+      noArrow:
+        'Arrow functions must not be used in templates, ' +
         'a method should be passed directly like `${this.myMethod}` as it ' +
         'will be bound automatically.'
     }
@@ -42,10 +42,8 @@ const rule: Rule.RuleModule = {
      */
     function isDisallowedExpr(node: ESTree.Node): boolean {
       if (
-        node.type === 'CallExpression' &&
-        node.callee.type === 'MemberExpression' &&
-        node.callee.property.type === 'Identifier' &&
-        node.callee.property.name === 'bind'
+        node.type === 'ArrowFunctionExpression' ||
+        node.type === 'FunctionExpression'
       ) {
         return true;
       }
@@ -76,7 +74,7 @@ const rule: Rule.RuleModule = {
             if (isDisallowedExpr(expr)) {
               context.report({
                 node: expr,
-                messageId: 'noBind'
+                messageId: 'noArrow'
               });
             }
           }
