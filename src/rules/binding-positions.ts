@@ -29,6 +29,18 @@ const rule: Rule.RuleModule = {
     //----------------------------------------------------------------------
     // Helpers
     //----------------------------------------------------------------------
+    /**
+     * Determines if a given TemplateElement is contained within
+     * a HTML comment.
+     *
+     * @param {ESTree.TemplateElement=} expr Expression to test
+     * @return {boolean}
+     */
+    function isInsideComment(expr: ESTree.TemplateElement|undefined): boolean {
+      return expr !== undefined &&
+        expr !== null &&
+        expr.value.raw.lastIndexOf('<!--') > expr.value.raw.lastIndexOf('-->');
+    }
 
     //----------------------------------------------------------------------
     // Public
@@ -54,6 +66,11 @@ const rule: Rule.RuleModule = {
               context.report({
                 node: expr,
                 message: 'Bindings cannot be used in place of attribute names.'
+              });
+            } else if (isInsideComment(prev)) {
+              context.report({
+                node: expr,
+                message: 'Bindings cannot be used inside HTML comments.'
               });
             }
           }
