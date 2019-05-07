@@ -24,7 +24,10 @@ ruleTester.run('binding-positions', rule, {
   valid: [
     {code: 'html`foo bar`'},
     {code: 'html`<x-foo attr=${expr}>`'},
-    {code: 'html`<x-foo>`'}
+    {code: 'html`<x-foo>`'},
+    {code: 'html`<!-- test -->`'},
+    {code: 'html`<!-- \\${expr} -->`'},
+    {code: 'html`<!-- foo -->${something}<!-- bar -->`'}
   ],
 
   invalid: [
@@ -65,6 +68,16 @@ ruleTester.run('binding-positions', rule, {
           message: 'Bindings cannot be used in place of tag names.',
           line: 1,
           column: 17
+        }
+      ]
+    },
+    {
+      code: 'html`<!-- ${foo} -->`',
+      errors: [
+        {
+          message: 'Bindings cannot be used inside HTML comments.',
+          line: 1,
+          column: 13
         }
       ]
     }
