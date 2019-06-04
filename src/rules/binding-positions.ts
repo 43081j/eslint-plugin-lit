@@ -25,6 +25,7 @@ const rule: Rule.RuleModule = {
     // variables should be defined here
     const tagPattern = /<\/?$/;
     const attrPattern = /^=/;
+    const selfClosingPattern = /^\/>/;
 
     //----------------------------------------------------------------------
     // Helpers
@@ -66,6 +67,12 @@ const rule: Rule.RuleModule = {
               context.report({
                 node: expr,
                 message: 'Bindings cannot be used in place of attribute names.'
+              });
+            } else if (next && selfClosingPattern.test(next.value.raw)) {
+              context.report({
+                node: expr,
+                message: 'Bindings at the end of a self-closing tag must be' +
+                  ' followed by a space or quoted'
               });
             } else if (isInsideComment(prev)) {
               context.report({

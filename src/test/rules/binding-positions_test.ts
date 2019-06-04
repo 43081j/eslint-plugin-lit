@@ -27,7 +27,9 @@ ruleTester.run('binding-positions', rule, {
     {code: 'html`<x-foo>`'},
     {code: 'html`<!-- test -->`'},
     {code: 'html`<!-- \\${expr} -->`'},
-    {code: 'html`<!-- foo -->${something}<!-- bar -->`'}
+    {code: 'html`<!-- foo -->${something}<!-- bar -->`'},
+    {code: 'html`<self-closing foo=${bar} />`'},
+    {code: 'html`<self-closing foo="${bar}"/>`'}
   ],
 
   invalid: [
@@ -78,6 +80,17 @@ ruleTester.run('binding-positions', rule, {
           message: 'Bindings cannot be used inside HTML comments.',
           line: 1,
           column: 13
+        }
+      ]
+    },
+    {
+      code: 'html`<some-element foo=${bar}/>`',
+      errors: [
+        {
+          message: 'Bindings at the end of a self-closing tag must be' +
+            ' followed by a space or quoted',
+          line: 1,
+          column: 26
         }
       ]
     }
