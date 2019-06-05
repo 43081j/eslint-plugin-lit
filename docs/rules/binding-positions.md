@@ -14,6 +14,7 @@ html`<x-foo ${expr}="bar">`;
 html`<x-foo></${expr}>`;
 html`<${expr} attr="bar">`;
 html`<!-- ${expr} -->`;
+html`<input .value=${foo}/>`;
 ```
 
 The following patterns are not warnings:
@@ -21,6 +22,8 @@ The following patterns are not warnings:
 ```ts
 html`<x-foo attr=${expr}>`;
 html`<!-- \${expr} -->`;
+html`<input .value=${foo} />`;
+html`<input .value="${foo}"/>`;
 ```
 
 In particular, note that you may escape an expression inside a comment
