@@ -29,7 +29,7 @@ const rule: Rule.RuleModule = {
 
   create(context): Rule.RuleListener {
     // variables should be defined here
-    const disallowedPattern = /[&<>"]/;
+    const disallowedPattern = /([<>"]|&(?!(#\d+|[a-z]+);))/;
 
     //----------------------------------------------------------------------
     // Helpers

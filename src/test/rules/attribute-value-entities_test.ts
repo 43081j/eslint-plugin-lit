@@ -24,6 +24,9 @@ ruleTester.run('attribute-value-entities', rule, {
   valid: [
     {code: 'html`foo bar`'},
     {code: 'html`<x-foo attr="bar"></x-foo>`'},
+    {code: 'html`<x-foo attr="bar&amp;baz"></x-foo>`'},
+    {code: 'html`<x-foo attr="bar&#52;baz"></x-foo>`'},
+    {code: 'html`<x-foo attr="bar&gt;baz"></x-foo>`'},
     {code: "html`<x-foo attr=${'>'}></x-foo>`"},
     {code: 'html`<x-foo attr="()"></x-foo>`'}
   ],
