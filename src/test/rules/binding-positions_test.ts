@@ -87,7 +87,8 @@ ruleTester.run('binding-positions', rule, {
       code: 'html`<some-element foo=${bar}/>`',
       errors: [
         {
-          message: 'Bindings at the end of a self-closing tag must be' +
+          message:
+            'Bindings at the end of a self-closing tag must be' +
             ' followed by a space or quoted',
           line: 1,
           column: 26

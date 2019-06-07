@@ -138,6 +138,48 @@ export class TemplateAnalyzer {
   }
 
   /**
+   * Returns the raw attribute source of a given attribute
+   *
+   * @param {treeAdapter.Element} element Element which owns this attribute
+   * @param {string} attr Attribute name to retrieve
+   * @return {string}
+   */
+  public getRawAttributeValue(
+    element: treeAdapter.Element,
+    attr: string
+  ): string | null {
+    if (!element.sourceCodeLocation) {
+      return null;
+    }
+
+    const loc = element.sourceCodeLocation.startTag.attrs[attr];
+    let str = '';
+
+    for (const quasi of this._node.quasi.quasis) {
+      const placeholder = getExpressionPlaceholder(this._node, quasi);
+      const val = quasi.value.raw + placeholder;
+
+      str += val;
+
+      if (loc.endOffset < str.length) {
+        const fullAttr = str.substring(
+          loc.startOffset + attr.length + 1,
+          loc.endOffset
+        );
+        if (fullAttr.startsWith('"') && fullAttr.endsWith('"')) {
+          return fullAttr.replace(/(^"|"$)/g, '');
+        }
+        if (fullAttr.startsWith("'") && fullAttr.endsWith("'")) {
+          return fullAttr.replace(/(^'|'$)/g, '');
+        }
+        return fullAttr;
+      }
+    }
+
+    return null;
+  }
+
+  /**
    * Resolves a Parse5 location into an ESTree location
    *
    * @param {parse5.Location} loc Location to convert

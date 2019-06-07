@@ -37,10 +37,14 @@ const rule: Rule.RuleModule = {
      * @param {ESTree.TemplateElement=} expr Expression to test
      * @return {boolean}
      */
-    function isInsideComment(expr: ESTree.TemplateElement|undefined): boolean {
-      return expr !== undefined &&
+    function isInsideComment(
+      expr: ESTree.TemplateElement | undefined
+    ): boolean {
+      return (
+        expr !== undefined &&
         expr !== null &&
-        expr.value.raw.lastIndexOf('<!--') > expr.value.raw.lastIndexOf('-->');
+        expr.value.raw.lastIndexOf('<!--') > expr.value.raw.lastIndexOf('-->')
+      );
     }
 
     //----------------------------------------------------------------------
@@ -71,7 +75,8 @@ const rule: Rule.RuleModule = {
             } else if (next && selfClosingPattern.test(next.value.raw)) {
               context.report({
                 node: expr,
-                message: 'Bindings at the end of a self-closing tag must be' +
+                message:
+                  'Bindings at the end of a self-closing tag must be' +
                   ' followed by a space or quoted'
               });
             } else if (isInsideComment(prev)) {
