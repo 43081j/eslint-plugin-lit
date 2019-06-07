@@ -29,7 +29,7 @@ const rule: Rule.RuleModule = {
 
   create(context): Rule.RuleListener {
     // variables should be defined here
-    const disallowedPattern = /[&<>"]/;
+    const disallowedPattern = /([<>"]|&(?!(#\d+|[a-z]+);))/;
 
     //----------------------------------------------------------------------
     // Helpers
@@ -53,12 +53,13 @@ const rule: Rule.RuleModule = {
               // eslint-disable-next-line guard-for-in
               for (const attr in element.attribs) {
                 const loc = analyzer.getLocationForAttribute(element, attr);
+                const rawValue = analyzer.getRawAttributeValue(element, attr);
 
-                if (!loc) {
+                if (!loc || !rawValue) {
                   continue;
                 }
 
-                if (disallowedPattern.test(element.attribs[attr])) {
+                if (disallowedPattern.test(rawValue)) {
                   context.report({
                     loc: loc,
                     messageId: 'unencoded'
