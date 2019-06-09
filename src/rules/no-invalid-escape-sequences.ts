@@ -19,7 +19,8 @@ const rule: Rule.RuleModule = {
         'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-invalid-escape-sequences.md'
     },
     messages: {
-      invalid: 'Some escape sequences are invalid in template strings. ' +
+      invalid:
+        'Some escape sequences are invalid in template strings. ' +
         'They should either be escaped again (e.g. "\\02c") or interpolated'
     }
   },

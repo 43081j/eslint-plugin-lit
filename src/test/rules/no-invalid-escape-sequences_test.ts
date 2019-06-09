@@ -32,7 +32,7 @@ ruleTester.run('no-invalid-escape-sequences', rule, {
   invalid: [
     {
       code: 'html`foo \\0123 bar`',
-      parserOptions: { ecmaVersion: 2018 },
+      parserOptions: {ecmaVersion: 2018},
       errors: [
         {
           messageId: 'invalid',
@@ -43,7 +43,7 @@ ruleTester.run('no-invalid-escape-sequences', rule, {
     },
     {
       code: 'html`foo \\0b123 bar`',
-      parserOptions: { ecmaVersion: 2018 },
+      parserOptions: {ecmaVersion: 2018},
       errors: [
         {
           messageId: 'invalid',
