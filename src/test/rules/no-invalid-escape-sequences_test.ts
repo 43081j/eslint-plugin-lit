@@ -22,15 +22,28 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-invalid-escape-sequences', rule, {
   valid: [
-    {code: 'html`foo \\\\xFF bar`'},
+    {code: 'html`foo \\xFF bar`'},
     {code: 'html`foo \\\\0123 bar`'},
     {code: 'html`foo \\\\0b1101 bar`'},
-    {code: 'html`foo \\\\0o100 bar`'}
+    {code: 'html`foo \\\\0o100 bar`'},
+    {code: 'html`foo \\u002c bar`'}
   ],
 
   invalid: [
     {
       code: 'html`foo \\0123 bar`',
+      parserOptions: { ecmaVersion: 2018 },
+      errors: [
+        {
+          messageId: 'invalid',
+          line: 1,
+          column: 5
+        }
+      ]
+    },
+    {
+      code: 'html`foo \\0b123 bar`',
+      parserOptions: { ecmaVersion: 2018 },
       errors: [
         {
           messageId: 'invalid',
