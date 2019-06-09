@@ -9,15 +9,14 @@ An example is if we were to template octal:
 html`some \2c octal`;
 ```
 
-This should instead be done one of the two following ways:
+This should instead be escaped twice to ensure it remains intact:
 
 ```ts
 html`some \\2c octal`;
-
-// or
-
-html`some ${'\2c'} octal`;
 ```
+
+Alternatively, if you did mean to insert the value as is, you
+should likely use hex or unicode instead: `\xFF`.
 
 ## Rule Details
 
@@ -34,7 +33,8 @@ The following patterns are not warnings:
 
 ```ts
 html`foo \\2c bar`;
-html`foo ${'\2c'} bar`;
+html`foo \xFF bar`;
+html`foo \u0002 bar`;
 ```
 
 ## When Not To Use It
