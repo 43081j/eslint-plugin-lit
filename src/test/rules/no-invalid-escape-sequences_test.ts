@@ -26,7 +26,8 @@ ruleTester.run('no-invalid-escape-sequences', rule, {
     {code: 'html`foo \\\\0123 bar`'},
     {code: 'html`foo \\\\0b1101 bar`'},
     {code: 'html`foo \\\\0o100 bar`'},
-    {code: 'html`foo \\u002c bar`'}
+    {code: 'html`foo \\u002c bar`'},
+    {code: 'html`foo \\876 bar`'}
   ],
 
   invalid: [

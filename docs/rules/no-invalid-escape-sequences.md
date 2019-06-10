@@ -6,13 +6,13 @@ cause a parse error or similar.
 An example is if we were to template octal:
 
 ```ts
-html`some \2c octal`;
+html`an octal escape sequence: \123`;
 ```
 
 This should instead be escaped twice to ensure it remains intact:
 
 ```ts
-html`some \\2c octal`;
+html`an octal escape sequence: \\123`;
 ```
 
 Alternatively, if you did mean to insert the value as is, you
@@ -25,8 +25,9 @@ This rule disallows invalid escape sequences in templates.
 The following patterns are considered warnings:
 
 ```ts
-html`foo \2c bar`;
-html`foo \0b1101 bar`;
+html`foo \2c bar`; // because \2 is octal
+html`foo \0b1101 bar`; // because \0 is octal
+html`foo \0123`;
 ```
 
 The following patterns are not warnings:
