@@ -26,7 +26,7 @@ The following patterns are considered warnings:
 
 ```ts
 html`foo \2c bar`; // because \2 is octal
-html`foo \0b1101 bar`; // because \0 is octal
+html`foo \123 bar`; // because \1 is octal
 html`foo \0123`;
 ```
 

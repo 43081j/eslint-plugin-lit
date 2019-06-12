@@ -27,7 +27,7 @@ const rule: Rule.RuleModule = {
 
   create(context): Rule.RuleListener {
     // variables should be defined here
-    const escapePattern = /(^|[^\\])\\[0-7]+/;
+    const escapePattern = /(^|[^\\])\\([1-7][0-7]*|[0-7]{2,})+/;
 
     return {
       TaggedTemplateExpression: (node: ESTree.Node): void => {
