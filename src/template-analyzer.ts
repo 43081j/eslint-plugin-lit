@@ -132,7 +132,7 @@ export class TemplateAnalyzer {
       return null;
     }
 
-    const loc = element.sourceCodeLocation.startTag.attrs[attr];
+    const loc = element.sourceCodeLocation.attrs[attr.toLowerCase()];
 
     return loc ? this.resolveLocation(loc) : null;
   }
@@ -155,7 +155,7 @@ export class TemplateAnalyzer {
       return '';
     }
 
-    const loc = element.sourceCodeLocation.startTag.attrs[attr];
+    const loc = element.sourceCodeLocation.attrs[attr.toLowerCase()];
     let str = '';
 
     for (const quasi of this._node.quasi.quasis) {
