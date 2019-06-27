@@ -151,6 +151,9 @@ export class TemplateAnalyzer {
     if (!element.sourceCodeLocation) {
       return null;
     }
+    if (element.attribs[attr] === '') {
+      return '';
+    }
 
     const loc = element.sourceCodeLocation.startTag.attrs[attr];
     let str = '';
