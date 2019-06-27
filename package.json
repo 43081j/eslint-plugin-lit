@@ -48,20 +48,20 @@
   "devDependencies": {
     "@types/eslint": "^4.16.6",
     "@types/estree": "0.0.39",
-    "@types/node": "^12.0.4",
+    "@types/node": "^12.0.10",
     "@types/parse5": "^5.0.0",
     "@types/parse5-htmlparser2-tree-adapter": "^5.0.1",
-    "@typescript-eslint/eslint-plugin": "^1.9.0",
-    "@typescript-eslint/parser": "^1.9.0",
-    "babel-eslint": "^10.0.1",
+    "@typescript-eslint/eslint-plugin": "^1.11.0",
+    "@typescript-eslint/parser": "^1.11.0",
+    "babel-eslint": "^10.0.2",
     "chai": "^4.2.0",
-    "eslint": "^5.16.0",
+    "eslint": "^6.0.1",
     "eslint-config-google": "^0.13.0",
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
-    "prettier": "^1.17.1",
+    "prettier": "^1.18.2",
     "rimraf": "^2.6.3",
-    "typescript": "^3.5.1",
+    "typescript": "^3.5.2",
     "watch": "^1.0.2"
   }
 }
