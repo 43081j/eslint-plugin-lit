@@ -29,7 +29,8 @@ ruleTester.run('attribute-value-entities', rule, {
     {code: 'html`<x-foo attr="bar&gt;baz"></x-foo>`'},
     {code: "html`<x-foo attr=${'>'}></x-foo>`"},
     {code: 'html`<x-foo attr="()"></x-foo>`'},
-    {code: 'html`<x-foo attr></x-foo>`'}
+    {code: 'html`<x-foo attr></x-foo>`'},
+    {code: 'html`<svg viewBox="0 0 48 48"></svg>`'}
   ],
 
   invalid: [
