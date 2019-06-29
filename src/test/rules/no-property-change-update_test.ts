@@ -16,9 +16,12 @@ import {RuleTester} from 'eslint';
 
 const ruleTester = new RuleTester({
   parserOptions: {
-    sourceType: 'module'
+    sourceType: 'module',
+    ecmaVersion: 2015
   }
 });
+
+const babelParser = require.resolve('babel-eslint');
 
 ruleTester.run('no-property-change-update', rule, {
   valid: [
@@ -51,7 +54,7 @@ ruleTester.run('no-property-change-update', rule, {
       }`
     },
     {
-      parser: 'babel-eslint',
+      parser: babelParser,
       code: `class Foo extends LitElement {
         @property({ type: String })
         prop = 'test';
@@ -81,7 +84,7 @@ ruleTester.run('no-property-change-update', rule, {
       ]
     },
     {
-      parser: 'babel-eslint',
+      parser: babelParser,
       code: `class Foo extends LitElement {
         @property({ type: String })
         prop = 'foo';
