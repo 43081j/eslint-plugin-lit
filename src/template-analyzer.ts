@@ -151,11 +151,19 @@ export class TemplateAnalyzer {
     if (!element.sourceCodeLocation) {
       return null;
     }
+
+    const xAttribs = element['x-attribsPrefix'];
+    let originalAttr = attr.toLowerCase();
+
+    if (xAttribs && xAttribs[attr]) {
+      originalAttr = `${xAttribs[attr]}:${attr}`;
+    }
+
     if (element.attribs[attr] === '') {
       return '';
     }
 
-    const loc = element.sourceCodeLocation.attrs[attr.toLowerCase()];
+    const loc = element.sourceCodeLocation.attrs[originalAttr];
     let str = '';
 
     for (const quasi of this._node.quasi.quasis) {
