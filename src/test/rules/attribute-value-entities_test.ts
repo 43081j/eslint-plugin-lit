@@ -31,7 +31,8 @@ ruleTester.run('attribute-value-entities', rule, {
     {code: "html`<x-foo attr=${'>'}></x-foo>`"},
     {code: 'html`<x-foo attr="()"></x-foo>`'},
     {code: 'html`<x-foo attr></x-foo>`'},
-    {code: 'html`<svg viewBox="0 0 48 48"></svg>`'}
+    {code: 'html`<svg viewBox="0 0 48 48"></svg>`'},
+    {code: 'html`<svg xlink:href="abc"></svg>`'}
   ],
 
   invalid: [
