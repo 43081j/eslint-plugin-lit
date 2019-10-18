@@ -46,22 +46,22 @@
     "eslint": ">= 5"
   },
   "devDependencies": {
-    "@types/eslint": "^4.16.6",
+    "@types/eslint": "^6.1.1",
     "@types/estree": "0.0.39",
-    "@types/node": "^12.0.10",
-    "@types/parse5": "^5.0.0",
+    "@types/node": "^12.7.8",
+    "@types/parse5": "^5.0.2",
     "@types/parse5-htmlparser2-tree-adapter": "^5.0.1",
-    "@typescript-eslint/eslint-plugin": "^1.11.0",
-    "@typescript-eslint/parser": "^1.11.0",
-    "babel-eslint": "^10.0.2",
+    "@typescript-eslint/eslint-plugin": "^2.3.1",
+    "@typescript-eslint/parser": "^2.3.1",
+    "babel-eslint": "^10.0.3",
     "chai": "^4.2.0",
-    "eslint": "^6.0.1",
-    "eslint-config-google": "^0.13.0",
-    "mocha": "^6.1.4",
+    "eslint": "^6.5.0",
+    "eslint-config-google": "^0.14.0",
+    "mocha": "^6.2.1",
     "nyc": "^14.1.1",
     "prettier": "^1.18.2",
-    "rimraf": "^2.6.3",
-    "typescript": "^3.5.2",
+    "rimraf": "^3.0.0",
+    "typescript": "^3.6.3",
     "watch": "^1.0.2"
   }
 }
