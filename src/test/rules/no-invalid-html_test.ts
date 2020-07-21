@@ -26,12 +26,25 @@ ruleTester.run('no-invalid-html', rule, {
     // Duplicate attrs rule handles this
     {code: 'html`<x-foo bar bar></x-foo>`'},
     {code: 'html`foo bar`'},
-    {code: 'html`<x-foo bar=${true}></x-foo>`'}
+    {code: 'html`<x-foo bar=${true}></x-foo>`'},
+    {code: 'html`<hr>`'},
+    {code: 'html`<hr />`'}
   ],
 
   invalid: [
     {
       code: 'html`<x-foo />`',
+      errors: [
+        {
+          messageId: 'parseError',
+          data: {err: 'non-void-html-element-start-tag-with-trailing-solidus'},
+          line: 1,
+          column: 5
+        }
+      ]
+    },
+    {
+      code: 'html`<div />`',
       errors: [
         {
           messageId: 'parseError',
