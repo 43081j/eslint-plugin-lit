@@ -27,19 +27,39 @@
         "allowTemplateLiterals": true
       }
     ],
-    "@typescript-eslint/class-name-casing": "error",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "default",
+        "format": ["camelCase", "PascalCase"]
+      },
+      {
+        "selector": "parameter",
+        "format": ["camelCase"],
+        "leadingUnderscore": "allow"
+      },
+      {
+        "selector": "memberLike",
+        "modifiers": ["private"],
+        "format": ["camelCase"],
+        "prefix": ["__"]
+      },
+      {
+        "selector": "memberLike",
+        "modifiers": ["protected"],
+        "format": ["camelCase"],
+        "prefix": ["_"]
+      },
+      {
+        "selector": "typeLike",
+        "format": ["PascalCase"]
+      }
+    ],
     "@typescript-eslint/explicit-function-return-type": ["error", {
       "allowExpressions": true
     }],
     "@typescript-eslint/explicit-member-accessibility": "error",
     "@typescript-eslint/member-delimiter-style": "error",
-    "@typescript-eslint/member-naming": [
-      "error",
-      {
-        "private": "^__",
-        "protected": "^_"
-      }
-    ],
     "@typescript-eslint/no-array-constructor": "error",
     "@typescript-eslint/no-empty-interface": "error",
     "@typescript-eslint/no-explicit-any": "error",
