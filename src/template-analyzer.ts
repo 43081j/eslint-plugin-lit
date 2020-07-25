@@ -257,11 +257,9 @@ export class TemplateAnalyzer {
         const children = (node as treeAdapter.ParentNode).childNodes;
 
         if (children && children.length > 0) {
-          children.forEach(
-            (child): void => {
-              visit(child, node);
-            }
-          );
+          children.forEach((child): void => {
+            visit(child, node);
+          });
         }
       }
 
