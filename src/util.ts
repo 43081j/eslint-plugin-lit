@@ -53,10 +53,12 @@ export function getPropertyMap(
       if (ret) {
         const arg = ret.argument as ESTree.ObjectExpression;
         for (const prop of arg.properties) {
-          const name = getIdentifierName(prop.key);
+          if (prop.type === 'Property') {
+            const name = getIdentifierName(prop.key);
 
-          if (name && prop.value.type === 'ObjectExpression') {
-            result.set(name, prop.value);
+            if (name && prop.value.type === 'ObjectExpression') {
+              result.set(name, prop.value);
+            }
           }
         }
       }
