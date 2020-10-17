@@ -198,22 +198,11 @@ export class TemplateAnalyzer {
    */
   public resolveLocation(
     loc: parse5.Location
-  ): ESTree.SourceLocation | null | undefined {
-    let offset = 0;
-
-    for (const quasi of this._node.quasi.quasis) {
-      const placeholder = getExpressionPlaceholder(this._node, quasi);
-      offset += quasi.value.raw.length + placeholder.length;
-
-      if (loc.startOffset < offset) {
-        return {
-          start: { line: (loc.startLine - 1) + this._node.loc.start.line, column: (loc.startCol - 1) },
-          end: { line: (loc.endLine - 1) + this._node.loc.start.line, column: (loc.endCol - 1) }
-        };;
-      }
-    }
-
-    return null;
+  ): ESTree.SourceLocation {
+    return {
+      start: { line: (loc.startLine - 1) + this._node.loc.start.line, column: (loc.startCol - 1) },
+      end: { line: (loc.endLine - 1) + this._node.loc.start.line, column: (loc.endCol - 1) }
+    };
   }
 
   /**
