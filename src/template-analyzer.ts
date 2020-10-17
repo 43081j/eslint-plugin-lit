@@ -199,9 +199,19 @@ export class TemplateAnalyzer {
   public resolveLocation(
     loc: parse5.Location
   ): ESTree.SourceLocation {
+    let startOffset;
+    let endOffset;
+    if (loc.startLine === 1) {
+      startOffset = loc.startCol + this._node.quasi.loc.start.column;
+      endOffset = loc.endCol + this._node.quasi.loc.start.column;
+    } else {
+      startOffset = loc.startCol - 1;
+      endOffset = loc.endCol;
+    }
+
     return {
-      start: { line: (loc.startLine - 1) + this._node.loc.start.line, column: (loc.startCol - 1) },
-      end: { line: (loc.endLine - 1) + this._node.loc.start.line, column: (loc.endCol - 1) }
+      start: { line: (loc.startLine - 1) + this._node.loc.start.line, column: startOffset },
+      end: { line: (loc.endLine - 1) + this._node.loc.start.line, column: endOffset }
     };
   }
 
