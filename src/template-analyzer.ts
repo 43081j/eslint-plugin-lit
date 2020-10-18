@@ -199,6 +199,25 @@ export class TemplateAnalyzer {
   public resolveLocation(
     loc: parse5.Location
   ): ESTree.SourceLocation {
+    let offset = 0;
+    let expression;
+    let height = 0;
+
+    for (const quasi of this._node.quasi.quasis) {
+      const placeholder = getExpressionPlaceholder(this._node, quasi);
+      offset += quasi.value.raw.length + placeholder.length;
+
+      const i = this._node.quasi.quasis.indexOf(quasi);
+      if (i !== 0) {
+        expression = this._node.quasi.expressions[i - 1];
+        height += expression.loc.end.line - expression.loc.start.line;
+      }
+
+      if (loc.startOffset < offset) {
+        break;
+      }
+    }
+
     let startOffset;
     let endOffset;
     if (loc.startLine === 1) {
@@ -210,8 +229,8 @@ export class TemplateAnalyzer {
     }
 
     return {
-      start: { line: (loc.startLine - 1) + this._node.loc.start.line, column: startOffset },
-      end: { line: (loc.endLine - 1) + this._node.loc.start.line, column: endOffset }
+      start: { line: (loc.startLine - 1) + this._node.loc.start.line + height, column: startOffset },
+      end: { line: (loc.endLine - 1) + this._node.loc.start.line + height, column: endOffset }
     };
   }
 

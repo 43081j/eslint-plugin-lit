@@ -100,14 +100,11 @@ export function getExpressionPlaceholder(
   quasi: ESTree.TemplateElement
 ): string {
   const i = node.quasi.quasis.indexOf(quasi);
-  const start = node.quasi.expressions && node.quasi.expressions[i] && node.quasi.expressions[i].range[0];
-  const end = node.quasi.expressions && node.quasi.expressions[i] && node.quasi.expressions[i].range[1];
-  const width = end - start;
 
   if (/=$/.test(quasi.value.raw)) {
-    return `"{${new Array(isNaN(width) ? 0 : width).join('_')}}"`;
+    return `"{{__Q:${i}__}}"`;
   }
-  return `"{${new Array(isNaN(width) ? 0 : width).join('_')}}"`;
+  return `{{__Q:${i}__}}`;
 }
 
 
