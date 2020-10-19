@@ -200,7 +200,6 @@ export class TemplateAnalyzer {
     loc: parse5.Location
   ): ESTree.SourceLocation {
     let offset = 0;
-    let expression;
     let height = 0;
 
     for (const quasi of this._node.quasi.quasis) {
@@ -209,7 +208,7 @@ export class TemplateAnalyzer {
 
       const i = this._node.quasi.quasis.indexOf(quasi);
       if (i !== 0) {
-        expression = this._node.quasi.expressions[i - 1];
+        const expression = this._node.quasi.expressions[i - 1];
         height += expression.loc.end.line - expression.loc.start.line;
       }
 

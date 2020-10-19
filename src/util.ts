@@ -107,7 +107,6 @@ export function getExpressionPlaceholder(
   return `{{__Q:${i}__}}`;
 }
 
-
 /**
  * Tests whether a string is a placeholder or not
  *
