@@ -1,7 +1,7 @@
 import * as ESTree from 'estree';
 import * as parse5 from 'parse5';
 import treeAdapter = require('parse5-htmlparser2-tree-adapter');
-import { templateExpressionToHtml, getExpressionPlaceholder } from './util';
+import {templateExpressionToHtml, getExpressionPlaceholder} from './util';
 
 export interface Visitor {
   enter: (node: treeAdapter.Node, parent: treeAdapter.Node | null) => void;
@@ -230,8 +230,14 @@ export class TemplateAnalyzer {
     }
 
     return {
-      start: { line: (loc.startLine - 1) + this._node.loc.start.line + height, column: startOffset },
-      end: { line: (loc.endLine - 1) + this._node.loc.start.line + height, column: endOffset }
+      start: {
+        line: (loc.startLine - 1) + this._node.loc.start.line + height,
+        column: startOffset
+      },
+      end: {
+        line: (loc.endLine - 1) + this._node.loc.start.line + height,
+        column: endOffset
+      }
     };
   }
 
