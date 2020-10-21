@@ -211,7 +211,8 @@ export class TemplateAnalyzer {
       const i = this._node.quasi.quasis.indexOf(quasi);
       if (i !== 0) {
         const expression = this._node.quasi.expressions[i - 1];
-        height += expression.loc!.end.line - expression.loc!.start.line;
+        if (!expression.loc) return null;
+        height += expression.loc.end.line - expression.loc.start.line;
       }
 
       if (loc.startOffset < offset) {
