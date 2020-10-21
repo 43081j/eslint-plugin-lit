@@ -39,7 +39,7 @@ ruleTester.run('no-invalid-html', rule, {
           messageId: 'parseError',
           data: {err: 'non-void-html-element-start-tag-with-trailing-solidus'},
           line: 1,
-          column: 5
+          column: 6
         }
       ]
     },
@@ -52,7 +52,7 @@ ruleTester.run('no-invalid-html', rule, {
             err: 'eof-in-tag'
           },
           line: 1,
-          column: 5
+          column: 20
         }
       ]
     },
@@ -63,7 +63,7 @@ ruleTester.run('no-invalid-html', rule, {
           messageId: 'parseError',
           data: {err: 'unexpected-character-in-attribute-name'},
           line: 1,
-          column: 5
+          column: 20
         }
       ]
     },
@@ -74,7 +74,7 @@ ruleTester.run('no-invalid-html', rule, {
           messageId: 'parseError',
           data: {err: 'end-tag-with-attributes'},
           line: 1,
-          column: 5
+          column: 25
         }
       ]
     },
@@ -85,7 +85,7 @@ ruleTester.run('no-invalid-html', rule, {
           messageId: 'parseError',
           data: {err: 'eof-in-tag'},
           line: 1,
-          column: 44
+          column: 72
         }
       ]
     },
@@ -96,7 +96,7 @@ ruleTester.run('no-invalid-html', rule, {
           messageId: 'parseError',
           data: {err: 'unexpected-character-in-unquoted-attribute-value'},
           line: 1,
-          column: 5
+          column: 17
         }
       ]
     }

@@ -37,7 +37,7 @@ ruleTester.run('no-legacy-template-syntax', rule, {
           messageId: 'unsupported',
           data: {replacement: 'bar='},
           line: 1,
-          column: 5
+          column: 13
         }
       ]
     },
@@ -48,7 +48,7 @@ ruleTester.run('no-legacy-template-syntax', rule, {
           messageId: 'unsupported',
           data: {replacement: '?bar='},
           line: 1,
-          column: 5
+          column: 13
         }
       ]
     },
@@ -59,7 +59,7 @@ ruleTester.run('no-legacy-template-syntax', rule, {
           messageId: 'unsupported',
           data: {replacement: '@bar='},
           line: 1,
-          column: 5
+          column: 13
         }
       ]
     },
@@ -70,7 +70,7 @@ ruleTester.run('no-legacy-template-syntax', rule, {
           messageId: 'unsupported',
           data: {replacement: '?baz='},
           line: 1,
-          column: 31
+          column: 39
         }
       ]
     }

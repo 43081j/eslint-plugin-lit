@@ -198,19 +198,48 @@ export class TemplateAnalyzer {
    */
   public resolveLocation(
     loc: parse5.Location
-  ): ESTree.SourceLocation | null | undefined {
+  ): ESTree.SourceLocation | null {
     let offset = 0;
+    let height = 0;
+
+    if (!this._node.loc || !this._node.quasi.loc) return null;
 
     for (const quasi of this._node.quasi.quasis) {
       const placeholder = getExpressionPlaceholder(this._node, quasi);
       offset += quasi.value.raw.length + placeholder.length;
 
+      const i = this._node.quasi.quasis.indexOf(quasi);
+      if (i !== 0) {
+        const expression = this._node.quasi.expressions[i - 1];
+        if (!expression.loc) return null;
+        height += expression.loc.end.line - expression.loc.start.line;
+      }
+
       if (loc.startOffset < offset) {
-        return quasi.loc;
+        break;
       }
     }
 
-    return null;
+    let startOffset;
+    let endOffset;
+    if (loc.startLine === 1) {
+      startOffset = loc.startCol + this._node.quasi.loc.start.column;
+      endOffset = loc.endCol + this._node.quasi.loc.start.column;
+    } else {
+      startOffset = loc.startCol - 1;
+      endOffset = loc.endCol;
+    }
+
+    return {
+      start: {
+        line: (loc.startLine - 1) + this._node.loc.start.line + height,
+        column: startOffset
+      },
+      end: {
+        line: (loc.endLine - 1) + this._node.loc.start.line + height,
+        column: endOffset
+      }
+    };
   }
 
   /**
