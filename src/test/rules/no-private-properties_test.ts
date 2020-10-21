@@ -70,12 +70,12 @@ ruleTester.run('no-private-properties', rule, {
         {
           messageId: 'unsupported',
           line: 1,
-          column: 5
+          column: 13
         },
         {
           messageId: 'unsupported',
           line: 1,
-          column: 22
+          column: 33
         }
       ]
     },
@@ -91,12 +91,12 @@ ruleTester.run('no-private-properties', rule, {
         {
           messageId: 'unsupported',
           line: 1,
-          column: 5
+          column: 13
         },
         {
           messageId: 'unsupported',
           line: 1,
-          column: 32
+          column: 43
         }
       ]
     }

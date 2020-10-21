@@ -44,7 +44,7 @@ ruleTester.run('attribute-value-entities', rule, {
             'Attribute values may not contain unencoded HTML ' +
             'entities, e.g. use `&gt;` instead of `>`',
           line: 1,
-          column: 5
+          column: 13
         }
       ]
     },
@@ -56,7 +56,7 @@ ruleTester.run('attribute-value-entities', rule, {
             'Attribute values may not contain unencoded HTML ' +
             'entities, e.g. use `&gt;` instead of `>`',
           line: 1,
-          column: 5
+          column: 13
         }
       ]
     },
@@ -68,7 +68,7 @@ ruleTester.run('attribute-value-entities', rule, {
             'Attribute values may not contain unencoded HTML ' +
             'entities, e.g. use `&gt;` instead of `>`',
           line: 1,
-          column: 5
+          column: 13
         }
       ]
     },
@@ -80,7 +80,7 @@ ruleTester.run('attribute-value-entities', rule, {
             'Attribute values may not contain unencoded HTML ' +
             'entities, e.g. use `&gt;` instead of `>`',
           line: 1,
-          column: 5
+          column: 13
         }
       ]
     },
@@ -92,7 +92,7 @@ ruleTester.run('attribute-value-entities', rule, {
             'Attribute values may not contain unencoded HTML ' +
             'entities, e.g. use `&gt;` instead of `>`',
           line: 1,
-          column: 5
+          column: 13
         }
       ]
     }

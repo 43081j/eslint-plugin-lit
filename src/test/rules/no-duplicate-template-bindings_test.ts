@@ -38,7 +38,7 @@ ruleTester.run('no-duplicate-template-bindings', rule, {
         {
           message: 'Duplicate bindings are not allowed.',
           line: 1,
-          column: 5
+          column: 20
         }
       ]
     },
@@ -48,7 +48,7 @@ ruleTester.run('no-duplicate-template-bindings', rule, {
         {
           message: 'Duplicate bindings are not allowed.',
           line: 1,
-          column: 5
+          column: 20
         }
       ]
     },
@@ -58,7 +58,7 @@ ruleTester.run('no-duplicate-template-bindings', rule, {
         {
           message: 'Duplicate bindings are not allowed.',
           line: 1,
-          column: 28
+          column: 39
         }
       ]
     }

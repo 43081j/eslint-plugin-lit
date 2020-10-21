@@ -41,7 +41,7 @@ ruleTester.run('no-value-attribute', rule, {
             'rather than permanently binding; you should set the `value` ' +
             'property instead via `.value`',
           line: 1,
-          column: 5
+          column: 13
         }
       ]
     },
@@ -54,7 +54,7 @@ ruleTester.run('no-value-attribute', rule, {
             'rather than permanently binding; you should set the `value` ' +
             'property instead via `.value`',
           line: 1,
-          column: 5
+          column: 25
         }
       ]
     }
