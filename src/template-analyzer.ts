@@ -3,6 +3,12 @@ import * as parse5 from 'parse5';
 import treeAdapter = require('parse5-htmlparser2-tree-adapter');
 import {templateExpressionToHtml, getExpressionPlaceholder} from './util';
 
+export interface RawAttribute {
+  name: string;
+  value?: string;
+  quotedValue?: string;
+}
+
 export interface Visitor {
   enter: (node: treeAdapter.Node, parent: treeAdapter.Node | null) => void;
   exit: (node: treeAdapter.Node, parent: treeAdapter.Node | null) => void;
@@ -43,6 +49,7 @@ const analyzerCache = new WeakMap<
  */
 export class TemplateAnalyzer {
   public errors: ReadonlyArray<ParseError> = [];
+  public source: string = '';
   protected _node: ESTree.TaggedTemplateExpression;
   protected _ast: treeAdapter.DocumentFragment;
 
@@ -71,7 +78,7 @@ export class TemplateAnalyzer {
   public constructor(node: ESTree.TaggedTemplateExpression) {
     this._node = node;
 
-    const html = templateExpressionToHtml(node);
+    this.source = templateExpressionToHtml(node);
 
     const opts: ParserOptionsWithError = {
       treeAdapter: treeAdapter,
@@ -82,9 +89,39 @@ export class TemplateAnalyzer {
     };
 
     this._ast = parse5.parseFragment(
-      html,
+      this.source,
       opts
     ) as treeAdapter.DocumentFragment;
+  }
+
+  /**
+   * Retrieves a raw attribute from an element to provide
+   * access to the quoted value.
+   *
+   * @param {treeAdapter.Element} element Element to retrieve attribute from
+   * @param {string} attr Attribute to retrieve
+   * @return {object}
+   */
+  public getRawAttribute(
+    element: treeAdapter.Element,
+    attr: string
+  ): RawAttribute | undefined {
+    const loc = element.sourceCodeLocation?.attrs[attr.toLowerCase()];
+
+    if (!loc) {
+      return undefined;
+    }
+
+    const source = this.source.substring(loc.startOffset, loc.endOffset);
+    const firstEq = source.indexOf('=');
+    const left = firstEq === -1 ? source : source.substr(0, firstEq);
+    const right = firstEq === -1 ? undefined : source.substr(firstEq + 1);
+
+    return {
+      name: left,
+      value: right?.replace(/(^["']|["']$)/g, ''),
+      quotedValue: right
+    };
   }
 
   /**
@@ -196,9 +233,7 @@ export class TemplateAnalyzer {
    * @param {parse5.Location} loc Location to convert
    * @return {ESTree.SourceLocation}
    */
-  public resolveLocation(
-    loc: parse5.Location
-  ): ESTree.SourceLocation | null {
+  public resolveLocation(loc: parse5.Location): ESTree.SourceLocation | null {
     let offset = 0;
     let height = 0;
 
@@ -232,11 +267,11 @@ export class TemplateAnalyzer {
 
     return {
       start: {
-        line: (loc.startLine - 1) + this._node.loc.start.line + height,
+        line: loc.startLine - 1 + this._node.loc.start.line + height,
         column: startOffset
       },
       end: {
-        line: (loc.endLine - 1) + this._node.loc.start.line + height,
+        line: loc.endLine - 1 + this._node.loc.start.line + height,
         column: endOffset
       }
     };

@@ -32,7 +32,10 @@ ruleTester.run('attribute-value-entities', rule, {
     {code: 'html`<x-foo attr="()"></x-foo>`'},
     {code: 'html`<x-foo attr></x-foo>`'},
     {code: 'html`<svg viewBox="0 0 48 48"></svg>`'},
-    {code: 'html`<svg xlink:href="abc"></svg>`'}
+    {code: 'html`<svg xlink:href="abc"></svg>`'},
+    {code: 'html`<x-foo attr="double\'quotes"></x-foo>`'},
+    {code: "html`<x-foo attr='single\"quotes'></x-foo>`"},
+    {code: 'html`<x-foo unquoted=foo></x-foo>`'}
   ],
 
   invalid: [
@@ -62,18 +65,6 @@ ruleTester.run('attribute-value-entities', rule, {
     },
     {
       code: 'html`<x-foo attr="&"></x-foo>`',
-      errors: [
-        {
-          message:
-            'Attribute values may not contain unencoded HTML ' +
-            'entities, e.g. use `&gt;` instead of `>`',
-          line: 1,
-          column: 13
-        }
-      ]
-    },
-    {
-      code: "html`<x-foo attr='\"'></x-foo>`",
       errors: [
         {
           message:

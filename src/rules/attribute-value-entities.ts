@@ -23,13 +23,19 @@ const rule: Rule.RuleModule = {
     messages: {
       unencoded:
         'Attribute values may not contain unencoded HTML ' +
-        'entities, e.g. use `&gt;` instead of `>`'
+        'entities, e.g. use `&gt;` instead of `>`',
+      doubleQuotes:
+        'Attributes delimited by double quotes may not contain ' +
+        'unencoded double quotes (e.g. `attr="bad"quote"`)',
+      singleQuotes:
+        'Attributes delimited by single quotes may not contain ' +
+        "unencoded single quotes (e.g. `attr='bad'quote'`)"
     }
   },
 
   create(context): Rule.RuleListener {
     // variables should be defined here
-    const disallowedPattern = /([<>"]|&(?!(#\d+|[a-z]+);))/;
+    const disallowedPattern = /([<>]|&(?!(#\d+|[a-z]+);))/;
 
     //----------------------------------------------------------------------
     // Helpers
@@ -64,6 +70,26 @@ const rule: Rule.RuleModule = {
                     loc: loc,
                     messageId: 'unencoded'
                   });
+                } else {
+                  const rawAttribute = analyzer.getRawAttribute(element, attr);
+
+                  if (
+                    rawAttribute?.quotedValue?.startsWith('"') &&
+                    rawAttribute.value?.includes('"')
+                  ) {
+                    context.report({
+                      loc: loc,
+                      messageId: 'doubleQuotes'
+                    });
+                  } else if (
+                    rawAttribute?.quotedValue?.startsWith("'") &&
+                    rawAttribute.value?.includes("'")
+                  ) {
+                    context.report({
+                      loc: loc,
+                      messageId: 'singleQuotes'
+                    });
+                  }
                 }
               }
             }
