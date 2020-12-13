@@ -23,13 +23,19 @@ const rule: Rule.RuleModule = {
     messages: {
       unencoded:
         'Attribute values may not contain unencoded HTML ' +
-        'entities, e.g. use `&gt;` instead of `>`'
+        'entities, e.g. use `&gt;` instead of `>`',
+      doubleQuotes:
+        'Attributes delimited by double quotes may not contain ' +
+        'unencoded double quotes (e.g. `attr="bad"quote"`)',
+      singleQuotes:
+        'Attributes delimited by single quotes may not contain ' +
+        "unencoded single quotes (e.g. `attr='bad'quote'`)"
     }
   },
 
   create(context): Rule.RuleListener {
     // variables should be defined here
-    const disallowedPattern = /([<>"]|&(?!(#\d+|[a-z]+);))/;
+    const disallowedPattern = /([<>]|&(?!(#\d+|[a-z]+);))/;
 
     //----------------------------------------------------------------------
     // Helpers
@@ -55,14 +61,30 @@ const rule: Rule.RuleModule = {
                 const loc = analyzer.getLocationForAttribute(element, attr);
                 const rawValue = analyzer.getRawAttributeValue(element, attr);
 
-                if (!loc || !rawValue) {
+                if (!loc || !rawValue?.value) {
                   continue;
                 }
 
-                if (disallowedPattern.test(rawValue)) {
+                if (disallowedPattern.test(rawValue.value)) {
                   context.report({
                     loc: loc,
                     messageId: 'unencoded'
+                  });
+                } else if (
+                  rawValue.quotedValue?.startsWith('"') &&
+                  rawValue.value?.includes('"')
+                ) {
+                  context.report({
+                    loc: loc,
+                    messageId: 'doubleQuotes'
+                  });
+                } else if (
+                  rawValue.quotedValue?.startsWith("'") &&
+                  rawValue.value?.includes("'")
+                ) {
+                  context.report({
+                    loc: loc,
+                    messageId: 'singleQuotes'
                   });
                 }
               }
