@@ -95,36 +95,6 @@ export class TemplateAnalyzer {
   }
 
   /**
-   * Retrieves a raw attribute from an element to provide
-   * access to the quoted value.
-   *
-   * @param {treeAdapter.Element} element Element to retrieve attribute from
-   * @param {string} attr Attribute to retrieve
-   * @return {object}
-   */
-  public getRawAttribute(
-    element: treeAdapter.Element,
-    attr: string
-  ): RawAttribute | undefined {
-    const loc = element.sourceCodeLocation?.attrs[attr.toLowerCase()];
-
-    if (!loc) {
-      return undefined;
-    }
-
-    const source = this.source.substring(loc.startOffset, loc.endOffset);
-    const firstEq = source.indexOf('=');
-    const left = firstEq === -1 ? source : source.substr(0, firstEq);
-    const right = firstEq === -1 ? undefined : source.substr(firstEq + 1);
-
-    return {
-      name: left,
-      value: right?.replace(/(^["']|["']$)/g, ''),
-      quotedValue: right
-    };
-  }
-
-  /**
    * Returns the ESTree location equivalent of a given parsed location.
    *
    * @param {treeAdapter.Node} node Node to retrieve location of
@@ -184,7 +154,7 @@ export class TemplateAnalyzer {
   public getRawAttributeValue(
     element: treeAdapter.Element,
     attr: string
-  ): string | null {
+  ): RawAttribute | null {
     if (!element.sourceCodeLocation) {
       return null;
     }
@@ -196,35 +166,26 @@ export class TemplateAnalyzer {
       originalAttr = `${xAttribs[attr]}:${attr}`;
     }
 
-    if (element.attribs[attr] === '') {
-      return '';
-    }
-
     const loc = element.sourceCodeLocation.attrs[originalAttr];
-    let str = '';
+    const source = this.source.substring(loc.startOffset, loc.endOffset);
+    const firstEq = source.indexOf('=');
+    const left = firstEq === -1 ? source : source.substr(0, firstEq);
+    const right = firstEq === -1 ? undefined : source.substr(firstEq + 1);
+    let unquotedValue = right;
 
-    for (const quasi of this._node.quasi.quasis) {
-      const placeholder = getExpressionPlaceholder(this._node, quasi);
-      const val = quasi.value.raw + placeholder;
-
-      str += val;
-
-      if (loc.endOffset < str.length) {
-        const fullAttr = str.substring(
-          loc.startOffset + attr.length + 1,
-          loc.endOffset
-        );
-        if (fullAttr.startsWith('"') && fullAttr.endsWith('"')) {
-          return fullAttr.replace(/(^"|"$)/g, '');
-        }
-        if (fullAttr.startsWith("'") && fullAttr.endsWith("'")) {
-          return fullAttr.replace(/(^'|'$)/g, '');
-        }
-        return fullAttr;
+    if (right) {
+      if (right.startsWith('"') && right.endsWith('"')) {
+        unquotedValue = right.replace(/(^"|"$)/g, '');
+      } else if (right.startsWith("'") && right.endsWith("'")) {
+        unquotedValue = right.replace(/(^'|'$)/g, '');
       }
     }
 
-    return null;
+    return {
+      name: left,
+      value: unquotedValue,
+      quotedValue: right
+    };
   }
 
   /**

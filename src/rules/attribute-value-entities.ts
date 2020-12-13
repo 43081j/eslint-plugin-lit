@@ -61,35 +61,31 @@ const rule: Rule.RuleModule = {
                 const loc = analyzer.getLocationForAttribute(element, attr);
                 const rawValue = analyzer.getRawAttributeValue(element, attr);
 
-                if (!loc || !rawValue) {
+                if (!loc || !rawValue?.value) {
                   continue;
                 }
 
-                if (disallowedPattern.test(rawValue)) {
+                if (disallowedPattern.test(rawValue.value)) {
                   context.report({
                     loc: loc,
                     messageId: 'unencoded'
                   });
-                } else {
-                  const rawAttribute = analyzer.getRawAttribute(element, attr);
-
-                  if (
-                    rawAttribute?.quotedValue?.startsWith('"') &&
-                    rawAttribute.value?.includes('"')
-                  ) {
-                    context.report({
-                      loc: loc,
-                      messageId: 'doubleQuotes'
-                    });
-                  } else if (
-                    rawAttribute?.quotedValue?.startsWith("'") &&
-                    rawAttribute.value?.includes("'")
-                  ) {
-                    context.report({
-                      loc: loc,
-                      messageId: 'singleQuotes'
-                    });
-                  }
+                } else if (
+                  rawValue?.quotedValue?.startsWith('"') &&
+                  rawValue.value?.includes('"')
+                ) {
+                  context.report({
+                    loc: loc,
+                    messageId: 'doubleQuotes'
+                  });
+                } else if (
+                  rawValue?.quotedValue?.startsWith("'") &&
+                  rawValue.value?.includes("'")
+                ) {
+                  context.report({
+                    loc: loc,
+                    messageId: 'singleQuotes'
+                  });
                 }
               }
             }
