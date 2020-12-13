@@ -71,7 +71,7 @@ const rule: Rule.RuleModule = {
                     messageId: 'unencoded'
                   });
                 } else if (
-                  rawValue?.quotedValue?.startsWith('"') &&
+                  rawValue.quotedValue?.startsWith('"') &&
                   rawValue.value?.includes('"')
                 ) {
                   context.report({
@@ -79,7 +79,7 @@ const rule: Rule.RuleModule = {
                     messageId: 'doubleQuotes'
                   });
                 } else if (
-                  rawValue?.quotedValue?.startsWith("'") &&
+                  rawValue.quotedValue?.startsWith("'") &&
                   rawValue.value?.includes("'")
                 ) {
                   context.report({
