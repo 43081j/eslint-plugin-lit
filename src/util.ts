@@ -31,6 +31,11 @@ export interface PropertyMapEntry {
   attribute: boolean;
 }
 
+/**
+ * Extracts property metadata from a given property object
+ * @param {ESTree.ObjectExpression} node Node to extract from
+ * @return {object}
+ */
 export function extractPropertyEntry(
   node: ESTree.ObjectExpression
 ): PropertyMapEntry {
