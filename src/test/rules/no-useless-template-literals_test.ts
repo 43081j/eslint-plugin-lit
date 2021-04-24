@@ -22,14 +22,18 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-useless-template-literals', rule, {
-  valid: [{code: 'html`foo ${someVar} bar`'}, {code: 'html`foo bar`'}],
+  valid: [
+    {code: 'html`foo ${someVar} bar`'},
+    {code: 'html`foo bar`'},
+    {code: 'html`<foo .prop=${"literal"}></foo>`'}
+  ],
 
   invalid: [
     {
       code: 'html`foo ${123} bar`',
       errors: [
         {
-          message: 'Literals must not be substituted into templates',
+          message: 'Literals must not be substituted into text bindings',
           line: 1,
           column: 12
         }
@@ -39,14 +43,26 @@ ruleTester.run('no-useless-template-literals', rule, {
       code: 'html`foo ${"abc"} ${true} bar`',
       errors: [
         {
-          message: 'Literals must not be substituted into templates',
+          message: 'Literals must not be substituted into text bindings',
           line: 1,
           column: 12
         },
         {
-          message: 'Literals must not be substituted into templates',
+          message: 'Literals must not be substituted into text bindings',
           line: 1,
           column: 21
+        }
+      ]
+    },
+    {
+      code: 'html`<foo attr=${"abc"}></foo>`',
+      errors: [
+        {
+          message:
+            'Literals must not be substituted into attributes, ' +
+            'set it directly instead (e.g. attr="value")',
+          line: 1,
+          column: 18
         }
       ]
     }

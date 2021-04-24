@@ -101,6 +101,57 @@ ruleTester.run('no-property-change-update', rule, {
       ]
     },
     {
+      parser: babelParser,
+      code: `class Foo extends LitElement {
+        @internalProperty()
+        prop = 'foo';
+        update() {
+          this.prop = 'bar';
+        }
+      }`,
+      errors: [
+        {
+          messageId: 'propertyChange',
+          line: 5,
+          column: 11
+        }
+      ]
+    },
+    {
+      parser: babelParser,
+      code: `class Foo extends LitElement {
+        @property()
+        prop = 'foo';
+        update() {
+          this.prop = 'bar';
+        }
+      }`,
+      errors: [
+        {
+          messageId: 'propertyChange',
+          line: 5,
+          column: 11
+        }
+      ]
+    },
+    {
+      parser: babelParser,
+      code: `class Foo extends LitElement {
+        @state()
+        prop = 'foo';
+        update() {
+          this.prop = 'bar';
+        }
+      }`,
+      errors: [
+        {
+          messageId: 'propertyChange',
+          line: 5,
+          column: 11
+        }
+      ]
+    },
+    {
       code: `class Foo extends LitElement {
         static get properties() {
           return { prop: { type: String } };
