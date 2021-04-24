@@ -84,6 +84,23 @@ ruleTester.run('no-property-change-update', rule, {
       ]
     },
     {
+      code: `const x = class extends LitElement {
+        static get properties() {
+          return { prop: { type: String } };
+        }
+        update() {
+          this.prop = 'foo';
+        }
+      }`,
+      errors: [
+        {
+          messageId: 'propertyChange',
+          line: 6,
+          column: 11
+        }
+      ]
+    },
+    {
       parser: babelParser,
       code: `class Foo extends LitElement {
         @property({ type: String })

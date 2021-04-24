@@ -41,8 +41,8 @@ const rule: Rule.RuleModule = {
             pos.end.line < quasi.loc.end.line) ||
             (pos.start.line === quasi.loc.start.line &&
               pos.start.column >= quasi.loc.start.column) ||
-            (pos.end.line === quasi.loc.end.line &&
-              pos.end.column <= quasi.loc.end.column))
+            (pos.start.line === quasi.loc.end.line &&
+              pos.start.column <= quasi.loc.end.column))
         ) {
           return node.quasi.expressions[i] ?? null;
         }

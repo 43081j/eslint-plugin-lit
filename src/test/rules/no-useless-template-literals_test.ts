@@ -40,6 +40,18 @@ ruleTester.run('no-useless-template-literals', rule, {
       ]
     },
     {
+      code: 'html`foo\n<foo attr=${"abc"}></foo>\nbar`',
+      errors: [
+        {
+          message:
+            'Literals must not be substituted into attributes, ' +
+            'set it directly instead (e.g. attr="value")',
+          line: 2,
+          column: 13
+        }
+      ]
+    },
+    {
       code: 'html`foo ${"abc"} ${true} bar`',
       errors: [
         {
