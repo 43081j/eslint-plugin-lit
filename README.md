@@ -55,6 +55,7 @@ You may also extend the recommended configuration like so:
 - [lit/no-legacy-template-syntax](docs/rules/no-legacy-template-syntax.md)
 - [lit/no-private-properties](docs/rules/no-private-properties.md)
 - [lit/no-property-change-update](docs/rules/no-property-change-update.md)
+- [lit/no-quoted-expressions](docs/rules/no-quoted-expressions.md)
 - [lit/no-template-arrow](docs/rules/no-template-arrow.md)
 - [lit/no-template-bind](docs/rules/no-template-bind.md)
 - [lit/no-template-map](docs/rules/no-template-map.md)
