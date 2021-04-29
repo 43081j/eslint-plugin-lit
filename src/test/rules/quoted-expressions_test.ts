@@ -1,5 +1,5 @@
 /**
- * @fileoverview Disallows quoted expressions in template bindings
+ * @fileoverview Enforces the presence or absence of quotes around expressions
  * @author James Garbutt <https://github.com/43081j>
  */
 
@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/no-quoted-expressions');
+import rule = require('../../rules/quoted-expressions');
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ const ruleTester = new RuleTester({
   }
 });
 
-ruleTester.run('no-quoted-expressions', rule, {
+ruleTester.run('quoted-expressions', rule, {
   valid: [
     {code: 'html`<x-foo></x-foo>`'},
     {code: 'html`<x-foo attr=${v}></x-foo>`'},
@@ -29,15 +29,24 @@ ruleTester.run('no-quoted-expressions', rule, {
     {code: 'html`<x-foo @event=${v}></x-foo>`'},
     {code: 'html`<x-foo attr=${v} attr2=${v}></x-foo>`'},
     {code: 'html`\n<x-foo\nattr=${v}></x-foo>`'},
-    {code: 'html`<x-foo attr="foo ${v} bar"></x-foo>`'}
+    {code: 'html`<x-foo attr="foo ${v} bar"></x-foo>`'},
+    {
+      options: ['always'],
+      code: 'html`<x-foo attr="${v}"></x-foo>`'
+    },
+    {
+      options: ['always'],
+      code: "html`<x-foo attr='${v}'></x-foo>`"
+    }
   ],
 
   invalid: [
     {
       code: 'html`<x-foo attr="${v}"></x-foo>`',
+      output: 'html`<x-foo attr=${v}></x-foo>`',
       errors: [
         {
-          messageId: 'quoteError',
+          messageId: 'neverQuote',
           line: 1,
           column: 21
         }
@@ -45,9 +54,10 @@ ruleTester.run('no-quoted-expressions', rule, {
     },
     {
       code: "html`<x-foo attr='${v}'></x-foo>`",
+      output: 'html`<x-foo attr=${v}></x-foo>`',
       errors: [
         {
-          messageId: 'quoteError',
+          messageId: 'neverQuote',
           line: 1,
           column: 21
         }
@@ -55,9 +65,10 @@ ruleTester.run('no-quoted-expressions', rule, {
     },
     {
       code: 'html`<x-foo .prop="${v}"></x-foo>`',
+      output: 'html`<x-foo .prop=${v}></x-foo>`',
       errors: [
         {
-          messageId: 'quoteError',
+          messageId: 'neverQuote',
           line: 1,
           column: 22
         }
@@ -65,9 +76,10 @@ ruleTester.run('no-quoted-expressions', rule, {
     },
     {
       code: "html`<x-foo .prop='${v}'></x-foo>`",
+      output: 'html`<x-foo .prop=${v}></x-foo>`',
       errors: [
         {
-          messageId: 'quoteError',
+          messageId: 'neverQuote',
           line: 1,
           column: 22
         }
@@ -75,9 +87,10 @@ ruleTester.run('no-quoted-expressions', rule, {
     },
     {
       code: 'html`<x-foo\nattr="${v}"\n></x-foo>`',
+      output: 'html`<x-foo\nattr=${v}\n></x-foo>`',
       errors: [
         {
-          messageId: 'quoteError',
+          messageId: 'neverQuote',
           line: 2,
           column: 9
         }
@@ -85,11 +98,36 @@ ruleTester.run('no-quoted-expressions', rule, {
     },
     {
       code: 'html`<x-foo dashed-attr="${v}"></x-foo>`',
+      output: 'html`<x-foo dashed-attr=${v}></x-foo>`',
       errors: [
         {
-          messageId: 'quoteError',
+          messageId: 'neverQuote',
           line: 1,
           column: 28
+        }
+      ]
+    },
+    {
+      code: 'html`<x-foo attr=${v}></x-foo>`',
+      output: 'html`<x-foo attr="${v}"></x-foo>`',
+      options: ['always'],
+      errors: [
+        {
+          messageId: 'alwaysQuote',
+          line: 1,
+          column: 20
+        }
+      ]
+    },
+    {
+      code: 'html`<x-foo attr=${/* foo */v}></x-foo>`',
+      output: 'html`<x-foo attr="${/* foo */v}"></x-foo>`',
+      options: ['always'],
+      errors: [
+        {
+          messageId: 'alwaysQuote',
+          line: 1,
+          column: 29
         }
       ]
     }
