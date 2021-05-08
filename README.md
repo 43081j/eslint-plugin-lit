@@ -60,3 +60,4 @@ You may also extend the recommended configuration like so:
 - [lit/no-template-map](docs/rules/no-template-map.md)
 - [lit/no-useless-template-literals](docs/rules/no-useless-template-literals.md)
 - [lit/no-value-attribute](docs/rules/no-value-attribute.md)
+- [lit/require-listener-teardown](docs/rules/require-listener-teardown.md)
