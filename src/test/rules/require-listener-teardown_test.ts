@@ -90,6 +90,34 @@ ruleTester.run('require-listener-teardown', rule, {
           column: 11
         }
       ]
+    },
+    {
+      code: `const foo = class extends HTMLElement {
+        connectedCallback() {
+          this.addEventListener('x', console.log);
+        }
+      }`,
+      errors: [
+        {
+          messageId: 'noTeardown',
+          line: 3,
+          column: 11
+        }
+      ]
+    },
+    {
+      code: `const foo = class extends Unknown {
+        connectedCallback() {
+          this.addEventListener('x', console.log);
+        }
+      }`,
+      errors: [
+        {
+          messageId: 'noTeardown',
+          line: 3,
+          column: 11
+        }
+      ]
     }
   ]
 });
