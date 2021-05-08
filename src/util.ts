@@ -25,6 +25,44 @@ export function getIdentifierName(node: ESTree.Node): string | undefined {
   return undefined;
 }
 
+export interface PropertyMapEntry {
+  expr: ESTree.ObjectExpression | null;
+  state: boolean;
+  attribute: boolean;
+}
+
+/**
+ * Extracts property metadata from a given property object
+ * @param {ESTree.ObjectExpression} node Node to extract from
+ * @return {object}
+ */
+export function extractPropertyEntry(
+  node: ESTree.ObjectExpression
+): PropertyMapEntry {
+  let state = false;
+  let attribute = true;
+
+  for (const prop of node.properties) {
+    if (
+      prop.type === 'Property' &&
+      prop.key.type === 'Identifier' &&
+      prop.value.type === 'Literal'
+    ) {
+      if (prop.key.name === 'state' && prop.value.value === true) {
+        state = true;
+      } else if (prop.key.name === 'attribute' && prop.value.value === false) {
+        attribute = false;
+      }
+    }
+  }
+
+  return {
+    expr: node,
+    state,
+    attribute
+  };
+}
+
 /**
  * Get the properties object of an element class
  *
@@ -33,8 +71,10 @@ export function getIdentifierName(node: ESTree.Node): string | undefined {
  */
 export function getPropertyMap(
   node: ESTree.Class
-): ReadonlyMap<string, ESTree.ObjectExpression> {
-  const result = new Map<string, ESTree.ObjectExpression>();
+): ReadonlyMap<string, PropertyMapEntry> {
+  const result = new Map<string, PropertyMapEntry>();
+  const propertyDecorators = ['state', 'property', 'internalProperty'];
+  const internalDecorators = ['state', 'internalProperty'];
 
   for (const member of node.body.body) {
     if (
@@ -57,7 +97,7 @@ export function getPropertyMap(
             const name = getIdentifierName(prop.key);
 
             if (name && prop.value.type === 'ObjectExpression') {
-              result.set(name, prop.value);
+              result.set(name, extractPropertyEntry(prop.value));
             }
           }
         }
@@ -72,12 +112,23 @@ export function getPropertyMap(
         if (
           decorator.expression.type === 'CallExpression' &&
           decorator.expression.callee.type === 'Identifier' &&
-          decorator.expression.callee.name === 'property' &&
-          decorator.expression.arguments.length > 0
+          propertyDecorators.includes(decorator.expression.callee.name)
         ) {
           const dArg = decorator.expression.arguments[0];
-          if (dArg.type === 'ObjectExpression') {
-            result.set(memberName, dArg);
+          if (dArg?.type === 'ObjectExpression') {
+            const state = internalDecorators.includes(
+              decorator.expression.callee.name
+            );
+            const entry = extractPropertyEntry(dArg);
+            if (state) {
+              entry.state = true;
+            }
+            result.set(memberName, entry);
+          } else {
+            const state = internalDecorators.includes(
+              decorator.expression.callee.name
+            );
+            result.set(memberName, {expr: null, state, attribute: true});
           }
         }
       }

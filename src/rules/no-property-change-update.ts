@@ -5,7 +5,7 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {getPropertyMap} from '../util';
+import {getPropertyMap, PropertyMapEntry} from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -29,7 +29,7 @@ const rule: Rule.RuleModule = {
 
   create(context): Rule.RuleListener {
     // variables should be defined here
-    let propertyMap: ReadonlyMap<string, ESTree.ObjectExpression> | null = null;
+    let propertyMap: ReadonlyMap<string, PropertyMapEntry> | null = null;
     let inUpdate = false;
 
     //----------------------------------------------------------------------
@@ -112,9 +112,9 @@ const rule: Rule.RuleModule = {
         return;
       }
 
-      const prop = propertyMap.get(node.left.property.name);
+      const hasProp = propertyMap.has(node.left.property.name);
 
-      if (!prop) {
+      if (!hasProp) {
         return;
       }
 
