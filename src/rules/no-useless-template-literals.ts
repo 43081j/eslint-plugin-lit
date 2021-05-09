@@ -71,8 +71,7 @@ const rule: Rule.RuleModule = {
             ) {
               context.report({
                 node: expr,
-                message:
-                  'Literals must not be substituted into text bindings'
+                message: 'Literals must not be substituted into text bindings'
               });
             }
           }
