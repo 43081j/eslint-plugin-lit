@@ -9,6 +9,11 @@ export interface RawAttribute {
   quotedValue?: string;
 }
 
+const isRootNode = (
+  node: treeAdapter.Node
+): node is treeAdapter.Document | treeAdapter.DocumentFragment =>
+  node.type === 'root';
+
 export interface Visitor {
   enter: (node: treeAdapter.Node, parent: treeAdapter.Node | null) => void;
   exit: (node: treeAdapter.Node, parent: treeAdapter.Node | null) => void;
@@ -34,7 +39,7 @@ export interface ParseError extends parse5.Location {
   code: string;
 }
 
-type ParserOptionsWithError = parse5.ParserOptions & {
+type ParserOptionsWithError = parse5.ParserOptions<typeof treeAdapter> & {
   onParseError?: (err: ParseError) => void;
 };
 
@@ -88,10 +93,7 @@ export class TemplateAnalyzer {
       }
     };
 
-    this._ast = parse5.parseFragment(
-      this.source,
-      opts
-    ) as treeAdapter.DocumentFragment;
+    this._ast = parse5.parseFragment(this.source, opts);
   }
 
   /**
@@ -104,7 +106,7 @@ export class TemplateAnalyzer {
     node: treeAdapter.Node
   ): ESTree.SourceLocation | null | undefined {
     if (treeAdapter.isElementNode(node)) {
-      const loc = (node as treeAdapter.Element).sourceCodeLocation;
+      const loc = node.sourceCodeLocation;
 
       if (loc) {
         return this.resolveLocation(loc.startTag);
@@ -113,8 +115,7 @@ export class TemplateAnalyzer {
       treeAdapter.isCommentNode(node) ||
       treeAdapter.isTextNode(node)
     ) {
-      const loc = (node as treeAdapter.CommentNode | treeAdapter.TextNode)
-        .sourceCodeLocation;
+      const loc = node.sourceCodeLocation;
 
       if (loc) {
         return this.resolveLocation(loc);
@@ -257,29 +258,26 @@ export class TemplateAnalyzer {
         visitor.enter(node, parent);
       }
 
-      if (node.type === 'root') {
+      if (isRootNode(node)) {
         if (visitor.enterDocumentFragment) {
-          visitor.enterDocumentFragment(
-            node as treeAdapter.DocumentFragment,
-            parent
-          );
+          visitor.enterDocumentFragment(node, parent);
         }
       } else if (treeAdapter.isCommentNode(node)) {
         if (visitor.enterCommentNode) {
-          visitor.enterCommentNode(node as treeAdapter.CommentNode, parent);
+          visitor.enterCommentNode(node, parent);
         }
       } else if (treeAdapter.isTextNode(node)) {
         if (visitor.enterTextNode) {
-          visitor.enterTextNode(node as treeAdapter.TextNode, parent);
+          visitor.enterTextNode(node, parent);
         }
       } else if (treeAdapter.isElementNode(node)) {
         if (visitor.enterElement) {
-          visitor.enterElement(node as treeAdapter.Element, parent);
+          visitor.enterElement(node, parent);
         }
       }
 
-      if (treeAdapter.isElementNode(node) || node.type === 'root') {
-        const children = (node as treeAdapter.ParentNode).childNodes;
+      if (treeAdapter.isElementNode(node) || isRootNode(node)) {
+        const children = node.childNodes;
 
         if (children && children.length > 0) {
           children.forEach((child): void => {

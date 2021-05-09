@@ -6,8 +6,6 @@
 
 [lit-html](https://github.com/polymer/lit-html) support for ESLint.
 
-**Note:** experimental, may change quite a bit.
-
 ## Install
 
 ```
@@ -41,6 +39,28 @@ You may also extend the recommended configuration like so:
 ```json
 {
   "extends": ["plugin:lit/recommended"],
+  "env": {"browser": true}
+}
+```
+
+## Usage with `eslint-plugin-wc`
+
+We highly recommend you also depend on
+[eslint-plugin-wc](https://github.com/43081j/eslint-plugin-wc) as it will
+provide additional rules for web components in general:
+
+```bash
+npm i -D eslint-plugin-wc
+```
+
+Config:
+
+```json
+{
+  "extends": [
+    "plugin:wc/recommended",
+    "plugin:lit/recommended"
+  ],
   "env": {"browser": true}
 }
 ```
