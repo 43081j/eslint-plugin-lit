@@ -15,8 +15,7 @@
     "build": "tsc",
     "start": "nodemon --watch src --ext ts --exec \"npm run dev\"",
     "dev": "npm run lint && npm run build && npm run test ",
-    "test": "nyc --reporter=html --reporter=text-summary mocha \"lib/test/**/*_test.js\"",
-    "test:coverage": "nyc report --reporter=text-lcov | coveralls",
+    "test": "nyc --reporter=html --reporter=text-summary --reporter=lcov mocha \"lib/test/**/*_test.js\"",
     "format": "prettier --write \"src/**/*.ts\"",
     "prepare": "npm run build",
     "prepublishOnly": "npm run lint && npm run test"
