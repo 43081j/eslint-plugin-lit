@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="media/eslint-lit.svg" alt="Eslint + Lit" />
+  <img src="media/eslint-lit.svg" alt="Eslint + Lit" width="425" height="175" />
 </div>
 
 # `eslint-plugin-lit`
