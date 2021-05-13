@@ -25,6 +25,7 @@ const rule: Rule.RuleModule = {
   create(context): Rule.RuleListener {
     // variables should be defined here
     const isAttr = /^[^\.\?]/;
+    const endsWithAttr = /=['"]?$/;
 
     //----------------------------------------------------------------------
     // Helpers
@@ -33,18 +34,16 @@ const rule: Rule.RuleModule = {
       pos: ESTree.SourceLocation,
       node: ESTree.TaggedTemplateExpression
     ): ESTree.Expression | null => {
-      for (let i = 0; i < node.quasi.quasis.length; i++) {
-        const quasi = node.quasi.quasis[i];
+      for (const expr of node.quasi.expressions) {
         if (
-          quasi.loc &&
-          ((pos.start.line > quasi.loc.start.line &&
-            pos.end.line < quasi.loc.end.line) ||
-            (pos.start.line === quasi.loc.start.line &&
-              pos.start.column >= quasi.loc.start.column) ||
-            (pos.start.line === quasi.loc.end.line &&
-              pos.start.column <= quasi.loc.end.column))
+          expr.loc &&
+          expr.loc.start.line === pos.start.line &&
+          expr.loc.start.column > pos.start.column &&
+          ((expr.loc.end.line === pos.end.line &&
+            expr.loc.end.column <= pos.end.column) ||
+            expr.loc.end.line < pos.end.line)
         ) {
-          return node.quasi.expressions[i] ?? null;
+          return expr;
         }
       }
       return null;
@@ -67,7 +66,7 @@ const rule: Rule.RuleModule = {
             const expr = node.quasi.expressions[i];
             if (
               expr.type === 'Literal' &&
-              !node.quasi.quasis[i].value.raw.endsWith('=')
+              !endsWithAttr.test(node.quasi.quasis[i].value.raw)
             ) {
               context.report({
                 node: expr,

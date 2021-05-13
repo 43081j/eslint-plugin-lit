@@ -25,7 +25,10 @@ ruleTester.run('no-useless-template-literals', rule, {
   valid: [
     {code: 'html`foo ${someVar} bar`'},
     {code: 'html`foo bar`'},
-    {code: 'html`<foo .prop=${"literal"}></foo>`'}
+    {code: 'html`<foo .prop=${"literal"}></foo>`'},
+    {code: 'html`<foo .prop=${\n"literal"\n}\n></foo>`'},
+    {code: 'html`<foo .prop="${"literal"}"></foo>`'},
+    {code: 'html`<foo\nattr="foo"\n.prop=${"literal"}></foo>`'}
   ],
 
   invalid: [
