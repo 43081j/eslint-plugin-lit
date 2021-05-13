@@ -25,6 +25,7 @@ const rule: Rule.RuleModule = {
   create(context): Rule.RuleListener {
     // variables should be defined here
     const isAttr = /^[^\.\?]/;
+    const endsWithAttr = /=['"]?$/;
 
     //----------------------------------------------------------------------
     // Helpers
@@ -65,7 +66,7 @@ const rule: Rule.RuleModule = {
             const expr = node.quasi.expressions[i];
             if (
               expr.type === 'Literal' &&
-              !node.quasi.quasis[i].value.raw.endsWith('=')
+              !endsWithAttr.test(node.quasi.quasis[i].value.raw)
             ) {
               context.report({
                 node: expr,
