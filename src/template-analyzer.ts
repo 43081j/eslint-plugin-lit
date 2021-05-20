@@ -101,6 +101,7 @@ export class TemplateAnalyzer {
    * Returns the ESTree location equivalent of a given parsed location.
    *
    * @param {treeAdapter.Node} node Node to retrieve location of
+   * @param {SourceCode} source Source code from ESLint
    * @return {?ESTree.SourceLocation}
    */
   public getLocationFor(
@@ -132,6 +133,7 @@ export class TemplateAnalyzer {
    *
    * @param {treeAdapter.Element} element Element which owns this attribute
    * @param {string} attr Attribute name to retrieve
+   * @param {SourceCode} source Source code from ESLint
    * @return {?ESTree.SourceLocation}
    */
   public getLocationForAttribute(
@@ -208,6 +210,7 @@ export class TemplateAnalyzer {
     }
 
     let currentOffset = 0;
+    // Initial correction is the offset of the overall template literal
     let endCorrection = (this._node.quasi.range?.[0] ?? 0) + 1;
     let startCorrection = endCorrection;
     let startCorrected = false;
@@ -219,15 +222,22 @@ export class TemplateAnalyzer {
 
       currentOffset += quasi.value.raw.length;
 
+      // If we haven't already found the quasi containing the start offset
+      // and this quasi ends after it, set the start offset's correction
+      // value and leave it from now on.
       if (!startCorrected && loc.startOffset < currentOffset) {
         startCorrection = endCorrection;
         startCorrected = true;
       }
 
+      // If the location ends before this point, it must fit entirely in
+      // this quasi and the quasis before it, so we don't care about the rest
       if (loc.endOffset < currentOffset) {
         break;
       }
 
+      // If there's no range, something's really messed up so just fall back
+      // to the template literal's location
       if (!quasi.range) {
         return this._node.quasi.loc ?? null;
       }
@@ -236,8 +246,12 @@ export class TemplateAnalyzer {
         const placeholder = getExpressionPlaceholder(this._node, quasi);
         const oldOffset = currentOffset;
 
+        // If there's an expression, increment the offset by its placeholder's
+        // length (e.g. ${v} may actually be {{__Q:0__}} in HTML)
         currentOffset += placeholder.length;
 
+        // If the offset fits inside the placeholder range, there's nothing
+        // smart we can do, so return the expression's location
         if (
           (loc.startOffset >= oldOffset && loc.startOffset < currentOffset) ||
           (loc.endOffset >= oldOffset && loc.endOffset < currentOffset)
@@ -245,10 +259,18 @@ export class TemplateAnalyzer {
           return expr.loc ?? null;
         }
 
+        // If the expression has no range, it won't be the only problem
+        // so lets just fall back to the template literal's location
         if (!expr.range) {
           return this._node.quasi.loc ?? null;
         }
 
+        // Increment the correction value by the size of the expression.
+        // Given an expression ${foo}, its range only covers "foo", not any
+        // whitespace or the brackets.
+        // To work around this, we use the end of the previous quasi and the
+        // start of the next quasi as our [start, end] rather than the
+        // expression's own [start, end].
         const exprEnd = nextQuasi?.range?.[0] ?? expr.range[1];
         const exprStart = quasi.range[1];
         endCorrection -= placeholder.length;
@@ -256,6 +278,9 @@ export class TemplateAnalyzer {
       }
     }
 
+    // If the start never got corrected, parse5 is trying to give us a bad day
+    // and probably gave us an offset after the end of the string (it does
+    // this). So we should fall back to whatever the current end correction is
     if (!startCorrected) {
       startCorrection = endCorrection;
     }
