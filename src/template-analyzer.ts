@@ -1,5 +1,6 @@
 import * as ESTree from 'estree';
 import * as parse5 from 'parse5';
+import {SourceCode} from 'eslint';
 import treeAdapter = require('parse5-htmlparser2-tree-adapter');
 import {templateExpressionToHtml, getExpressionPlaceholder} from './util';
 
@@ -103,13 +104,14 @@ export class TemplateAnalyzer {
    * @return {?ESTree.SourceLocation}
    */
   public getLocationFor(
-    node: treeAdapter.Node
+    node: treeAdapter.Node,
+    source: SourceCode
   ): ESTree.SourceLocation | null | undefined {
     if (treeAdapter.isElementNode(node)) {
       const loc = node.sourceCodeLocation;
 
       if (loc) {
-        return this.resolveLocation(loc.startTag);
+        return this.resolveLocation(loc.startTag, source);
       }
     } else if (
       treeAdapter.isCommentNode(node) ||
@@ -118,7 +120,7 @@ export class TemplateAnalyzer {
       const loc = node.sourceCodeLocation;
 
       if (loc) {
-        return this.resolveLocation(loc);
+        return this.resolveLocation(loc, source);
       }
     }
 
@@ -134,7 +136,8 @@ export class TemplateAnalyzer {
    */
   public getLocationForAttribute(
     element: treeAdapter.Element,
-    attr: string
+    attr: string,
+    source: SourceCode
   ): ESTree.SourceLocation | null | undefined {
     if (!element.sourceCodeLocation) {
       return null;
@@ -142,7 +145,7 @@ export class TemplateAnalyzer {
 
     const loc = element.sourceCodeLocation.attrs[attr.toLowerCase()];
 
-    return loc ? this.resolveLocation(loc) : null;
+    return loc ? this.resolveLocation(loc, source) : null;
   }
 
   /**
@@ -190,53 +193,84 @@ export class TemplateAnalyzer {
   }
 
   /**
-   * Resolves a Parse5 location into an ESTree location
+   * Resolves a Parse5 location into an ESTree range
    *
    * @param {parse5.Location} loc Location to convert
+   * @param {SourceCode} source ESLint source code object
    * @return {ESTree.SourceLocation}
    */
-  public resolveLocation(loc: parse5.Location): ESTree.SourceLocation | null {
-    let offset = 0;
-    let height = 0;
+  public resolveLocation(
+    loc: parse5.Location,
+    source: SourceCode
+  ): ESTree.SourceLocation | null {
+    if (!this._node.loc || !this._node.quasi.loc) {
+      return null;
+    }
 
-    if (!this._node.loc || !this._node.quasi.loc) return null;
+    let currentOffset = 0;
+    let endCorrection = (this._node.quasi.range?.[0] ?? 0) + 1;
+    let startCorrection = endCorrection;
+    let startCorrected = false;
 
-    for (const quasi of this._node.quasi.quasis) {
-      const placeholder = getExpressionPlaceholder(this._node, quasi);
-      offset += quasi.value.raw.length + placeholder.length;
+    for (let i = 0; i < this._node.quasi.quasis.length; i++) {
+      const quasi = this._node.quasi.quasis[i];
+      const expr = this._node.quasi.expressions[i];
+      const nextQuasi = this._node.quasi.quasis[i + 1];
 
-      const i = this._node.quasi.quasis.indexOf(quasi);
-      if (i !== 0) {
-        const expression = this._node.quasi.expressions[i - 1];
-        if (!expression.loc) return null;
-        height += expression.loc.end.line - expression.loc.start.line;
+      currentOffset += quasi.value.raw.length;
+
+      if (!startCorrected && loc.startOffset < currentOffset) {
+        startCorrection = endCorrection;
+        startCorrected = true;
       }
 
-      if (loc.startOffset < offset) {
+      if (loc.endOffset < currentOffset) {
         break;
       }
-    }
 
-    let startOffset;
-    let endOffset;
-    if (loc.startLine === 1) {
-      startOffset = loc.startCol + this._node.quasi.loc.start.column;
-      endOffset = loc.endCol + this._node.quasi.loc.start.column;
-    } else {
-      startOffset = loc.startCol - 1;
-      endOffset = loc.endCol;
-    }
-
-    return {
-      start: {
-        line: loc.startLine - 1 + this._node.loc.start.line + height,
-        column: startOffset
-      },
-      end: {
-        line: loc.endLine - 1 + this._node.loc.start.line + height,
-        column: endOffset
+      if (!quasi.range) {
+        return this._node.quasi.loc ?? null;
       }
-    };
+
+      if (expr) {
+        const placeholder = getExpressionPlaceholder(this._node, quasi);
+        const oldOffset = currentOffset;
+
+        currentOffset += placeholder.length;
+
+        if (
+          (loc.startOffset >= oldOffset && loc.startOffset < currentOffset) ||
+          (loc.endOffset >= oldOffset && loc.endOffset < currentOffset)
+        ) {
+          return expr.loc ?? null;
+        }
+
+        if (!expr.range) {
+          return this._node.quasi.loc ?? null;
+        }
+
+        const exprEnd = nextQuasi?.range?.[0] ?? expr.range[1];
+        const exprStart = quasi.range[1];
+        endCorrection -= placeholder.length;
+        endCorrection += exprEnd - exprStart + 3;
+      }
+    }
+
+    if (!startCorrected) {
+      startCorrection = endCorrection;
+    }
+
+    try {
+      const start = source.getLocFromIndex(loc.startOffset + startCorrection);
+      const end = source.getLocFromIndex(loc.endOffset + endCorrection);
+
+      return {
+        start,
+        end
+      };
+    } catch (_err) {
+      return this._node.quasi.loc ?? null;
+    }
   }
 
   /**

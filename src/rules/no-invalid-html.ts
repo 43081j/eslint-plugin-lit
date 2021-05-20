@@ -25,7 +25,7 @@ const rule: Rule.RuleModule = {
   },
 
   create(context): Rule.RuleListener {
-    // variables should be defined here
+    const source = context.getSourceCode();
 
     //----------------------------------------------------------------------
     // Helpers
@@ -50,7 +50,7 @@ const rule: Rule.RuleModule = {
               continue;
             }
 
-            const loc = analyzer.resolveLocation(err);
+            const loc = analyzer.resolveLocation(err, source);
 
             if (loc) {
               context.report({

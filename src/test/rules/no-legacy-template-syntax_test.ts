@@ -70,7 +70,7 @@ ruleTester.run('no-legacy-template-syntax', rule, {
           messageId: 'unsupported',
           data: {replacement: '?baz='},
           line: 1,
-          column: 39
+          column: 33
         }
       ]
     }

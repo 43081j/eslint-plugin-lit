@@ -85,7 +85,7 @@ ruleTester.run('no-invalid-html', rule, {
           messageId: 'parseError',
           data: {err: 'eof-in-tag'},
           line: 1,
-          column: 72
+          column: 62
         }
       ]
     },
