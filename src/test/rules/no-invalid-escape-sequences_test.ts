@@ -40,7 +40,9 @@ ruleTester.run('no-invalid-escape-sequences', rule, {
         {
           messageId: 'invalid',
           line: 1,
-          column: 5
+          column: 9,
+          endLine: 1,
+          endColumn: 9
         }
       ]
     },
@@ -51,7 +53,9 @@ ruleTester.run('no-invalid-escape-sequences', rule, {
         {
           messageId: 'invalid',
           line: 1,
-          column: 5
+          column: 9,
+          endLine: 1,
+          endColumn: 9
         }
       ]
     }

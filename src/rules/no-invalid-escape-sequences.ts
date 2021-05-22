@@ -26,7 +26,7 @@ const rule: Rule.RuleModule = {
   },
 
   create(context): Rule.RuleListener {
-    // variables should be defined here
+    const source = context.getSourceCode();
     const escapePattern = /(^|[^\\])\\([1-7][0-7]*|[0-7]{2,})+/;
 
     return {
@@ -37,9 +37,14 @@ const rule: Rule.RuleModule = {
           node.tag.name === 'html'
         ) {
           for (const quasi of node.quasi.quasis) {
-            if (escapePattern.test(quasi.value.raw)) {
+            const match = quasi.value.raw.match(escapePattern);
+
+            if (quasi.range && match && match.index !== undefined) {
+              const pos = source.getLocFromIndex(
+                quasi.range[0] + 1 + match.index
+              );
               context.report({
-                node: quasi,
+                loc: {start: pos, end: pos},
                 messageId: 'invalid'
               });
             }
