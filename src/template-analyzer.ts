@@ -98,37 +98,6 @@ export class TemplateAnalyzer {
   }
 
   /**
-   * Returns the ESTree location equivalent of a given parsed location.
-   *
-   * @param {treeAdapter.Node} node Node to retrieve location of
-   * @param {SourceCode} source Source code from ESLint
-   * @return {?ESTree.SourceLocation}
-   */
-  public getLocationFor(
-    node: treeAdapter.Node,
-    source: SourceCode
-  ): ESTree.SourceLocation | null | undefined {
-    if (treeAdapter.isElementNode(node)) {
-      const loc = node.sourceCodeLocation;
-
-      if (loc) {
-        return this.resolveLocation(loc.startTag, source);
-      }
-    } else if (
-      treeAdapter.isCommentNode(node) ||
-      treeAdapter.isTextNode(node)
-    ) {
-      const loc = node.sourceCodeLocation;
-
-      if (loc) {
-        return this.resolveLocation(loc, source);
-      }
-    }
-
-    return this._node.loc;
-  }
-
-  /**
    * Returns the ESTree location equivalent of a given attribute
    *
    * @param {treeAdapter.Element} element Element which owns this attribute
