@@ -1,5 +1,6 @@
 import * as ESTree from 'estree';
 import * as parse5 from 'parse5';
+import {SourceCode} from 'eslint';
 import treeAdapter = require('parse5-htmlparser2-tree-adapter');
 import {templateExpressionToHtml, getExpressionPlaceholder} from './util';
 
@@ -97,44 +98,17 @@ export class TemplateAnalyzer {
   }
 
   /**
-   * Returns the ESTree location equivalent of a given parsed location.
-   *
-   * @param {treeAdapter.Node} node Node to retrieve location of
-   * @return {?ESTree.SourceLocation}
-   */
-  public getLocationFor(
-    node: treeAdapter.Node
-  ): ESTree.SourceLocation | null | undefined {
-    if (treeAdapter.isElementNode(node)) {
-      const loc = node.sourceCodeLocation;
-
-      if (loc) {
-        return this.resolveLocation(loc.startTag);
-      }
-    } else if (
-      treeAdapter.isCommentNode(node) ||
-      treeAdapter.isTextNode(node)
-    ) {
-      const loc = node.sourceCodeLocation;
-
-      if (loc) {
-        return this.resolveLocation(loc);
-      }
-    }
-
-    return this._node.loc;
-  }
-
-  /**
    * Returns the ESTree location equivalent of a given attribute
    *
    * @param {treeAdapter.Element} element Element which owns this attribute
    * @param {string} attr Attribute name to retrieve
+   * @param {SourceCode} source Source code from ESLint
    * @return {?ESTree.SourceLocation}
    */
   public getLocationForAttribute(
     element: treeAdapter.Element,
-    attr: string
+    attr: string,
+    source: SourceCode
   ): ESTree.SourceLocation | null | undefined {
     if (!element.sourceCodeLocation) {
       return null;
@@ -142,7 +116,7 @@ export class TemplateAnalyzer {
 
     const loc = element.sourceCodeLocation.attrs[attr.toLowerCase()];
 
-    return loc ? this.resolveLocation(loc) : null;
+    return loc ? this.resolveLocation(loc, source) : null;
   }
 
   /**
@@ -190,53 +164,107 @@ export class TemplateAnalyzer {
   }
 
   /**
-   * Resolves a Parse5 location into an ESTree location
+   * Resolves a Parse5 location into an ESTree range
    *
    * @param {parse5.Location} loc Location to convert
+   * @param {SourceCode} source ESLint source code object
    * @return {ESTree.SourceLocation}
    */
-  public resolveLocation(loc: parse5.Location): ESTree.SourceLocation | null {
-    let offset = 0;
-    let height = 0;
+  public resolveLocation(
+    loc: parse5.Location,
+    source: SourceCode
+  ): ESTree.SourceLocation | null {
+    if (!this._node.loc || !this._node.quasi.loc) {
+      return null;
+    }
 
-    if (!this._node.loc || !this._node.quasi.loc) return null;
+    let currentOffset = 0;
+    // Initial correction is the offset of the overall template literal
+    let endCorrection = (this._node.quasi.range?.[0] ?? 0) + 1;
+    let startCorrection = endCorrection;
+    let startCorrected = false;
 
-    for (const quasi of this._node.quasi.quasis) {
-      const placeholder = getExpressionPlaceholder(this._node, quasi);
-      offset += quasi.value.raw.length + placeholder.length;
+    for (let i = 0; i < this._node.quasi.quasis.length; i++) {
+      const quasi = this._node.quasi.quasis[i];
+      const expr = this._node.quasi.expressions[i];
+      const nextQuasi = this._node.quasi.quasis[i + 1];
 
-      const i = this._node.quasi.quasis.indexOf(quasi);
-      if (i !== 0) {
-        const expression = this._node.quasi.expressions[i - 1];
-        if (!expression.loc) return null;
-        height += expression.loc.end.line - expression.loc.start.line;
+      currentOffset += quasi.value.raw.length;
+
+      // If we haven't already found the quasi containing the start offset
+      // and this quasi ends after it, set the start offset's correction
+      // value and leave it from now on.
+      if (!startCorrected && loc.startOffset < currentOffset) {
+        startCorrection = endCorrection;
+        startCorrected = true;
       }
 
-      if (loc.startOffset < offset) {
+      // If the location ends before this point, it must fit entirely in
+      // this quasi and the quasis before it, so we don't care about the rest
+      if (loc.endOffset < currentOffset) {
         break;
       }
-    }
 
-    let startOffset;
-    let endOffset;
-    if (loc.startLine === 1) {
-      startOffset = loc.startCol + this._node.quasi.loc.start.column;
-      endOffset = loc.endCol + this._node.quasi.loc.start.column;
-    } else {
-      startOffset = loc.startCol - 1;
-      endOffset = loc.endCol;
-    }
-
-    return {
-      start: {
-        line: loc.startLine - 1 + this._node.loc.start.line + height,
-        column: startOffset
-      },
-      end: {
-        line: loc.endLine - 1 + this._node.loc.start.line + height,
-        column: endOffset
+      // If there's no range, something's really messed up so just fall back
+      // to the template literal's location
+      if (!quasi.range) {
+        return this._node.quasi.loc ?? null;
       }
-    };
+
+      if (expr) {
+        const placeholder = getExpressionPlaceholder(this._node, quasi);
+        const oldOffset = currentOffset;
+
+        // If there's an expression, increment the offset by its placeholder's
+        // length (e.g. ${v} may actually be {{__Q:0__}} in HTML)
+        currentOffset += placeholder.length;
+
+        // If the offset fits inside the placeholder range, there's nothing
+        // smart we can do, so return the expression's location
+        if (
+          (loc.startOffset >= oldOffset && loc.startOffset < currentOffset) ||
+          (loc.endOffset >= oldOffset && loc.endOffset < currentOffset)
+        ) {
+          return expr.loc ?? null;
+        }
+
+        // If the expression has no range, it won't be the only problem
+        // so lets just fall back to the template literal's location
+        if (!expr.range) {
+          return this._node.quasi.loc ?? null;
+        }
+
+        // Increment the correction value by the size of the expression.
+        // Given an expression ${foo}, its range only covers "foo", not any
+        // whitespace or the brackets.
+        // To work around this, we use the end of the previous quasi and the
+        // start of the next quasi as our [start, end] rather than the
+        // expression's own [start, end].
+        const exprEnd = nextQuasi?.range?.[0] ?? expr.range[1];
+        const exprStart = quasi.range[1];
+        endCorrection -= placeholder.length;
+        endCorrection += exprEnd - exprStart + 3;
+      }
+    }
+
+    // If the start never got corrected, parse5 is trying to give us a bad day
+    // and probably gave us an offset after the end of the string (it does
+    // this). So we should fall back to whatever the current end correction is
+    if (!startCorrected) {
+      startCorrection = endCorrection;
+    }
+
+    try {
+      const start = source.getLocFromIndex(loc.startOffset + startCorrection);
+      const end = source.getLocFromIndex(loc.endOffset + endCorrection);
+
+      return {
+        start,
+        end
+      };
+    } catch (_err) {
+      return this._node.quasi.loc ?? null;
+    }
   }
 
   /**

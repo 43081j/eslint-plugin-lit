@@ -68,14 +68,14 @@ ruleTester.run('no-private-properties', rule, {
       ],
       errors: [
         {
-          messageId: 'unsupported',
+          messageId: 'noPrivate',
           line: 1,
           column: 13
         },
         {
-          messageId: 'unsupported',
+          messageId: 'noPrivate',
           line: 1,
-          column: 33
+          column: 24
         }
       ]
     },
@@ -89,14 +89,14 @@ ruleTester.run('no-private-properties', rule, {
       ],
       errors: [
         {
-          messageId: 'unsupported',
+          messageId: 'noPrivate',
           line: 1,
           column: 13
         },
         {
-          messageId: 'unsupported',
+          messageId: 'noPrivate',
           line: 1,
-          column: 43
+          column: 34
         }
       ]
     }

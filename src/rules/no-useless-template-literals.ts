@@ -23,7 +23,7 @@ const rule: Rule.RuleModule = {
   },
 
   create(context): Rule.RuleListener {
-    // variables should be defined here
+    const source = context.getSourceCode();
     const isAttr = /^[^\.\?]/;
     const endsWithAttr = /=['"]?$/;
 
@@ -79,7 +79,11 @@ const rule: Rule.RuleModule = {
             enterElement: (element): void => {
               // eslint-disable-next-line guard-for-in
               for (const attr in element.attribs) {
-                const loc = analyzer.getLocationForAttribute(element, attr);
+                const loc = analyzer.getLocationForAttribute(
+                  element,
+                  attr,
+                  source
+                );
 
                 if (!loc) {
                   continue;

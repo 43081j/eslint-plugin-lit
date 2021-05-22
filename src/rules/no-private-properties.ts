@@ -20,7 +20,8 @@ const rule: Rule.RuleModule = {
         'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-private-properties.md'
     },
     messages: {
-      unsupported: 'TODO'
+      noPrivate:
+        'Private and protected properties should not be assigned in bindings'
     },
     schema: [
       {
@@ -36,7 +37,7 @@ const rule: Rule.RuleModule = {
   },
 
   create(context): Rule.RuleListener {
-    // variables should be defined here
+    const source = context.getSourceCode();
     const config: Partial<{private: string; protected: string}> =
       context.options[0] || {};
     const conventions = Object.entries(config).reduce<Record<string, RegExp>>(
@@ -71,7 +72,11 @@ const rule: Rule.RuleModule = {
             enterElement: (element): void => {
               // eslint-disable-next-line guard-for-in
               for (const attr in element.attribs) {
-                const loc = analyzer.getLocationForAttribute(element, attr);
+                const loc = analyzer.getLocationForAttribute(
+                  element,
+                  attr,
+                  source
+                );
 
                 if (!loc) {
                   continue;
@@ -89,7 +94,7 @@ const rule: Rule.RuleModule = {
                 if (invalidPropertyName) {
                   context.report({
                     loc,
-                    messageId: 'unsupported'
+                    messageId: 'noPrivate'
                   });
                 }
               }

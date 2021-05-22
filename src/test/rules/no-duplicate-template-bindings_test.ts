@@ -58,7 +58,37 @@ ruleTester.run('no-duplicate-template-bindings', rule, {
         {
           message: 'Duplicate bindings are not allowed.',
           line: 1,
-          column: 39
+          column: 33
+        }
+      ]
+    },
+    {
+      code: 'html`<button @click=${fn} part="button" @click=${fn}></button>`',
+      errors: [
+        {
+          message: 'Duplicate bindings are not allowed.',
+          line: 1,
+          column: 47
+        }
+      ]
+    },
+    {
+      code: 'html`<button @click=${\nfn\n\n} foo @click=${fn}></button>`',
+      errors: [
+        {
+          message: 'Duplicate bindings are not allowed.',
+          line: 4,
+          column: 13
+        }
+      ]
+    },
+    {
+      code: 'html`<button\n@click=${\nfn\n\n} foo @click=${fn}></button>`',
+      errors: [
+        {
+          message: 'Duplicate bindings are not allowed.',
+          line: 5,
+          column: 13
         }
       ]
     }

@@ -31,7 +31,7 @@ const rule: Rule.RuleModule = {
   },
 
   create(context): Rule.RuleListener {
-    // variables should be defined here
+    const source = context.getSourceCode();
     const warnedTags = ['input'];
 
     //----------------------------------------------------------------------
@@ -58,7 +58,11 @@ const rule: Rule.RuleModule = {
                 'value' in element.attribs &&
                 isExpressionPlaceholder(element.attribs['value'])
               ) {
-                const loc = analyzer.getLocationForAttribute(element, 'value');
+                const loc = analyzer.getLocationForAttribute(
+                  element,
+                  'value',
+                  source
+                );
 
                 if (loc) {
                   context.report({

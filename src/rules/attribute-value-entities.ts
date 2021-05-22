@@ -34,7 +34,7 @@ const rule: Rule.RuleModule = {
   },
 
   create(context): Rule.RuleListener {
-    // variables should be defined here
+    const source = context.getSourceCode();
     const disallowedPattern = /([<>]|&(?!(#\d+|[a-z]+);))/;
 
     //----------------------------------------------------------------------
@@ -58,7 +58,11 @@ const rule: Rule.RuleModule = {
             enterElement: (element): void => {
               // eslint-disable-next-line guard-for-in
               for (const attr in element.attribs) {
-                const loc = analyzer.getLocationForAttribute(element, attr);
+                const loc = analyzer.getLocationForAttribute(
+                  element,
+                  attr,
+                  source
+                );
                 const rawValue = analyzer.getRawAttributeValue(element, attr);
 
                 if (!loc || !rawValue?.value) {
