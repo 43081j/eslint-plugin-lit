@@ -14,7 +14,8 @@ const config = {
     'lit/no-template-bind': 'error',
     'lit/no-template-map': 'error',
     'lit/no-useless-template-literals': 'error',
-    'lit/no-value-attribute': 'error'
+    'lit/no-value-attribute': 'error',
+    'lit/quoted-expressions': 'error'
   }
 };
 
