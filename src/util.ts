@@ -1,11 +1,11 @@
 import * as ESTree from 'estree';
 
-interface BabelDecorator extends ESTree.BaseNode {
+export interface BabelDecorator extends ESTree.BaseNode {
   type: 'Decorator';
   expression: ESTree.Expression;
 }
 
-interface BabelProperty extends ESTree.MethodDefinition {
+export interface BabelProperty extends ESTree.MethodDefinition {
   decorators?: BabelDecorator[];
 }
 
