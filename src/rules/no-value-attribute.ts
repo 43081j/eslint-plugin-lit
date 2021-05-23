@@ -22,6 +22,7 @@ const rule: Rule.RuleModule = {
       url:
         'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-value-attribute.md'
     },
+    fixable: 'code',
     messages: {
       preferProperty:
         'The `value` attribute only defines the initial value ' +
@@ -65,9 +66,13 @@ const rule: Rule.RuleModule = {
                 );
 
                 if (loc) {
+                  const range = source.getIndexFromLoc(loc.start);
+
                   context.report({
-                    loc: loc,
-                    messageId: 'preferProperty'
+                    loc,
+                    messageId: 'preferProperty',
+                    fix: (fixer) =>
+                      fixer.insertTextBeforeRange([range, range], '.')
                   });
                 }
               }
