@@ -36,7 +36,7 @@ const rule: Rule.RuleModule = {
       }
     ],
     messages: {
-      always: 'Adopted stylesheets should be used instead of inline style tags',
+      always: 'Static styles should be used instead of inline style tags',
       never: 'Inline style tags should be used instead of static styles'
     }
   },
