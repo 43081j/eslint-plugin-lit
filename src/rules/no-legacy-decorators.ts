@@ -5,7 +5,6 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {BabelDecorator} from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -23,7 +22,7 @@ const rule: Rule.RuleModule = {
     messages: {
       legacyDecorator:
         'Legacy decorators should no longer be used, did you mean to use ' +
-        '"{{replacement}}"?'
+        "the '{{replacement}}' decorator from the 'lit/decorators' module?"
     }
   },
 
@@ -34,39 +33,20 @@ const rule: Rule.RuleModule = {
     const legacyDecorators: Record<string, string> = {
       internalProperty: 'state'
     };
-    const getDecoratorIdentifier = (
-      node: BabelDecorator
-    ): ESTree.Identifier | null => {
-      if (node.expression.type === 'Identifier') {
-        return node.expression;
-      }
-      if (
-        node.expression.type === 'CallExpression' &&
-        node.expression.callee.type === 'Identifier'
-      ) {
-        return node.expression.callee;
-      }
-      return null;
-    };
 
     return {
-      Decorator: (node: ESTree.Node): void => {
-        const decorator = (node as unknown) as BabelDecorator;
-        if (decorator.type === 'Decorator') {
-          const ident = getDecoratorIdentifier(decorator);
-
-          if (ident) {
-            const replacement = legacyDecorators[ident.name];
-
-            if (replacement) {
-              context.report({
-                node,
-                messageId: 'legacyDecorator',
-                data: {
-                  replacement
-                },
-                fix: (fixer) => fixer.replaceText(ident, replacement)
-              });
+      ImportDeclaration: (node: ESTree.ImportDeclaration): void => {
+        if (node.source.value === 'lit-element') {
+          for (const specifier of node.specifiers) {
+            if (specifier.type === 'ImportSpecifier') {
+              const replacement = legacyDecorators[specifier.imported.name];
+              if (replacement) {
+                context.report({
+                  node: specifier,
+                  messageId: 'legacyDecorator',
+                  data: {replacement}
+                });
+              }
             }
           }
         }

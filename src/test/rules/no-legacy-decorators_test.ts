@@ -21,58 +21,35 @@ const ruleTester = new RuleTester({
   }
 });
 
-const babelParser = require.resolve('babel-eslint');
-
 ruleTester.run('no-legacy-decorators', rule, {
   valid: [
     {code: 'class Foo { }'},
-    {
-      parser: babelParser,
-      code: `class Foo extends LitElement {
-        @property({ type: String })
-        prop = 'test';
-      }`
-    },
-    {
-      parser: babelParser,
-      code: `class Foo extends LitElement {
-        @state() prop = 'test';
-      }`
-    }
+    {code: `import {property} from 'lit/decorators';`},
+    {code: `import {state} from 'lit/decorators';`}
   ],
 
   invalid: [
     {
-      parser: babelParser,
-      code: `class Foo extends LitElement {
-        @internalProperty() prop = 'test';
-      }`,
+      code: `import {internalProperty} from 'lit-element';`,
       errors: [
         {
           messageId: 'legacyDecorator',
-          line: 2,
+          data: {replacement: 'state'},
+          line: 1,
           column: 9
         }
-      ],
-      output: `class Foo extends LitElement {
-        @state() prop = 'test';
-      }`
+      ]
     },
     {
-      parser: babelParser,
-      code: `class Foo {
-        @internalProperty() prop = 'test';
-      }`,
+      code: `import {LitElement, internalProperty} from 'lit-element';`,
       errors: [
         {
           messageId: 'legacyDecorator',
-          line: 2,
-          column: 9
+          data: {replacement: 'state'},
+          line: 1,
+          column: 21
         }
-      ],
-      output: `class Foo {
-        @state() prop = 'test';
-      }`
+      ]
     }
   ]
 });

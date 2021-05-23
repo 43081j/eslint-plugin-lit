@@ -10,17 +10,13 @@ This rule disallows use of legacy lit decorators.
 The following patterns are considered warnings:
 
 ```ts
-class Foo {
-  @internalProperty() someProp;
-}
+import {internalProperty} from 'lit-element';
 ```
 
 The following patterns are not warnings:
 
 ```ts
-class Foo {
-  @state() someProp;
-}
+import {state} from 'lit/decorators';
 ```
 
 ## When Not To Use It
