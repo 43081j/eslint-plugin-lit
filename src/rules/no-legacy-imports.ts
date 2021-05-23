@@ -22,7 +22,12 @@ const rule: Rule.RuleModule = {
     messages: {
       legacyDecorator:
         'Legacy decorators should no longer be used, did you mean to use ' +
-        "the '{{replacement}}' decorator from the 'lit/decorators' module?"
+        "the '{{replacement}}' decorator from the 'lit/decorators' module?",
+      movedDecorator:
+        "Decorators should now be imported from the 'lit/decorators' module",
+      movedSource:
+        "Lit imports should come from the 'lit' module rather than" +
+        " 'lit-element' or 'lit-html'"
     }
   },
 
@@ -30,6 +35,16 @@ const rule: Rule.RuleModule = {
     const legacyDecorators: Record<string, string> = {
       internalProperty: 'state'
     };
+    const movedDecorators = [
+      'customElement',
+      'eventOptions',
+      'property',
+      'query',
+      'queryAll',
+      'queryAssignedNodes',
+      'queryAsync'
+    ];
+    const movedSources = ['lit-element', 'lit-html'];
 
     return {
       ImportDeclaration: (node: ESTree.ImportDeclaration): void => {
@@ -43,9 +58,24 @@ const rule: Rule.RuleModule = {
                   messageId: 'legacyDecorator',
                   data: {replacement}
                 });
+              } else if (movedDecorators.includes(specifier.imported.name)) {
+                context.report({
+                  node: specifier,
+                  messageId: 'movedDecorator'
+                });
               }
             }
           }
+        }
+
+        if (
+          typeof node.source.value === 'string' &&
+          movedSources.includes(node.source.value)
+        ) {
+          context.report({
+            node: node.source,
+            messageId: 'movedSource'
+          });
         }
       }
     };
