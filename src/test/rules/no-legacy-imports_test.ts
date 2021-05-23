@@ -1,5 +1,5 @@
 /**
- * @fileoverview Detects usages of legacy decorators
+ * @fileoverview Detects usages of legacy lit imports
  * @author James Garbutt <https://github.com/43081j>
  */
 
@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/no-legacy-decorators');
+import rule = require('../../rules/no-legacy-imports');
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ const ruleTester = new RuleTester({
   }
 });
 
-ruleTester.run('no-legacy-decorators', rule, {
+ruleTester.run('no-legacy-imports', rule, {
   valid: [
     {code: 'class Foo { }'},
     {code: `import {property} from 'lit/decorators';`},

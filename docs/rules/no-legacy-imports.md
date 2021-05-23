@@ -1,11 +1,11 @@
-# Detects usages of legacy decorators (no-legacy-decorators)
+# Detects usages of legacy lit imports (no-legacy-imports)
 
-Legacy lit decorators should not be used in newer versions of lit and have
-been replaced.
+Legacy lit imports should not be used in newer versions and have been
+replaced.
 
 ## Rule Details
 
-This rule disallows use of legacy lit decorators.
+This rule disallows use of legacy lit imports.
 
 The following patterns are considered warnings:
 

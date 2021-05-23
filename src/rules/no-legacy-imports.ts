@@ -1,5 +1,5 @@
 /**
- * @fileoverview Detects usages of legacy decorators
+ * @fileoverview Detects usages of legacy lit imports
  * @author James Garbutt <https://github.com/43081j>
  */
 
@@ -13,10 +13,10 @@ import * as ESTree from 'estree';
 const rule: Rule.RuleModule = {
   meta: {
     docs: {
-      description: 'Detects usages of legacy decorators',
+      description: 'Detects usages of legacy lit imports',
       category: 'Best Practices',
       url:
-        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-legacy-decorators.md'
+        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-legacy-imports.md'
     },
     fixable: 'code',
     messages: {
@@ -27,9 +27,6 @@ const rule: Rule.RuleModule = {
   },
 
   create(context): Rule.RuleListener {
-    // TODO (43081j) If this ever contains more than just `internalProperty`,
-    // we should do deeper checks, e.g. check the decorator is decorating
-    // a property.
     const legacyDecorators: Record<string, string> = {
       internalProperty: 'state'
     };
