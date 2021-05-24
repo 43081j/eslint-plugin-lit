@@ -42,7 +42,7 @@ ruleTester.run('no-invalid-escape-sequences', rule, {
           line: 1,
           column: 10,
           endLine: 1,
-          endColumn: 16
+          endColumn: 15
         }
       ],
       output: 'html`foo \\\\0123 bar`'
@@ -56,7 +56,7 @@ ruleTester.run('no-invalid-escape-sequences', rule, {
           line: 1,
           column: 10,
           endLine: 1,
-          endColumn: 13
+          endColumn: 12
         }
       ],
       output: 'html`foo \\\\3c bar`'
@@ -70,14 +70,14 @@ ruleTester.run('no-invalid-escape-sequences', rule, {
           line: 1,
           column: 10,
           endLine: 1,
-          endColumn: 13
+          endColumn: 12
         },
         {
           messageId: 'invalid',
           line: 1,
           column: 18,
           endLine: 1,
-          endColumn: 22
+          endColumn: 21
         }
       ],
       output: 'html`foo \\\\3c bar \\\\33`'
