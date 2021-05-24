@@ -57,6 +57,19 @@ const rule: Rule.RuleModule = {
             const asProp = (member as unknown) as ClassProperty;
 
             if (
+              member.type === 'MethodDefinition' &&
+              member.kind === 'get' &&
+              member.static &&
+              member.key.type === 'Identifier' &&
+              member.key.name === 'styles'
+            ) {
+              context.report({
+                node: member,
+                messageId: 'never'
+              });
+            }
+
+            if (
               asProp.type === 'ClassProperty' &&
               asProp.static &&
               asProp.key.type === 'Identifier' &&
@@ -83,12 +96,10 @@ const rule: Rule.RuleModule = {
           });
         }
       },
-      TaggedTemplateExpression: (node: ESTree.Node): void => {
-        if (
-          node.type === 'TaggedTemplateExpression' &&
-          node.tag.type === 'Identifier' &&
-          node.tag.name === 'html'
-        ) {
+      TaggedTemplateExpression: (
+        node: ESTree.TaggedTemplateExpression
+      ): void => {
+        if (node.tag.type === 'Identifier' && node.tag.name === 'html') {
           const analyzer = TemplateAnalyzer.create(node);
 
           if (prefer) {
@@ -96,7 +107,7 @@ const rule: Rule.RuleModule = {
               enterElement(node) {
                 if (node.tagName === 'style' && node.sourceCodeLocation) {
                   const loc = analyzer.resolveLocation(
-                    node.sourceCodeLocation.startTag,
+                    node.sourceCodeLocation,
                     source
                   );
                   if (loc) {

@@ -36,6 +36,11 @@ ruleTester.run('prefer-static-styles', rule, {
     },
     {
       code: `class Foo extends LitElement {
+        static get styles() { return css\`.foo {}\`; };
+      }`
+    },
+    {
+      code: `class Foo extends LitElement {
         whatever() {
           this.shadowRoot.adoptedStylesheets = [
             new CSSStyleSheet()
@@ -70,7 +75,24 @@ ruleTester.run('prefer-static-styles', rule, {
         {
           messageId: 'always',
           line: 1,
-          column: 6
+          column: 6,
+          endLine: 1,
+          endColumn: 44
+        }
+      ]
+    },
+    {
+      options: ['never'],
+      code: `class Foo extends LitElement {
+        static get styles() { return css\`.foo {}\`; };
+      }`,
+      errors: [
+        {
+          messageId: 'never',
+          line: 2,
+          column: 9,
+          endLine: 2,
+          endColumn: 53
         }
       ]
     },
@@ -85,7 +107,9 @@ ruleTester.run('prefer-static-styles', rule, {
         {
           messageId: 'never',
           line: 2,
-          column: 9
+          column: 9,
+          endLine: 2,
+          endColumn: 38
         }
       ]
     },
@@ -102,7 +126,9 @@ ruleTester.run('prefer-static-styles', rule, {
         {
           messageId: 'never',
           line: 3,
-          column: 11
+          column: 11,
+          endLine: 5,
+          endColumn: 12
         }
       ]
     }
