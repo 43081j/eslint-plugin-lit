@@ -43,7 +43,8 @@ ruleTester.run('no-value-attribute', rule, {
           line: 1,
           column: 13
         }
-      ]
+      ],
+      output: 'html`<input .value=${val} />`'
     },
     {
       code: 'html`<input type="text" value=${val} />`',
@@ -56,7 +57,8 @@ ruleTester.run('no-value-attribute', rule, {
           line: 1,
           column: 25
         }
-      ]
+      ],
+      output: 'html`<input type="text" .value=${val} />`'
     }
   ]
 });
