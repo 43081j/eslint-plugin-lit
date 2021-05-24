@@ -21,7 +21,15 @@ const ruleTester = new RuleTester({
   }
 });
 
-const babelParser = require.resolve('babel-eslint');
+const parser = require.resolve('@babel/eslint-parser');
+const parserOptions = {
+  requireConfigFile: false,
+  babelOptions: {
+    plugins: [
+      ['@babel/plugin-proposal-decorators', {decoratorsBeforeExport: true}]
+    ]
+  }
+};
 
 ruleTester.run('no-property-change-update', rule, {
   valid: [
@@ -54,7 +62,8 @@ ruleTester.run('no-property-change-update', rule, {
       }`
     },
     {
-      parser: babelParser,
+      parser,
+      parserOptions,
       code: `class Foo extends LitElement {
         @property({ type: String })
         prop = 'test';
@@ -101,7 +110,8 @@ ruleTester.run('no-property-change-update', rule, {
       ]
     },
     {
-      parser: babelParser,
+      parser,
+      parserOptions,
       code: `class Foo extends LitElement {
         @property({ type: String })
         prop = 'foo';
@@ -118,7 +128,8 @@ ruleTester.run('no-property-change-update', rule, {
       ]
     },
     {
-      parser: babelParser,
+      parser,
+      parserOptions,
       code: `class Foo extends LitElement {
         @internalProperty()
         prop = 'foo';
@@ -135,7 +146,8 @@ ruleTester.run('no-property-change-update', rule, {
       ]
     },
     {
-      parser: babelParser,
+      parser,
+      parserOptions,
       code: `class Foo extends LitElement {
         @property()
         prop = 'foo';
@@ -152,7 +164,8 @@ ruleTester.run('no-property-change-update', rule, {
       ]
     },
     {
-      parser: babelParser,
+      parser,
+      parserOptions,
       code: `class Foo extends LitElement {
         @state()
         prop = 'foo';
