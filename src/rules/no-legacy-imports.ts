@@ -26,8 +26,8 @@ const rule: Rule.RuleModule = {
       movedDecorator:
         "Decorators should now be imported from the 'lit/decorators' module",
       movedSource:
-        "Lit imports should come from the 'lit' module rather than" +
-        " 'lit-element' or 'lit-html'"
+        'Imported module has moved in lit 2, did you mean ' +
+        'to use "{{replacement}}"?'
     }
   },
 
@@ -44,7 +44,18 @@ const rule: Rule.RuleModule = {
       'queryAssignedNodes',
       'queryAsync'
     ];
-    const movedSources = ['lit-element', 'lit-html'];
+    const movedSources: Array<{from: RegExp; to: string}> = [
+      {from: /^lit-element$/, to: 'lit'},
+      {from: /^lit-html$/, to: 'lit'},
+      {
+        from: /^lit-element\/lib\/updating-element(?:\.js)?$/,
+        to: '@lit/reactive-element'
+      },
+      {
+        from: /^lit-html\/directives\/(.+)$/,
+        to: 'lit/directives/$1'
+      }
+    ];
 
     return {
       ImportDeclaration: (node: ESTree.ImportDeclaration): void => {
@@ -68,14 +79,20 @@ const rule: Rule.RuleModule = {
           }
         }
 
-        if (
-          typeof node.source.value === 'string' &&
-          movedSources.includes(node.source.value)
-        ) {
-          context.report({
-            node: node.source,
-            messageId: 'movedSource'
-          });
+        const source = node.source.value;
+
+        if (typeof source === 'string') {
+          const mapping = movedSources.find((s) => s.from.test(source));
+          if (mapping) {
+            const replacement = source.replace(mapping.from, mapping.to);
+            context.report({
+              node: node.source,
+              messageId: 'movedSource',
+              data: {
+                replacement
+              }
+            });
+          }
         }
       }
     };

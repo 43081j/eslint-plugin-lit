@@ -44,8 +44,11 @@ ruleTester.run('no-legacy-imports', rule, {
         },
         {
           messageId: 'movedSource',
+          data: {replacement: 'lit'},
           line: 1,
-          column: 32
+          column: 32,
+          endLine: 1,
+          endColumn: 45
         }
       ]
     },
@@ -60,8 +63,11 @@ ruleTester.run('no-legacy-imports', rule, {
         },
         {
           messageId: 'movedSource',
+          data: {replacement: 'lit'},
           line: 1,
-          column: 44
+          column: 44,
+          endLine: 1,
+          endColumn: 57
         }
       ]
     },
@@ -70,8 +76,11 @@ ruleTester.run('no-legacy-imports', rule, {
       errors: [
         {
           messageId: 'movedSource',
+          data: {replacement: 'lit'},
           line: 1,
-          column: 26
+          column: 26,
+          endLine: 1,
+          endColumn: 39
         }
       ]
     },
@@ -85,8 +94,11 @@ ruleTester.run('no-legacy-imports', rule, {
         },
         {
           messageId: 'movedSource',
+          data: {replacement: 'lit'},
           line: 1,
-          column: 24
+          column: 24,
+          endLine: 1,
+          endColumn: 37
         }
       ]
     },
@@ -100,8 +112,11 @@ ruleTester.run('no-legacy-imports', rule, {
         },
         {
           messageId: 'movedSource',
+          data: {replacement: 'lit'},
           line: 1,
-          column: 29
+          column: 29,
+          endLine: 1,
+          endColumn: 42
         }
       ]
     },
@@ -115,8 +130,11 @@ ruleTester.run('no-legacy-imports', rule, {
         },
         {
           messageId: 'movedSource',
+          data: {replacement: 'lit'},
           line: 1,
-          column: 28
+          column: 28,
+          endLine: 1,
+          endColumn: 41
         }
       ]
     },
@@ -125,8 +143,11 @@ ruleTester.run('no-legacy-imports', rule, {
       errors: [
         {
           messageId: 'movedSource',
+          data: {replacement: 'lit'},
           line: 1,
-          column: 22
+          column: 22,
+          endLine: 1,
+          endColumn: 35
         }
       ]
     },
@@ -135,8 +156,63 @@ ruleTester.run('no-legacy-imports', rule, {
       errors: [
         {
           messageId: 'movedSource',
+          data: {replacement: 'lit'},
           line: 1,
-          column: 22
+          column: 22,
+          endLine: 1,
+          endColumn: 32
+        }
+      ]
+    },
+    {
+      code: `import {UpdatingElement} from 'lit-element/lib/updating-element';`,
+      errors: [
+        {
+          messageId: 'movedSource',
+          data: {replacement: '@lit/reactive-element'},
+          line: 1,
+          column: 31,
+          endLine: 1,
+          endColumn: 65
+        }
+      ]
+    },
+    {
+      code: `import {UpdatingElement} from 'lit-element/lib/updating-element.js';`,
+      errors: [
+        {
+          messageId: 'movedSource',
+          data: {replacement: '@lit/reactive-element'},
+          line: 1,
+          column: 31,
+          endLine: 1,
+          endColumn: 68
+        }
+      ]
+    },
+    {
+      code: `import {ifDefined} from 'lit-html/directives/if-defined';`,
+      errors: [
+        {
+          messageId: 'movedSource',
+          data: {replacement: 'lit/directives/if-defined'},
+          line: 1,
+          column: 25,
+          endLine: 1,
+          endColumn: 57
+        }
+      ]
+    },
+    {
+      code: `import {ifDefined} from 'lit-html/directives/if-defined.js';`,
+      errors: [
+        {
+          messageId: 'movedSource',
+          data: {replacement: 'lit/directives/if-defined.js'},
+          line: 1,
+          column: 25,
+          endLine: 1,
+          endColumn: 60
         }
       ]
     }
