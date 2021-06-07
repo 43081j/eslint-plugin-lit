@@ -40,9 +40,12 @@ ruleTester.run('no-invalid-escape-sequences', rule, {
         {
           messageId: 'invalid',
           line: 1,
-          column: 5
+          column: 10,
+          endLine: 1,
+          endColumn: 15
         }
-      ]
+      ],
+      output: 'html`foo \\\\0123 bar`'
     },
     {
       code: 'html`foo \\3c bar`',
@@ -51,9 +54,33 @@ ruleTester.run('no-invalid-escape-sequences', rule, {
         {
           messageId: 'invalid',
           line: 1,
-          column: 5
+          column: 10,
+          endLine: 1,
+          endColumn: 12
         }
-      ]
+      ],
+      output: 'html`foo \\\\3c bar`'
+    },
+    {
+      code: 'html`foo \\3c bar \\33`',
+      parserOptions: {ecmaVersion: 2018},
+      errors: [
+        {
+          messageId: 'invalid',
+          line: 1,
+          column: 10,
+          endLine: 1,
+          endColumn: 12
+        },
+        {
+          messageId: 'invalid',
+          line: 1,
+          column: 18,
+          endLine: 1,
+          endColumn: 21
+        }
+      ],
+      output: 'html`foo \\\\3c bar \\\\33`'
     }
   ]
 });

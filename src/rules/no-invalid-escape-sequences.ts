@@ -18,16 +18,17 @@ const rule: Rule.RuleModule = {
       url:
         'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-invalid-escape-sequences.md'
     },
+    fixable: 'code',
     messages: {
       invalid:
         'Some escape sequences are invalid in template strings. ' +
-        'They should either be escaped again (e.g. "\\02c") or interpolated'
+        'They should either be escaped again (e.g. "\\\\02c") or interpolated'
     }
   },
 
   create(context): Rule.RuleListener {
-    // variables should be defined here
-    const escapePattern = /(^|[^\\])\\([1-7][0-7]*|[0-7]{2,})+/;
+    const source = context.getSourceCode();
+    const escapePattern = /(^|[^\\](?:\\\\)*)(\\([1-7][0-7]*|[0-7]{2,}))/g;
 
     return {
       TaggedTemplateExpression: (node: ESTree.Node): void => {
@@ -37,11 +38,24 @@ const rule: Rule.RuleModule = {
           node.tag.name === 'html'
         ) {
           for (const quasi of node.quasi.quasis) {
-            if (escapePattern.test(quasi.value.raw)) {
-              context.report({
-                node: quasi,
-                messageId: 'invalid'
-              });
+            if (quasi.range) {
+              const results = quasi.value.raw.matchAll(escapePattern);
+
+              for (const match of results) {
+                if (match.index !== undefined) {
+                  const rangeStart =
+                    quasi.range[0] + 1 + match.index + match[1].length;
+                  const rangeEnd = rangeStart + match[2].length;
+                  const start = source.getLocFromIndex(rangeStart);
+                  const end = source.getLocFromIndex(rangeEnd);
+                  context.report({
+                    loc: {start, end},
+                    messageId: 'invalid',
+                    fix: (fixer) =>
+                      fixer.insertTextBeforeRange([rangeStart, rangeEnd], '\\')
+                  });
+                }
+              }
             }
           }
         }
