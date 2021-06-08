@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es2020",
+    // https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping
+    "lib": ["ES2019"],
+    "target": "ES2019",
     "module": "commonjs",
     "declaration": true,
     "outDir": "./lib",
@@ -16,8 +18,5 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    "src/**/*.ts",
-    "custom_types/*.d.ts"
-  ]
+  "include": ["src/**/*.ts", "custom_types/*.d.ts"]
 }
