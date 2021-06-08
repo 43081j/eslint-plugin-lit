@@ -209,7 +209,7 @@ export class TemplateAnalyzer {
       // If there's no range, something's really messed up so just fall back
       // to the template literal's location
       if (!quasi.range) {
-        return this._node.quasi.loc != null ? this._node.quasi.loc : null;
+        return this._node.quasi.loc ? this._node.quasi.loc : null;
       }
 
       if (expr) {
@@ -226,13 +226,13 @@ export class TemplateAnalyzer {
           (loc.startOffset >= oldOffset && loc.startOffset < currentOffset) ||
           (loc.endOffset >= oldOffset && loc.endOffset < currentOffset)
         ) {
-          return expr.loc != null ? expr.loc : null;
+          return expr.loc ? expr.loc : null;
         }
 
         // If the expression has no range, it won't be the only problem
         // so lets just fall back to the template literal's location
         if (!expr.range) {
-          return this._node.quasi.loc != null ? this._node.quasi.loc : null;
+          return this._node.quasi.loc ? this._node.quasi.loc : null;
         }
 
         // Increment the correction value by the size of the expression.
@@ -265,7 +265,7 @@ export class TemplateAnalyzer {
         end
       };
     } catch (_err) {
-      return this._node.quasi.loc != null ? this._node.quasi.loc : null;
+      return this._node.quasi.loc ? this._node.quasi.loc : null;
     }
   }
 

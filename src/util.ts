@@ -87,7 +87,8 @@ export function getPropertyMap(
       const ret = member.value.body.body.find(
         (m): boolean =>
           m.type === 'ReturnStatement' &&
-          m.argument != undefined &&
+          m.argument !== undefined &&
+          m.argument !== null &&
           m.argument.type === 'ObjectExpression'
       ) as ESTree.ReturnStatement;
       if (ret) {
