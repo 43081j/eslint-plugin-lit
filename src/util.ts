@@ -115,7 +115,7 @@ export function getPropertyMap(
           propertyDecorators.includes(decorator.expression.callee.name)
         ) {
           const dArg = decorator.expression.arguments[0];
-          if (dArg?.type === 'ObjectExpression') {
+          if (dArg && dArg.type === 'ObjectExpression') {
             const state = internalDecorators.includes(
               decorator.expression.callee.name
             );
