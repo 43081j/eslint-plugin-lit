@@ -91,7 +91,7 @@ const rule: Rule.RuleModule = {
 
                 const expr = getExprAfterPosition(loc, node);
 
-                if (isAttr.test(attr) && expr?.type === 'Literal') {
+                if (isAttr.test(attr) && expr && expr.type === 'Literal') {
                   context.report({
                     node: expr,
                     message:

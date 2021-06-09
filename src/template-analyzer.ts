@@ -180,7 +180,8 @@ export class TemplateAnalyzer {
 
     let currentOffset = 0;
     // Initial correction is the offset of the overall template literal
-    let endCorrection = (this._node.quasi.range?.[0] ?? 0) + 1;
+    let endCorrection =
+      ((this._node.quasi.range && this._node.quasi.range[0]) || 0) + 1;
     let startCorrection = endCorrection;
     let startCorrected = false;
 
@@ -208,7 +209,7 @@ export class TemplateAnalyzer {
       // If there's no range, something's really messed up so just fall back
       // to the template literal's location
       if (!quasi.range) {
-        return this._node.quasi.loc ?? null;
+        return this._node.quasi.loc ? this._node.quasi.loc : null;
       }
 
       if (expr) {
@@ -225,13 +226,13 @@ export class TemplateAnalyzer {
           (loc.startOffset >= oldOffset && loc.startOffset < currentOffset) ||
           (loc.endOffset >= oldOffset && loc.endOffset < currentOffset)
         ) {
-          return expr.loc ?? null;
+          return expr.loc ? expr.loc : null;
         }
 
         // If the expression has no range, it won't be the only problem
         // so lets just fall back to the template literal's location
         if (!expr.range) {
-          return this._node.quasi.loc ?? null;
+          return this._node.quasi.loc ? this._node.quasi.loc : null;
         }
 
         // Increment the correction value by the size of the expression.
@@ -240,7 +241,8 @@ export class TemplateAnalyzer {
         // To work around this, we use the end of the previous quasi and the
         // start of the next quasi as our [start, end] rather than the
         // expression's own [start, end].
-        const exprEnd = nextQuasi?.range?.[0] ?? expr.range[1];
+        const exprEnd =
+          (nextQuasi && nextQuasi.range && nextQuasi.range[0]) || expr.range[1];
         const exprStart = quasi.range[1];
         endCorrection -= placeholder.length;
         endCorrection += exprEnd - exprStart + 3;
@@ -263,7 +265,7 @@ export class TemplateAnalyzer {
         end
       };
     } catch (_err) {
-      return this._node.quasi.loc ?? null;
+      return this._node.quasi.loc ? this._node.quasi.loc : null;
     }
   }
 

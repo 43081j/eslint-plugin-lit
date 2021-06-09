@@ -1,6 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es2020",
+    // https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping
+    // https://stackoverflow.com/questions/59787574/typescript-tsconfig-settings-for-node-js-12
+    "lib": [
+      "es2019",
+      "es2020.bigint",
+      "es2020.string",
+      "es2020.symbol.wellknown"
+    ],
+    "target": "ES2019",
     "module": "commonjs",
     "declaration": true,
     "outDir": "./lib",
@@ -16,8 +24,5 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    "src/**/*.ts",
-    "custom_types/*.d.ts"
-  ]
+  "include": ["src/**/*.ts", "custom_types/*.d.ts"]
 }
