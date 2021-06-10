@@ -65,7 +65,7 @@ const rule: Rule.RuleModule = {
                 );
                 const rawValue = analyzer.getRawAttributeValue(element, attr);
 
-                if (!loc || !rawValue || !rawValue.value) {
+                if (!loc || !rawValue?.value) {
                   continue;
                 }
 
@@ -75,20 +75,16 @@ const rule: Rule.RuleModule = {
                     messageId: 'unencoded'
                   });
                 } else if (
-                  rawValue.quotedValue &&
-                  rawValue.quotedValue.startsWith('"') &&
-                  rawValue.value &&
-                  rawValue.value.includes('"')
+                  rawValue.quotedValue?.startsWith('"') &&
+                  rawValue.value?.includes('"')
                 ) {
                   context.report({
                     loc: loc,
                     messageId: 'doubleQuotes'
                   });
                 } else if (
-                  rawValue.quotedValue &&
-                  rawValue.quotedValue.startsWith("'") &&
-                  rawValue.value &&
-                  rawValue.value.includes("'")
+                  rawValue.quotedValue?.startsWith("'") &&
+                  rawValue.value?.includes("'")
                 ) {
                   context.report({
                     loc: loc,
