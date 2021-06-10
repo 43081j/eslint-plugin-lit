@@ -42,7 +42,6 @@ const rule: Rule.RuleModule = {
     ): boolean {
       return (
         expr !== undefined &&
-        expr !== null &&
         expr.value.raw.lastIndexOf('<!--') > expr.value.raw.lastIndexOf('-->')
       );
     }
