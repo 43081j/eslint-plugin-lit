@@ -16,8 +16,7 @@ const rule: Rule.RuleModule = {
       description:
         'Enforces the presence or absence of quotes around expressions',
       category: 'Best Practices',
-      url:
-        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/quoted-expressions.md'
+      url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/quoted-expressions.md'
     },
     schema: [
       {

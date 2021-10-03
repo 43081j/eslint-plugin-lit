@@ -15,8 +15,7 @@ const rule: Rule.RuleModule = {
     docs: {
       description: 'Disallows array `.map` in templates',
       category: 'Best Practices',
-      url:
-        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-template-map.md'
+      url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-template-map.md'
     },
     messages: {
       noMap:

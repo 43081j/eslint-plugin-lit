@@ -17,8 +17,7 @@ const rule: Rule.RuleModule = {
       description:
         'Disallows property changes in the `update` lifecycle method',
       category: 'Best Practices',
-      url:
-        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-property-change-update.md'
+      url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-property-change-update.md'
     },
     messages: {
       propertyChange:

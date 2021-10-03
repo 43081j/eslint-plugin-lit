@@ -16,8 +16,7 @@ const rule: Rule.RuleModule = {
     docs: {
       description: 'Disallows usages of "non-public" property bindings',
       category: 'Best Practices',
-      url:
-        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-private-properties.md'
+      url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-private-properties.md'
     },
     messages: {
       noPrivate:

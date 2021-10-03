@@ -17,8 +17,7 @@ const rule: Rule.RuleModule = {
       description: 'Disallows redundant literal values in templates',
       category: 'Best Practices',
       recommended: true,
-      url:
-        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-useless-template-literals.md'
+      url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-useless-template-literals.md'
     }
   },
 
