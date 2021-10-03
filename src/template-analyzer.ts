@@ -94,7 +94,11 @@ export class TemplateAnalyzer {
       }
     };
 
-    this._ast = parse5.parseFragment(this.source, opts);
+    if (this.source.includes('<html')) {
+      this._ast = parse5.parse(this.source, opts);
+    } else {
+      this._ast = parse5.parseFragment(this.source, opts);
+    }
   }
 
   /**
