@@ -120,6 +120,48 @@ export class TemplateAnalyzer {
   }
 
   /**
+   * Returns the value of the specified attribute.
+   * If this is an expression, the expression will be returned. Otherwise,
+   * the raw value will be returned.
+   * NOTE: if an attribute has multiple expressions in its value, this will
+   * return the *first* expression.
+   * @param {treeAdapter.Element} element Element which owns this attribute
+   * @param {string} attr Attribute name to retrieve
+   * @param {SourceCode} source Source code from ESLint
+   * @return {?ESTree.Expression|string}
+   */
+  public getAttributeValue(
+    element: treeAdapter.Element,
+    attr: string,
+    source: SourceCode
+  ): ESTree.Expression | string | null {
+    const value = element.attribs[attr];
+    const loc = this.getLocationForAttribute(element, attr, source);
+
+    if (!loc) {
+      return value;
+    }
+
+    // We add the attribute name length so we only pick up expressions
+    // inside the value part
+    const start = source.getIndexFromLoc(loc.start) + attr.length;
+    const end = source.getIndexFromLoc(loc.end);
+
+    const containedExpr = this._node.quasi.expressions.find((expr) => {
+      if (!expr.loc) {
+        return false;
+      }
+
+      const exprStart = source.getIndexFromLoc(expr.loc.start);
+      const exprEnd = source.getIndexFromLoc(expr.loc.end);
+
+      return exprStart >= start && exprEnd <= end;
+    });
+
+    return containedExpr || element.attribs[attr];
+  }
+
+  /**
    * Returns the raw attribute source of a given attribute
    *
    * @param {treeAdapter.Element} element Element which owns this attribute
