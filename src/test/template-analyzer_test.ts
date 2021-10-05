@@ -293,4 +293,23 @@ describe('TemplateAnalyzer', () => {
     expect((nodes[3] as parse5.Element).name).to.equal('body');
     expect(nodes[4].type).to.equal('text');
   });
+
+  it('should handle uppercase HTML tags', () => {
+    result = parseTemplate(`
+      html\`<HTML><body>Foo</body></HTML>\`;
+    `);
+
+    const nodes: parse5.Node[] = [];
+
+    result.analyzer.traverse({
+      enter: (node) => {
+        nodes.push(node);
+      }
+    });
+
+    expect(nodes.length).to.equal(5);
+    expect(nodes[0].type).to.equal('root');
+    expect(nodes[1].type).to.equal('tag');
+    expect((nodes[1] as parse5.Element).name).to.equal('html');
+  });
 });
