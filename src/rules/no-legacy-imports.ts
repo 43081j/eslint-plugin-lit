@@ -15,8 +15,7 @@ const rule: Rule.RuleModule = {
     docs: {
       description: 'Detects usages of legacy lit imports',
       category: 'Best Practices',
-      url:
-        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-legacy-imports.md'
+      url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-legacy-imports.md'
     },
     fixable: 'code',
     messages: {

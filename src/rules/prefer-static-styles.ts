@@ -27,8 +27,7 @@ const rule: Rule.RuleModule = {
     docs: {
       description: 'Enforces the use of static styles in elements',
       category: 'Best Practices',
-      url:
-        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/prefer-static-styles.md'
+      url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/prefer-static-styles.md'
     },
     schema: [
       {
@@ -54,7 +53,7 @@ const rule: Rule.RuleModule = {
           node.superClass.name === 'LitElement'
         ) {
           for (const member of node.body.body) {
-            const asProp = (member as unknown) as ClassProperty;
+            const asProp = member as unknown as ClassProperty;
 
             if (
               member.type === 'MethodDefinition' &&

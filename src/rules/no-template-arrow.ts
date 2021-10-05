@@ -15,8 +15,7 @@ const rule: Rule.RuleModule = {
     docs: {
       description: 'Disallows arrow functions in templates',
       category: 'Best Practices',
-      url:
-        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-template-arrow.md'
+      url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-template-arrow.md'
     },
     messages: {
       noArrow:

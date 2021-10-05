@@ -16,8 +16,7 @@ const rule: Rule.RuleModule = {
     docs: {
       description: 'Detects usages of legacy binding syntax',
       category: 'Best Practices',
-      url:
-        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-legacy-template-syntax.md'
+      url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-legacy-template-syntax.md'
     },
     messages: {
       unsupported:

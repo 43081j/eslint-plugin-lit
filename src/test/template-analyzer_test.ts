@@ -3,6 +3,7 @@ import {parse} from 'espree';
 import * as ESTree from 'estree';
 import {SourceCode} from 'eslint';
 import {expect} from 'chai';
+import * as parse5 from 'parse5-htmlparser2-tree-adapter';
 
 const parseOptions = {
   ecmaVersion: 6,
@@ -117,5 +118,198 @@ describe('TemplateAnalyzer', () => {
         }
       });
     });
+  });
+
+  describe('traverse', () => {
+    beforeEach(() => {
+      result = parseTemplate(`
+        html\`
+          <div title="jeden"></div>
+          <div title="dwa"></div>
+          Text
+          <!-- Comment -->
+        \`;
+      `);
+    });
+
+    describe('enter', () => {
+      it('should be called for every node', () => {
+        const nodes: parse5.Node[] = [];
+
+        result.analyzer.traverse({
+          enter: (node) => {
+            if (parse5.isTextNode(node) && node.data.trim() === '') {
+              return;
+            }
+            nodes.push(node);
+          }
+        });
+
+        expect(nodes.length).to.equal(5);
+        expect(nodes[0].type).to.equal('root');
+        expect(nodes[1].type).to.equal('tag');
+        expect(nodes[2].type).to.equal('tag');
+        expect(nodes[3].type).to.equal('text');
+        expect(nodes[4].type).to.equal('comment');
+      });
+    });
+
+    describe('enterDocumentFragment', () => {
+      it('should be called for the root fragment', () => {
+        const nodes: parse5.Node[] = [];
+
+        result.analyzer.traverse({
+          enterDocumentFragment: (node) => {
+            nodes.push(node);
+          }
+        });
+
+        expect(nodes.length).to.equal(1);
+        expect(nodes[0].type).to.equal('root');
+      });
+    });
+
+    describe('enterCommentNode', () => {
+      it('should be called for comment nodes', () => {
+        const nodes: parse5.Node[] = [];
+
+        result.analyzer.traverse({
+          enterCommentNode: (node) => {
+            nodes.push(node);
+          }
+        });
+
+        expect(nodes.length).to.equal(1);
+        expect(nodes[0].type).to.equal('comment');
+      });
+    });
+
+    describe('enterTextNode', () => {
+      it('should be called for text nodes', () => {
+        const nodes: parse5.Node[] = [];
+
+        result.analyzer.traverse({
+          enterTextNode: (node) => {
+            nodes.push(node);
+          }
+        });
+
+        expect(nodes.length).to.equal(4);
+        expect(nodes[0].type).to.equal('text');
+        expect(nodes[1].type).to.equal('text');
+        expect(nodes[2].type).to.equal('text');
+        expect(nodes[3].type).to.equal('text');
+      });
+    });
+
+    describe('enterElement', () => {
+      it('should be called for elements', () => {
+        const nodes: parse5.Node[] = [];
+
+        result.analyzer.traverse({
+          enterElement: (node) => {
+            nodes.push(node);
+          }
+        });
+
+        expect(nodes.length).to.equal(2);
+        expect(nodes[0].type).to.equal('tag');
+        expect(nodes[1].type).to.equal('tag');
+      });
+    });
+
+    describe('exit', () => {
+      it('should be called for every node', () => {
+        const nodes: parse5.Node[] = [];
+
+        result.analyzer.traverse({
+          exit: (node) => {
+            nodes.push(node);
+          }
+        });
+
+        expect(nodes.length).to.equal(8);
+        expect(nodes[0].type).to.equal('text');
+        expect(nodes[1].type).to.equal('tag');
+        expect(nodes[2].type).to.equal('text');
+        expect(nodes[3].type).to.equal('tag');
+        expect(nodes[4].type).to.equal('text');
+        expect(nodes[5].type).to.equal('comment');
+        expect(nodes[6].type).to.equal('text');
+        expect(nodes[7].type).to.equal('root');
+      });
+    });
+
+    it('should visit children', () => {
+      result = parseTemplate(`
+        html\`
+          <div title="jeden">
+            <div title="dwa"></div>
+          </div>
+        \`;
+      `);
+
+      const nodes: parse5.Node[] = [];
+
+      result.analyzer.traverse({
+        enter: (node) => {
+          nodes.push(node);
+        }
+      });
+
+      expect(nodes.length).to.equal(7);
+      expect(nodes[0].type).to.equal('root');
+      expect(nodes[1].type).to.equal('text');
+      expect(nodes[2].type).to.equal('tag');
+      expect((nodes[2] as parse5.Element).attribs['title']).to.equal('jeden');
+      expect(nodes[3].type).to.equal('text');
+      expect(nodes[4].type).to.equal('tag');
+      expect((nodes[4] as parse5.Element).attribs['title']).to.equal('dwa');
+      expect(nodes[5].type).to.equal('text');
+      expect(nodes[6].type).to.equal('text');
+    });
+  });
+
+  it('should handle HTML documents', () => {
+    result = parseTemplate(`
+      html\`<html><body>Foo</body></html>\`;
+    `);
+
+    const nodes: parse5.Node[] = [];
+
+    result.analyzer.traverse({
+      enter: (node) => {
+        nodes.push(node);
+      }
+    });
+
+    expect(nodes.length).to.equal(5);
+    expect(nodes[0].type).to.equal('root');
+    expect(nodes[1].type).to.equal('tag');
+    expect((nodes[1] as parse5.Element).name).to.equal('html');
+    expect(nodes[2].type).to.equal('tag');
+    expect((nodes[2] as parse5.Element).name).to.equal('head');
+    expect(nodes[3].type).to.equal('tag');
+    expect((nodes[3] as parse5.Element).name).to.equal('body');
+    expect(nodes[4].type).to.equal('text');
+  });
+
+  it('should handle uppercase HTML tags', () => {
+    result = parseTemplate(`
+      html\`<HTML><body>Foo</body></HTML>\`;
+    `);
+
+    const nodes: parse5.Node[] = [];
+
+    result.analyzer.traverse({
+      enter: (node) => {
+        nodes.push(node);
+      }
+    });
+
+    expect(nodes.length).to.equal(5);
+    expect(nodes[0].type).to.equal('root');
+    expect(nodes[1].type).to.equal('tag');
+    expect((nodes[1] as parse5.Element).name).to.equal('html');
   });
 });

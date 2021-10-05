@@ -16,8 +16,7 @@ const rule: Rule.RuleModule = {
     docs: {
       description: 'Disallows duplicate names in template bindings',
       category: 'Best Practices',
-      url:
-        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-duplicate-template-bindings.md'
+      url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-duplicate-template-bindings.md'
     },
     messages: {
       duplicateBinding: 'Duplicate bindings are not allowed.'

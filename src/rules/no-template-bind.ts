@@ -15,8 +15,7 @@ const rule: Rule.RuleModule = {
     docs: {
       description: 'Disallows `.bind` in templates',
       category: 'Best Practices',
-      url:
-        'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-template-bind.md'
+      url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-template-bind.md'
     },
     messages: {
       noBind:
