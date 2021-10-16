@@ -283,6 +283,8 @@ describe('TemplateAnalyzer', () => {
       }
     });
 
+    const body = nodes[3] as parse5.Element;
+
     expect(nodes.length).to.equal(5);
     expect(nodes[0].type).to.equal('root');
     expect(nodes[1].type).to.equal('tag');
@@ -292,6 +294,31 @@ describe('TemplateAnalyzer', () => {
     expect(nodes[3].type).to.equal('tag');
     expect((nodes[3] as parse5.Element).name).to.equal('body');
     expect(nodes[4].type).to.equal('text');
+
+    expect(body.sourceCodeLocation).to.deep.equal({
+      startLine: 1,
+      startCol: 7,
+      startOffset: 6,
+      endLine: 1,
+      endCol: 30,
+      endOffset: 29,
+      startTag: {
+        startLine: 1,
+        startCol: 7,
+        startOffset: 6,
+        endLine: 1,
+        endCol: 13,
+        endOffset: 12
+      },
+      endTag: {
+        startLine: 1,
+        startCol: 16,
+        startOffset: 15,
+        endLine: 1,
+        endCol: 23,
+        endOffset: 22
+      }
+    });
   });
 
   it('should handle uppercase HTML tags', () => {
@@ -311,5 +338,35 @@ describe('TemplateAnalyzer', () => {
     expect(nodes[0].type).to.equal('root');
     expect(nodes[1].type).to.equal('tag');
     expect((nodes[1] as parse5.Element).name).to.equal('html');
+  });
+
+  it('should have correct position for normalised attributes', () => {
+    result = parseTemplate(`
+      html\`<div hidden></div>\`;
+    `);
+
+    const nodes: parse5.Node[] = [];
+
+    result.analyzer.traverse({
+      enter: (node) => {
+        nodes.push(node);
+      }
+    });
+
+    expect(nodes.length).to.equal(2);
+    expect(nodes[0].type).to.equal('root');
+    expect(nodes[1].type).to.equal('tag');
+
+    const div = nodes[1] as parse5.Element;
+    const attrLoc = div.sourceCodeLocation!.attrs['hidden'];
+
+    expect(attrLoc).to.deep.equal({
+      startLine: 1,
+      startCol: 6,
+      startOffset: 5,
+      endLine: 1,
+      endCol: 12,
+      endOffset: 11
+    });
   });
 });
