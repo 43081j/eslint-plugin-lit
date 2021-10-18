@@ -114,7 +114,7 @@ export class TemplateAnalyzer {
     attr: string,
     source: SourceCode
   ): ESTree.SourceLocation | null | undefined {
-    if (!element.sourceCodeLocation) {
+    if (!element.sourceCodeLocation || !element.sourceCodeLocation.attrs) {
       return null;
     }
 
@@ -140,6 +140,11 @@ export class TemplateAnalyzer {
     source: SourceCode
   ): ESTree.Expression | string | null {
     const value = element.attribs[attr];
+
+    if (value === undefined) {
+      return null;
+    }
+
     const loc = this.getLocationForAttribute(element, attr, source);
 
     if (!loc) {
@@ -162,7 +167,11 @@ export class TemplateAnalyzer {
       return exprStart >= start && exprEnd <= end;
     });
 
-    return containedExpr || element.attribs[attr];
+    if (containedExpr !== undefined) {
+      return containedExpr;
+    }
+
+    return value;
   }
 
   /**

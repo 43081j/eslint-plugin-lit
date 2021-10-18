@@ -118,6 +118,40 @@ describe('TemplateAnalyzer', () => {
         }
       });
     });
+
+    it('should handle non-existent attributes', () => {
+      result = parseTemplate(`
+        html\`<div></div>\`;
+      `);
+
+      result.analyzer.traverse({
+        enterElement(element) {
+          const expr = result.analyzer.getAttributeValue(
+            element,
+            'idontexist',
+            result.source
+          );
+          expect(expr).to.equal(null);
+        }
+      });
+    });
+
+    it('should return falsy expressions', () => {
+      result = parseTemplate(`
+        html\`<div title=$\{null\}></div>\`;
+      `);
+      result.analyzer.traverse({
+        enterElement(element) {
+          const expr = result.analyzer.getAttributeValue(
+            element,
+            'title',
+            result.source
+          ) as ESTree.Literal;
+          expect(expr.type).to.equal('Literal');
+          expect(expr.value).to.equal(null);
+        }
+      });
+    });
   });
 
   describe('traverse', () => {
