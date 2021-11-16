@@ -18,7 +18,8 @@ const config = {
     'lit/no-value-attribute': 'error',
     'lit/prefer-static-styles': 'error',
     'lit/quoted-expressions': 'error',
-    'lit/file-name-matches-element-class': 'error'
+    'lit/file-name-matches-element-class': 'error',
+    'lit/file-name-matches-element-name': 'error'
   }
 };
 
