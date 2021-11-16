@@ -17,7 +17,8 @@ const config = {
     'lit/no-useless-template-literals': 'error',
     'lit/no-value-attribute': 'error',
     'lit/prefer-static-styles': 'error',
-    'lit/quoted-expressions': 'error'
+    'lit/quoted-expressions': 'error',
+    'lit/file-name-matches-element-class': 'error'
   }
 };
 

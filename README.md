@@ -71,6 +71,7 @@ If you want more fine-grained configuration, you can instead add a snippet like 
 - [lit/no-useless-template-literals](docs/rules/no-useless-template-literals.md)
 - [lit/no-value-attribute](docs/rules/no-value-attribute.md)
 - [lit/quoted-expressions](docs/rules/quoted-expressions.md)
+- [lit/file-name-matches-element-class](docs/rules/file-name-matches-element-class.md)
 
 
 ## Shareable configurations
