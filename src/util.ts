@@ -1,4 +1,6 @@
 import * as ESTree from 'estree';
+import {extname, basename} from 'path';
+import {Rule} from 'eslint';
 
 export interface BabelDecorator extends ESTree.BaseNode {
   type: 'Decorator';
@@ -189,3 +191,53 @@ export function templateExpressionToHtml(
 
   return html;
 }
+
+const transformFuncs = {
+  snake(str: string): string {
+    return str
+      .replace(/([A-Z]($|[a-z]))/g, '_$1')
+      .replace(/^_/g, '')
+      .toLowerCase();
+  },
+  kebab(str: string): string {
+    return str
+      .replace(/([A-Z]($|[a-z]))/g, '-$1')
+      .replace(/^-/g, '')
+      .toLowerCase();
+  },
+  pascal(str: string): string {
+    return str.replace(/^./g, (c) => c.toLowerCase());
+  },
+  none(str: string): string {
+    return str;
+  }
+};
+
+export const hasFileName = (context: Rule.RuleContext): boolean => {
+  const file = context.getFilename();
+  return !(file === '<input>' || file === '<text>');
+};
+
+export const isValidFilename = (
+  context: Rule.RuleContext,
+  node: ESTree.Node,
+  elementName: string
+): void => {
+  const ext = extname(context.getFilename());
+  const filename = basename(context.getFilename(), ext);
+  const transforms: Array<'snake' | 'kebab' | 'pascal'> = [].concat(
+    context.options?.[0]?.transform || ['kebab']
+  );
+
+  const allowedFilenames = transforms.map((transform) => {
+    return transformFuncs[transform](elementName);
+  });
+  if (!allowedFilenames.some((f) => f === filename)) {
+    context.report({
+      node,
+      message: `File name should be one of ["${allowedFilenames
+        .map((f) => `${f}${ext}`)
+        .join(',')}"] but was "${filename}"`
+    });
+  }
+};
