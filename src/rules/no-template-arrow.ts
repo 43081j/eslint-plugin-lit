@@ -19,8 +19,9 @@ const rule: Rule.RuleModule = {
     },
     messages: {
       noArrow:
-        'Arrow functions must not be used in templates, ' +
-        'a method should be bound once in the constructor and passed directly like `${this.myMethod}`.'
+        'Arrow functions should not be used in templates. ' +
+        'LitElement event bindings are bound automatically, ' + 
+        'otherwise a method/function should be bound outside the render method (e.g. in the constructor) beforehand'
     }
   },
 
