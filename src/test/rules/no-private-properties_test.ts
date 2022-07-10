@@ -23,11 +23,11 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-private-properties', rule, {
   valid: [
-    {code: 'html`<x-foo .bar=${true} ?foo=${true} @baz=${fn}></x-foo>`'},
-    {code: 'html`<x-foo></x-foo>`'},
-    {code: 'html`<x-foo bar baz></x-foo>`'},
-    {code: 'html`<x-foo bar baz=${true}></x-foo>`'},
-    {code: 'html`<x-foo ._bar=${x} .__baz=${y}></x-foo>`'},
+    'html`<x-foo .bar=${true} ?foo=${true} @baz=${fn}></x-foo>`',
+    'html`<x-foo></x-foo>`',
+    'html`<x-foo bar baz></x-foo>`',
+    'html`<x-foo bar baz=${true}></x-foo>`',
+    'html`<x-foo ._bar=${x} .__baz=${y}></x-foo>`',
     {
       code: 'html`<x-foo _bar=${x} __baz=${y}></x-foo>`',
       options: [

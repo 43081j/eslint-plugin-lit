@@ -18,6 +18,7 @@ const rule: Rule.RuleModule = {
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-invalid-escape-sequences.md'
     },
     fixable: 'code',
+    schema: [],
     messages: {
       invalid:
         'Some escape sequences are invalid in template strings. ' +

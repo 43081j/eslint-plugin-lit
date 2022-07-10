@@ -23,13 +23,13 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-legacy-imports', rule, {
   valid: [
-    {code: 'class Foo { }'},
-    {code: `import {property} from 'lit/decorators';`},
-    {code: `import {state} from 'lit/decorators';`},
-    {code: `import {state as bacon} from 'lit/decorators';`},
-    {code: `import {LitElement} from 'lit';`},
-    {code: `import {LitElement as beans} from 'lit';`},
-    {code: `import * as lit from 'lit';`}
+    'class Foo { }',
+    `import {property} from 'lit/decorators';`,
+    `import {state} from 'lit/decorators';`,
+    `import {state as bacon} from 'lit/decorators';`,
+    `import {LitElement} from 'lit';`,
+    `import {LitElement as beans} from 'lit';`,
+    `import * as lit from 'lit';`
   ],
 
   invalid: [

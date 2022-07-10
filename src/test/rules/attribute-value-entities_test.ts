@@ -23,19 +23,19 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('attribute-value-entities', rule, {
   valid: [
-    {code: 'html`foo bar`'},
-    {code: 'html`<x-foo attr="bar"></x-foo>`'},
-    {code: 'html`<x-foo attr="bar&amp;baz"></x-foo>`'},
-    {code: 'html`<x-foo attr="bar&#52;baz"></x-foo>`'},
-    {code: 'html`<x-foo attr="bar&gt;baz"></x-foo>`'},
-    {code: "html`<x-foo attr=${'>'}></x-foo>`"},
-    {code: 'html`<x-foo attr="()"></x-foo>`'},
-    {code: 'html`<x-foo attr></x-foo>`'},
-    {code: 'html`<svg viewBox="0 0 48 48"></svg>`'},
-    {code: 'html`<svg xlink:href="abc"></svg>`'},
-    {code: 'html`<x-foo attr="double\'quotes"></x-foo>`'},
-    {code: "html`<x-foo attr='single\"quotes'></x-foo>`"},
-    {code: 'html`<x-foo unquoted=foo></x-foo>`'}
+    'html`foo bar`',
+    'html`<x-foo attr="bar"></x-foo>`',
+    'html`<x-foo attr="bar&amp;baz"></x-foo>`',
+    'html`<x-foo attr="bar&#52;baz"></x-foo>`',
+    'html`<x-foo attr="bar&gt;baz"></x-foo>`',
+    "html`<x-foo attr=${'>'}></x-foo>`",
+    'html`<x-foo attr="()"></x-foo>`',
+    'html`<x-foo attr></x-foo>`',
+    'html`<svg viewBox="0 0 48 48"></svg>`',
+    'html`<svg xlink:href="abc"></svg>`',
+    'html`<x-foo attr="double\'quotes"></x-foo>`',
+    "html`<x-foo attr='single\"quotes'></x-foo>`",
+    'html`<x-foo unquoted=foo></x-foo>`'
   ],
 
   invalid: [

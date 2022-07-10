@@ -26,28 +26,24 @@ const parserOptions = {requireConfigFile: false};
 
 ruleTester.run('prefer-static-styles', rule, {
   valid: [
-    {code: 'html`<div></div>`'},
+    'html`<div></div>`',
     {
-      parser,
-      parserOptions,
       code: `class Foo extends LitElement {
         static styles = css\`.foo {}\`;
-      }`
+      }`,
+      parser,
+      parserOptions
     },
-    {
-      code: `class Foo extends LitElement {
+    `class Foo extends LitElement {
         static get styles() { return css\`.foo {}\`; };
-      }`
-    },
-    {
-      code: `class Foo extends LitElement {
+      }`,
+    `class Foo extends LitElement {
         whatever() {
           this.shadowRoot.adoptedStylesheets = [
             new CSSStyleSheet()
           ];
         }
-      }`
-    },
+      }`,
     {
       code: 'html`<style>.foo {}</style>`',
       options: ['never']
@@ -82,10 +78,10 @@ ruleTester.run('prefer-static-styles', rule, {
       ]
     },
     {
-      options: ['never'],
       code: `class Foo extends LitElement {
         static get styles() { return css\`.foo {}\`; };
       }`,
+      options: ['never'],
       errors: [
         {
           messageId: 'never',
@@ -97,12 +93,12 @@ ruleTester.run('prefer-static-styles', rule, {
       ]
     },
     {
-      parser,
-      parserOptions,
-      options: ['never'],
       code: `class Foo extends LitElement {
         static styles = css\`.foo {}\`;
       }`,
+      options: ['never'],
+      parser,
+      parserOptions,
       errors: [
         {
           messageId: 'never',
@@ -114,7 +110,6 @@ ruleTester.run('prefer-static-styles', rule, {
       ]
     },
     {
-      options: ['never'],
       code: `class Foo extends LitElement {
         whatever() {
           this.shadowRoot.adoptedStylesheets = [
@@ -122,6 +117,7 @@ ruleTester.run('prefer-static-styles', rule, {
           ];
         }
       }`,
+      options: ['never'],
       errors: [
         {
           messageId: 'never',

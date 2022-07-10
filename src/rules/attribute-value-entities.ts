@@ -19,6 +19,7 @@ const rule: Rule.RuleModule = {
       recommended: true,
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/attribute-value-entities.md'
     },
+    schema: [],
     messages: {
       unencoded:
         'Attribute values may not contain unencoded HTML ' +

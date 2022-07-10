@@ -23,20 +23,20 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('quoted-expressions', rule, {
   valid: [
-    {code: 'html`<x-foo></x-foo>`'},
-    {code: 'html`<x-foo attr=${v}></x-foo>`'},
-    {code: 'html`<x-foo .prop=${v}></x-foo>`'},
-    {code: 'html`<x-foo @event=${v}></x-foo>`'},
-    {code: 'html`<x-foo attr=${v} attr2=${v}></x-foo>`'},
-    {code: 'html`\n<x-foo\nattr=${v}></x-foo>`'},
-    {code: 'html`<x-foo attr="foo ${v} bar"></x-foo>`'},
+    'html`<x-foo></x-foo>`',
+    'html`<x-foo attr=${v}></x-foo>`',
+    'html`<x-foo .prop=${v}></x-foo>`',
+    'html`<x-foo @event=${v}></x-foo>`',
+    'html`<x-foo attr=${v} attr2=${v}></x-foo>`',
+    'html`\n<x-foo\nattr=${v}></x-foo>`',
+    'html`<x-foo attr="foo ${v} bar"></x-foo>`',
     {
-      options: ['always'],
-      code: 'html`<x-foo attr="${v}"></x-foo>`'
+      code: 'html`<x-foo attr="${v}"></x-foo>`',
+      options: ['always']
     },
     {
-      options: ['always'],
-      code: "html`<x-foo attr='${v}'></x-foo>`"
+      code: "html`<x-foo attr='${v}'></x-foo>`",
+      options: ['always']
     }
   ],
 

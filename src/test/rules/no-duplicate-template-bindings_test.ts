@@ -23,12 +23,12 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-duplicate-template-bindings', rule, {
   valid: [
-    {code: 'html`<x-foo .bar=${true}>`'},
-    {code: 'html`foo bar`'},
-    {code: 'html`<x-foo ?bar=${true} baz>`'},
-    {code: 'html`<x-foo foo=${true}><x-bar foo=${true}></x-bar></x-foo>`'},
-    {code: 'html`<x-foo @foo=${v} .foo=${v}></x-foo>`'},
-    {code: 'html`<x-foo @bar=${true}>`'}
+    'html`<x-foo .bar=${true}>`',
+    'html`foo bar`',
+    'html`<x-foo ?bar=${true} baz>`',
+    'html`<x-foo foo=${true}><x-bar foo=${true}></x-bar></x-foo>`',
+    'html`<x-foo @foo=${v} .foo=${v}></x-foo>`',
+    'html`<x-foo @bar=${true}>`'
   ],
 
   invalid: [

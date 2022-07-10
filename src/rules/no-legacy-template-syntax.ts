@@ -18,6 +18,7 @@ const rule: Rule.RuleModule = {
       category: 'Best Practices',
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-legacy-template-syntax.md'
     },
+    schema: [],
     messages: {
       unsupported:
         'Legacy lit-extended syntax is unsupported, did you mean to use ' +

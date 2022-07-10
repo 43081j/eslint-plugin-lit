@@ -1,11 +1,16 @@
 {
-  "extends": "google",
+  "extends": [
+    "google",
+    "plugin:eslint-plugin/all"
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "rules": {
     "indent": "off",
     "quote-props": "off",
@@ -19,7 +24,10 @@
     "eqeqeq": "error",
     "no-unused-vars": "off",
     "spaced-comment": "off",
-    "comma-dangle": ["error", "never"],
+    "comma-dangle": [
+      "error",
+      "never"
+    ],
     "quotes": [
       "error",
       "single",
@@ -32,28 +40,47 @@
       "error",
       {
         "selector": "default",
-        "format": ["camelCase", "PascalCase"]
+        "format": [
+          "camelCase",
+          "PascalCase"
+        ]
       },
       {
         "selector": "parameter",
-        "format": ["camelCase"],
+        "format": [
+          "camelCase"
+        ],
         "leadingUnderscore": "allow"
       },
       {
         "selector": "memberLike",
-        "modifiers": ["private"],
-        "format": ["camelCase"],
-        "prefix": ["__"]
+        "modifiers": [
+          "private"
+        ],
+        "format": [
+          "camelCase"
+        ],
+        "prefix": [
+          "__"
+        ]
       },
       {
         "selector": "memberLike",
-        "modifiers": ["protected"],
-        "format": ["camelCase"],
-        "prefix": ["_"]
+        "modifiers": [
+          "protected"
+        ],
+        "format": [
+          "camelCase"
+        ],
+        "prefix": [
+          "_"
+        ]
       },
       {
         "selector": "typeLike",
-        "format": ["PascalCase"]
+        "format": [
+          "PascalCase"
+        ]
       }
     ],
     "@typescript-eslint/explicit-function-return-type": [
@@ -67,6 +94,8 @@
     "@typescript-eslint/no-array-constructor": "error",
     "@typescript-eslint/no-empty-interface": "error",
     "@typescript-eslint/no-explicit-any": "error",
-    "@typescript-eslint/no-parameter-properties": "error"
+    "@typescript-eslint/no-parameter-properties": "error",
+    "eslint-plugin/require-meta-docs-description": "off", // TODO: enable
+    "eslint-plugin/require-meta-type": "off" // TODO: enable
   }
 }

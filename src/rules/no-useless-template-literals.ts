@@ -18,6 +18,14 @@ const rule: Rule.RuleModule = {
       category: 'Best Practices',
       recommended: true,
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-useless-template-literals.md'
+    },
+    schema: [],
+    messages: {
+      doNotSubstituteTextBinding:
+        'Literals must not be substituted into text bindings',
+      doNotSubstituteAttributes: 'Literals must not be substituted into ' +
+        'attributes, set it directly instead (e.g. ' +
+        'attr="value")'
     }
   },
 
@@ -69,7 +77,7 @@ const rule: Rule.RuleModule = {
             ) {
               context.report({
                 node: expr,
-                message: 'Literals must not be substituted into text bindings'
+                messageId: 'doNotSubstituteTextBinding'
               });
             }
           }
@@ -93,10 +101,7 @@ const rule: Rule.RuleModule = {
                 if (isAttr.test(attr) && expr?.type === 'Literal') {
                   context.report({
                     node: expr,
-                    message:
-                      'Literals must not be substituted into ' +
-                      'attributes, set it directly instead (e.g. ' +
-                      'attr="value")'
+                    messageId: 'doNotSubstituteAttributes'
                   });
                 }
               }

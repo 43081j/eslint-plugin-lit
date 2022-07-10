@@ -17,6 +17,18 @@ const rule: Rule.RuleModule = {
       category: 'Best Practices',
       recommended: true,
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/binding-positions.md'
+    },
+    schema: [],
+    messages: {
+      noBindingTagName:
+        'Bindings cannot be used in place of tag names.',
+      noBindingAttributeName:
+        'Bindings cannot be used in place of attribute names.',
+      noBindingSelfClosingTag:
+        'Bindings at the end of a self-closing tag must be' +
+        ' followed by a space or quoted',
+      noBindingHTMLComment:
+        'Bindings cannot be used inside HTML comments.'
     }
   },
 
@@ -63,24 +75,22 @@ const rule: Rule.RuleModule = {
             if (tagPattern.test(prev.value.raw)) {
               context.report({
                 node: expr,
-                message: 'Bindings cannot be used in place of tag names.'
+                messageId: 'noBindingTagName'
               });
             } else if (next && attrPattern.test(next.value.raw)) {
               context.report({
                 node: expr,
-                message: 'Bindings cannot be used in place of attribute names.'
+                messageId: 'noBindingAttributeName'
               });
             } else if (next && selfClosingPattern.test(next.value.raw)) {
               context.report({
                 node: expr,
-                message:
-                  'Bindings at the end of a self-closing tag must be' +
-                  ' followed by a space or quoted'
+                messageId: 'noBindingSelfClosingTag'
               });
             } else if (isInsideComment(prev)) {
               context.report({
                 node: expr,
-                message: 'Bindings cannot be used inside HTML comments.'
+                messageId: 'noBindingHTMLComment'
               });
             }
           }

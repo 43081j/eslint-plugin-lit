@@ -18,10 +18,6 @@ const rule: Rule.RuleModule = {
       category: 'Best Practices',
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-private-properties.md'
     },
-    messages: {
-      noPrivate:
-        'Private and protected properties should not be assigned in bindings'
-    },
     schema: [
       {
         type: 'object',
@@ -32,7 +28,11 @@ const rule: Rule.RuleModule = {
         additionalProperties: false,
         minProperties: 1
       }
-    ]
+    ],
+    messages: {
+      noPrivate:
+        'Private and protected properties should not be assigned in bindings'
+    }
   },
 
   create(context): Rule.RuleListener {

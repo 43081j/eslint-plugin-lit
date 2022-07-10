@@ -23,9 +23,9 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-template-arrow', rule, {
   valid: [
-    {code: 'html`foo ${someVar} bar`'},
-    {code: 'html`foo bar`'},
-    {code: 'html`foo ${this.fn.bind(this)} bar`'}
+    'html`foo ${someVar} bar`',
+    'html`foo bar`',
+    'html`foo ${this.fn.bind(this)} bar`'
   ],
 
   invalid: [

@@ -18,6 +18,7 @@ const rule: Rule.RuleModule = {
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-legacy-imports.md'
     },
     fixable: 'code',
+    schema: [],
     messages: {
       legacyDecorator:
         'Legacy decorators should no longer be used, did you mean to use ' +
@@ -43,7 +44,7 @@ const rule: Rule.RuleModule = {
       'queryAssignedNodes',
       'queryAsync'
     ];
-    const movedSources: Array<{from: RegExp; to: string}> = [
+    const movedSources: Array<{ from: RegExp; to: string }> = [
       {from: /^lit-element$/, to: 'lit'},
       {from: /^lit-html$/, to: 'lit'},
       {

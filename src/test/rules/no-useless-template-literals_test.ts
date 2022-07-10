@@ -23,12 +23,12 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-useless-template-literals', rule, {
   valid: [
-    {code: 'html`foo ${someVar} bar`'},
-    {code: 'html`foo bar`'},
-    {code: 'html`<foo .prop=${"literal"}></foo>`'},
-    {code: 'html`<foo .prop=${\n"literal"\n}\n></foo>`'},
-    {code: 'html`<foo .prop="${"literal"}"></foo>`'},
-    {code: 'html`<foo\nattr="foo"\n.prop=${"literal"}></foo>`'}
+    'html`foo ${someVar} bar`',
+    'html`foo bar`',
+    'html`<foo .prop=${"literal"}></foo>`',
+    'html`<foo .prop=${\n"literal"\n}\n></foo>`',
+    'html`<foo .prop="${"literal"}"></foo>`',
+    'html`<foo\nattr="foo"\n.prop=${"literal"}></foo>`'
   ],
 
   invalid: [
@@ -36,7 +36,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       code: 'html`foo ${123} bar`',
       errors: [
         {
-          message: 'Literals must not be substituted into text bindings',
+          messageId: 'doNotSubstituteTextBinding',
           line: 1,
           column: 12
         }
@@ -46,9 +46,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       code: 'html`foo\n<foo attr=${"abc"}></foo>\nbar`',
       errors: [
         {
-          message:
-            'Literals must not be substituted into attributes, ' +
-            'set it directly instead (e.g. attr="value")',
+          messageId: 'doNotSubstituteAttributes',
           line: 2,
           column: 13
         }
@@ -58,12 +56,12 @@ ruleTester.run('no-useless-template-literals', rule, {
       code: 'html`foo ${"abc"} ${true} bar`',
       errors: [
         {
-          message: 'Literals must not be substituted into text bindings',
+          messageId: 'doNotSubstituteTextBinding',
           line: 1,
           column: 12
         },
         {
-          message: 'Literals must not be substituted into text bindings',
+          messageId: 'doNotSubstituteTextBinding',
           line: 1,
           column: 21
         }
@@ -73,9 +71,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       code: 'html`<foo attr=${"abc"}></foo>`',
       errors: [
         {
-          message:
-            'Literals must not be substituted into attributes, ' +
-            'set it directly instead (e.g. attr="value")',
+          messageId: 'doNotSubstituteAttributes',
           line: 1,
           column: 18
         }

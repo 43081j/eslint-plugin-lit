@@ -24,11 +24,11 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-invalid-html', rule, {
   valid: [
     // Duplicate attrs rule handles this
-    {code: 'html`<x-foo bar bar></x-foo>`'},
-    {code: 'html`foo bar`'},
-    {code: 'html`<x-foo bar=${true}></x-foo>`'},
-    {code: 'html`<hr>`'},
-    {code: 'html`<hr />`'}
+    'html`<x-foo bar bar></x-foo>`',
+    'html`foo bar`',
+    'html`<x-foo bar=${true}></x-foo>`',
+    'html`<hr>`',
+    'html`<hr />`'
   ],
 
   invalid: [

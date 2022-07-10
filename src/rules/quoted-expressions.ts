@@ -18,12 +18,12 @@ const rule: Rule.RuleModule = {
       category: 'Best Practices',
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/quoted-expressions.md'
     },
+    fixable: 'code',
     schema: [
       {
         enum: ['always', 'never']
       }
     ],
-    fixable: 'code',
     messages: {
       alwaysQuote:
         'Expressions must be quoted inside templates ' +

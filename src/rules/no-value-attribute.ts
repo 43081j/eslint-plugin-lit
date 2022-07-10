@@ -22,6 +22,7 @@ const rule: Rule.RuleModule = {
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-value-attribute.md'
     },
     fixable: 'code',
+    schema: [],
     messages: {
       preferProperty:
         'The `value` attribute only defines the initial value ' +
