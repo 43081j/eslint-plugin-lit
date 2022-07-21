@@ -33,44 +33,38 @@ const parserOptions = {
 
 ruleTester.run('no-property-change-update', rule, {
   valid: [
-    {code: 'class Foo { }'},
-    {
-      code: `class Foo {
+    'class Foo { }',
+    `class Foo {
         static get properties() {
           return { prop: { type: Number } };
         }
         update() {
           this.prop = 5;
         }
-      }`
-    },
-    {
-      code: `class Foo extends LitElement {
+      }`,
+    `class Foo extends LitElement {
         update() {
           this.prop = 5;
         }
-      }`
-    },
-    {
-      code: `class Foo extends LitElement {
+      }`,
+    `class Foo extends LitElement {
         static get properties() {
           return { prop: { type: Number } };
         }
         update() {
           this.prop2 = 5;
         }
-      }`
-    },
+      }`,
     {
-      parser,
-      parserOptions,
       code: `class Foo extends LitElement {
         @property({ type: String })
         prop = 'test';
         update() {
           this.prop2 = 5;
         }
-      }`
+      }`,
+      parser,
+      parserOptions
     }
   ],
 
@@ -110,8 +104,6 @@ ruleTester.run('no-property-change-update', rule, {
       ]
     },
     {
-      parser,
-      parserOptions,
       code: `class Foo extends LitElement {
         @property({ type: String })
         prop = 'foo';
@@ -119,6 +111,8 @@ ruleTester.run('no-property-change-update', rule, {
           this.prop = 'bar';
         }
       }`,
+      parser,
+      parserOptions,
       errors: [
         {
           messageId: 'propertyChange',
@@ -128,8 +122,6 @@ ruleTester.run('no-property-change-update', rule, {
       ]
     },
     {
-      parser,
-      parserOptions,
       code: `class Foo extends LitElement {
         @internalProperty()
         prop = 'foo';
@@ -137,6 +129,8 @@ ruleTester.run('no-property-change-update', rule, {
           this.prop = 'bar';
         }
       }`,
+      parser,
+      parserOptions,
       errors: [
         {
           messageId: 'propertyChange',
@@ -146,8 +140,6 @@ ruleTester.run('no-property-change-update', rule, {
       ]
     },
     {
-      parser,
-      parserOptions,
       code: `class Foo extends LitElement {
         @property()
         prop = 'foo';
@@ -155,6 +147,8 @@ ruleTester.run('no-property-change-update', rule, {
           this.prop = 'bar';
         }
       }`,
+      parser,
+      parserOptions,
       errors: [
         {
           messageId: 'propertyChange',
@@ -164,8 +158,6 @@ ruleTester.run('no-property-change-update', rule, {
       ]
     },
     {
-      parser,
-      parserOptions,
       code: `class Foo extends LitElement {
         @state()
         prop = 'foo';
@@ -173,6 +165,8 @@ ruleTester.run('no-property-change-update', rule, {
           this.prop = 'bar';
         }
       }`,
+      parser,
+      parserOptions,
       errors: [
         {
           messageId: 'propertyChange',

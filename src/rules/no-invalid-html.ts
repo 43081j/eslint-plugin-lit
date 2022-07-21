@@ -18,6 +18,7 @@ const rule: Rule.RuleModule = {
       category: 'Best Practices',
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-invalid-html.md'
     },
+    schema: [],
     messages: {
       parseError: 'Template contained invalid HTML syntax, error was: {{ err }}'
     }

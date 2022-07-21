@@ -19,6 +19,7 @@ const rule: Rule.RuleModule = {
       category: 'Best Practices',
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-property-change-update.md'
     },
+    schema: [],
     messages: {
       propertyChange:
         'Properties should not be changed in the update lifecycle method as' +

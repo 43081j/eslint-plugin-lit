@@ -23,10 +23,10 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-legacy-template-syntax', rule, {
   valid: [
-    {code: 'html`<x-foo .bar=${true} ?foo=${true} @baz=${fn}></x-foo>`'},
-    {code: 'html`<x-foo></x-foo>`'},
-    {code: 'html`<x-foo bar baz></x-foo>`'},
-    {code: 'html`<x-foo bar baz=${true}></x-foo>`'}
+    'html`<x-foo .bar=${true} ?foo=${true} @baz=${fn}></x-foo>`',
+    'html`<x-foo></x-foo>`',
+    'html`<x-foo bar baz></x-foo>`',
+    'html`<x-foo bar baz=${true}></x-foo>`'
   ],
 
   invalid: [

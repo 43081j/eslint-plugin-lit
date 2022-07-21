@@ -23,17 +23,18 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-value-attribute', rule, {
   valid: [
-    {code: 'html`<x-foo val=5></x-foo>`'},
-    {code: 'html`<x-foo value=5></x-foo>`'},
-    {code: 'html`<x-foo value=${5}></x-foo>`'},
-    {code: 'html`<input .value="foo" />`'},
-    {code: 'html`<input .value=${val} />`'},
-    {code: 'html`<input value="foo" />`'}
+    'html`<x-foo val=5></x-foo>`',
+    'html`<x-foo value=5></x-foo>`',
+    'html`<x-foo value=${5}></x-foo>`',
+    'html`<input .value="foo" />`',
+    'html`<input .value=${val} />`',
+    'html`<input value="foo" />`'
   ],
 
   invalid: [
     {
       code: 'html`<input value=${val} />`',
+      output: 'html`<input .value=${val} />`',
       errors: [
         {
           message:
@@ -43,11 +44,11 @@ ruleTester.run('no-value-attribute', rule, {
           line: 1,
           column: 13
         }
-      ],
-      output: 'html`<input .value=${val} />`'
+      ]
     },
     {
       code: 'html`<input type="text" value=${val} />`',
+      output: 'html`<input type="text" .value=${val} />`',
       errors: [
         {
           message:
@@ -57,8 +58,7 @@ ruleTester.run('no-value-attribute', rule, {
           line: 1,
           column: 25
         }
-      ],
-      output: 'html`<input type="text" .value=${val} />`'
+      ]
     }
   ]
 });

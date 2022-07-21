@@ -23,10 +23,10 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-template-bind', rule, {
   valid: [
-    {code: 'html`foo ${someVar} bar`'},
-    {code: 'html`foo bar`'},
-    {code: 'html`foo ${() => {}} bar`'},
-    {code: 'html`foo ${function () { }} bar`'}
+    'html`foo ${someVar} bar`',
+    'html`foo bar`',
+    'html`foo ${() => {}} bar`',
+    'html`foo ${function () { }} bar`'
   ],
 
   invalid: [

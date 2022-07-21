@@ -23,14 +23,14 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('binding-positions', rule, {
   valid: [
-    {code: 'html`foo bar`'},
-    {code: 'html`<x-foo attr=${expr}>`'},
-    {code: 'html`<x-foo>`'},
-    {code: 'html`<!-- test -->`'},
-    {code: 'html`<!-- \\${expr} -->`'},
-    {code: 'html`<!-- foo -->${something}<!-- bar -->`'},
-    {code: 'html`<self-closing foo=${bar} />`'},
-    {code: 'html`<self-closing foo="${bar}"/>`'}
+    'html`foo bar`',
+    'html`<x-foo attr=${expr}>`',
+    'html`<x-foo>`',
+    'html`<!-- test -->`',
+    'html`<!-- \\${expr} -->`',
+    'html`<!-- foo -->${something}<!-- bar -->`',
+    'html`<self-closing foo=${bar} />`',
+    'html`<self-closing foo="${bar}"/>`'
   ],
 
   invalid: [
@@ -38,7 +38,7 @@ ruleTester.run('binding-positions', rule, {
       code: 'html`<x-foo ${expr}="foo">`',
       errors: [
         {
-          message: 'Bindings cannot be used in place of attribute names.',
+          messageId: 'noBindingAttributeName',
           line: 1,
           column: 15
         }
@@ -48,7 +48,7 @@ ruleTester.run('binding-positions', rule, {
       code: 'html`<${expr}>`',
       errors: [
         {
-          message: 'Bindings cannot be used in place of tag names.',
+          messageId: 'noBindingTagName',
           line: 1,
           column: 9
         }
@@ -58,7 +58,7 @@ ruleTester.run('binding-positions', rule, {
       code: 'html`<${expr} foo="bar">`',
       errors: [
         {
-          message: 'Bindings cannot be used in place of tag names.',
+          messageId: 'noBindingTagName',
           line: 1,
           column: 9
         }
@@ -68,7 +68,7 @@ ruleTester.run('binding-positions', rule, {
       code: 'html`<x-foo></${expr}>`',
       errors: [
         {
-          message: 'Bindings cannot be used in place of tag names.',
+          messageId: 'noBindingTagName',
           line: 1,
           column: 17
         }
@@ -78,7 +78,7 @@ ruleTester.run('binding-positions', rule, {
       code: 'html`<!-- ${foo} -->`',
       errors: [
         {
-          message: 'Bindings cannot be used inside HTML comments.',
+          messageId: 'noBindingHTMLComment',
           line: 1,
           column: 13
         }
@@ -88,9 +88,7 @@ ruleTester.run('binding-positions', rule, {
       code: 'html`<some-element foo=${bar}/>`',
       errors: [
         {
-          message:
-            'Bindings at the end of a self-closing tag must be' +
-            ' followed by a space or quoted',
+          messageId: 'noBindingSelfClosingTag',
           line: 1,
           column: 26
         }

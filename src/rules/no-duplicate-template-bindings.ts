@@ -18,6 +18,7 @@ const rule: Rule.RuleModule = {
       category: 'Best Practices',
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-duplicate-template-bindings.md'
     },
+    schema: [],
     messages: {
       duplicateBinding: 'Duplicate bindings are not allowed.'
     }
