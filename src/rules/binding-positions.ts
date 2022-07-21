@@ -20,15 +20,13 @@ const rule: Rule.RuleModule = {
     },
     schema: [],
     messages: {
-      noBindingTagName:
-        'Bindings cannot be used in place of tag names.',
+      noBindingTagName: 'Bindings cannot be used in place of tag names.',
       noBindingAttributeName:
         'Bindings cannot be used in place of attribute names.',
       noBindingSelfClosingTag:
         'Bindings at the end of a self-closing tag must be' +
         ' followed by a space or quoted',
-      noBindingHTMLComment:
-        'Bindings cannot be used inside HTML comments.'
+      noBindingHTMLComment: 'Bindings cannot be used inside HTML comments.'
     }
   },
 

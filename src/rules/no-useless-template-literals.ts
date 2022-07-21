@@ -23,7 +23,8 @@ const rule: Rule.RuleModule = {
     messages: {
       doNotSubstituteTextBinding:
         'Literals must not be substituted into text bindings',
-      doNotSubstituteAttributes: 'Literals must not be substituted into ' +
+      doNotSubstituteAttributes:
+        'Literals must not be substituted into ' +
         'attributes, set it directly instead (e.g. ' +
         'attr="value")'
     }

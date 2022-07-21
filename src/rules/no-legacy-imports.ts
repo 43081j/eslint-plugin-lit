@@ -44,7 +44,7 @@ const rule: Rule.RuleModule = {
       'queryAssignedNodes',
       'queryAsync'
     ];
-    const movedSources: Array<{ from: RegExp; to: string }> = [
+    const movedSources: Array<{from: RegExp; to: string}> = [
       {from: /^lit-element$/, to: 'lit'},
       {from: /^lit-html$/, to: 'lit'},
       {
