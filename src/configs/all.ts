@@ -4,6 +4,7 @@ const config = {
   rules: {
     'lit/attribute-value-entities': 'error',
     'lit/binding-positions': 'error',
+    'lit/boolean-attributes': 'error',
     'lit/no-duplicate-template-bindings': 'error',
     'lit/no-invalid-escape-sequences': 'error',
     'lit/no-invalid-html': 'error',
