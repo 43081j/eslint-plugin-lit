@@ -150,8 +150,10 @@ export function getExpressionPlaceholder(
   quasi: ESTree.TemplateElement
 ): string {
   const i = node.quasi.quasis.indexOf(quasi);
+  // Just a rough guess at if this might be an attribute binding or not
+  const possibleAttr = /\s[^\s\/>"'=]+=$/;
 
-  if (/=$/.test(quasi.value.raw)) {
+  if (possibleAttr.test(quasi.value.raw)) {
     return `"{{__Q:${i}__}}"`;
   }
   return `{{__Q:${i}__}}`;
