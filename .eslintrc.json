@@ -95,6 +95,7 @@
     "@typescript-eslint/no-empty-interface": "error",
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-parameter-properties": "error",
+    "@typescript-eslint/naming-convention": "off",
     "eslint-plugin/require-meta-docs-description": "off",
     "eslint-plugin/require-meta-type": "off"
   }

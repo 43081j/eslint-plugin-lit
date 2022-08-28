@@ -11,17 +11,6 @@ import {TemplateAnalyzer} from '../template-analyzer';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-// TODO (43081j): hope that one day estree supports class fields...
-// they've existed for a while, i suppose its just behind.
-// Remove this when they do!
-interface ClassProperty extends ESTree.BaseNode {
-  type: 'ClassProperty';
-  key: ESTree.Expression;
-  value: ESTree.Expression;
-  computed: boolean;
-  static: boolean;
-}
-
 const rule: Rule.RuleModule = {
   meta: {
     docs: {
@@ -53,8 +42,6 @@ const rule: Rule.RuleModule = {
           node.superClass.name === 'LitElement'
         ) {
           for (const member of node.body.body) {
-            const asProp = member as unknown as ClassProperty;
-
             if (
               member.type === 'MethodDefinition' &&
               member.kind === 'get' &&
@@ -69,10 +56,10 @@ const rule: Rule.RuleModule = {
             }
 
             if (
-              asProp.type === 'ClassProperty' &&
-              asProp.static &&
-              asProp.key.type === 'Identifier' &&
-              asProp.key.name === 'styles'
+              member.type === 'PropertyDefinition' &&
+              member.static &&
+              member.key.type === 'Identifier' &&
+              member.key.name === 'styles'
             ) {
               context.report({
                 node: member,
