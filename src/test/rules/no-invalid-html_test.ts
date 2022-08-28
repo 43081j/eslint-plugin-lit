@@ -28,7 +28,10 @@ ruleTester.run('no-invalid-html', rule, {
     'html`foo bar`',
     'html`<x-foo bar=${true}></x-foo>`',
     'html`<hr>`',
-    'html`<hr />`'
+    'html`<hr />`',
+    'html`<a href="/?abc=${v}">Test</a>`',
+    'html`<a some-dashed-name=${v}>Test</a>`',
+    'html`<a @some-event=${v}>Test</a>`'
   ],
 
   invalid: [
