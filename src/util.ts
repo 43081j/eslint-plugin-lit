@@ -78,6 +78,7 @@ export function getPropertyMap(
 
   for (const member of node.body.body) {
     if (
+      member.type === 'MethodDefinition' &&
       member.static &&
       member.kind === 'get' &&
       member.key.type === 'Identifier' &&
@@ -103,31 +104,36 @@ export function getPropertyMap(
       }
     }
 
-    const babelProp = member as BabelProperty;
-    const memberName = getIdentifierName(member.key);
+    if (
+      member.type === 'MethodDefinition' ||
+      member.type === 'PropertyDefinition'
+    ) {
+      const babelProp = member as BabelProperty;
+      const memberName = getIdentifierName(member.key);
 
-    if (memberName && babelProp.decorators) {
-      for (const decorator of babelProp.decorators) {
-        if (
-          decorator.expression.type === 'CallExpression' &&
-          decorator.expression.callee.type === 'Identifier' &&
-          propertyDecorators.includes(decorator.expression.callee.name)
-        ) {
-          const dArg = decorator.expression.arguments[0];
-          if (dArg?.type === 'ObjectExpression') {
-            const state = internalDecorators.includes(
-              decorator.expression.callee.name
-            );
-            const entry = extractPropertyEntry(dArg);
-            if (state) {
-              entry.state = true;
+      if (memberName && babelProp.decorators) {
+        for (const decorator of babelProp.decorators) {
+          if (
+            decorator.expression.type === 'CallExpression' &&
+            decorator.expression.callee.type === 'Identifier' &&
+            propertyDecorators.includes(decorator.expression.callee.name)
+          ) {
+            const dArg = decorator.expression.arguments[0];
+            if (dArg?.type === 'ObjectExpression') {
+              const state = internalDecorators.includes(
+                decorator.expression.callee.name
+              );
+              const entry = extractPropertyEntry(dArg);
+              if (state) {
+                entry.state = true;
+              }
+              result.set(memberName, entry);
+            } else {
+              const state = internalDecorators.includes(
+                decorator.expression.callee.name
+              );
+              result.set(memberName, {expr: null, state, attribute: true});
             }
-            result.set(memberName, entry);
-          } else {
-            const state = internalDecorators.includes(
-              decorator.expression.callee.name
-            );
-            result.set(memberName, {expr: null, state, attribute: true});
           }
         }
       }

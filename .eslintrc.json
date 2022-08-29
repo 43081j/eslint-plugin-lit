@@ -1,7 +1,9 @@
 {
   "extends": [
+    "eslint:recommended",
     "google",
-    "plugin:eslint-plugin/all"
+    "plugin:eslint-plugin/all",
+    "plugin:@typescript-eslint/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -36,53 +38,7 @@
         "allowTemplateLiterals": true
       }
     ],
-    "@typescript-eslint/naming-convention": [
-      "error",
-      {
-        "selector": "default",
-        "format": [
-          "camelCase",
-          "PascalCase"
-        ]
-      },
-      {
-        "selector": "parameter",
-        "format": [
-          "camelCase"
-        ],
-        "leadingUnderscore": "allow"
-      },
-      {
-        "selector": "memberLike",
-        "modifiers": [
-          "private"
-        ],
-        "format": [
-          "camelCase"
-        ],
-        "prefix": [
-          "__"
-        ]
-      },
-      {
-        "selector": "memberLike",
-        "modifiers": [
-          "protected"
-        ],
-        "format": [
-          "camelCase"
-        ],
-        "prefix": [
-          "_"
-        ]
-      },
-      {
-        "selector": "typeLike",
-        "format": [
-          "PascalCase"
-        ]
-      }
-    ],
+    "no-useless-escape": "off",
     "@typescript-eslint/explicit-function-return-type": [
       "error",
       {
@@ -92,9 +48,9 @@
     "@typescript-eslint/explicit-member-accessibility": "error",
     "@typescript-eslint/member-delimiter-style": "error",
     "@typescript-eslint/no-array-constructor": "error",
-    "@typescript-eslint/no-empty-interface": "error",
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-parameter-properties": "error",
+    "@typescript-eslint/no-inferrable-types": "off",
     "eslint-plugin/require-meta-docs-description": "off",
     "eslint-plugin/require-meta-type": "off"
   }
