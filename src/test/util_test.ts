@@ -114,5 +114,137 @@ describe('util', () => {
         attribute: false
       });
     });
+
+    it('should ignore unknown properties', () => {
+      const node: ESTree.ObjectExpression = {
+        type: 'ObjectExpression',
+        properties: [
+          {
+            type: 'Property',
+            kind: 'init',
+            method: false,
+            shorthand: false,
+            computed: false,
+            key: {
+              type: 'Identifier',
+              name: 'nonsense'
+            },
+            value: {
+              type: 'Literal',
+              value: 'gibberish'
+            }
+          }
+        ]
+      };
+
+      const entry = util.extractPropertyEntry(node);
+
+      expect(entry).to.deep.equal({
+        expr: node,
+        state: false,
+        attribute: true
+      });
+    });
+  });
+
+  describe('getPropertyMap', () => {
+    it('should retrieve from static getter', () => {
+      const node: ESTree.ClassExpression = {
+        type: 'ClassExpression',
+        body: {
+          type: 'ClassBody',
+          body: [
+            {
+              type: 'MethodDefinition',
+              static: true,
+              computed: false,
+              kind: 'get',
+              key: {
+                type: 'Identifier',
+                name: 'properties'
+              },
+              value: {
+                type: 'FunctionExpression',
+                params: [],
+                body: {
+                  type: 'BlockStatement',
+                  body: [
+                    {
+                      type: 'ReturnStatement',
+                      argument: {
+                        type: 'ObjectExpression',
+                        properties: [
+                          {
+                            type: 'Property',
+                            kind: 'init',
+                            shorthand: false,
+                            computed: false,
+                            method: false,
+                            key: {
+                              type: 'Identifier',
+                              name: 'someProp'
+                            },
+                            value: {
+                              type: 'ObjectExpression',
+                              properties: []
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      };
+
+      const map = util.getPropertyMap(node);
+
+      expect(map.size).to.equal(1);
+      expect(map.has('someProp')).to.equal(true);
+    });
+
+    it('should ignore unrecognised static getters', () => {
+      const node: ESTree.ClassExpression = {
+        type: 'ClassExpression',
+        body: {
+          type: 'ClassBody',
+          body: [
+            {
+              type: 'MethodDefinition',
+              static: true,
+              computed: false,
+              kind: 'get',
+              key: {
+                type: 'Identifier',
+                name: 'properties'
+              },
+              value: {
+                type: 'FunctionExpression',
+                params: [],
+                body: {
+                  type: 'BlockStatement',
+                  body: [
+                    {
+                      type: 'ReturnStatement',
+                      argument: {
+                        type: 'Literal',
+                        value: 808
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      };
+
+      const map = util.getPropertyMap(node);
+
+      expect(map.size).to.equal(0);
+    });
   });
 });
