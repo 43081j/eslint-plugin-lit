@@ -51,7 +51,18 @@
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-parameter-properties": "error",
     "@typescript-eslint/no-inferrable-types": "off",
-    "eslint-plugin/require-meta-docs-description": "off",
+    "eslint-plugin/require-meta-docs-description": [
+      "error",
+      {
+        "pattern": "^(Enforces|Requires|Disallows|Detects)"
+      }
+    ],
+    "eslint-plugin/require-meta-docs-url": [
+      "error",
+      {
+        "pattern": "https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/{{name}}.md"
+      }
+    ],
     "eslint-plugin/require-meta-type": "off"
   }
 }
