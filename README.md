@@ -56,6 +56,7 @@ If you want more fine-grained configuration, you can instead add a snippet like 
 
 ## List of supported rules
 
+- [lit/attribute-denylist](docs/rules/attribute-denylist.md)
 - [lit/attribute-value-entities](docs/rules/attribute-value-entities.md)
 - [lit/binding-positions](docs/rules/binding-positions.md)
 - [lit/no-duplicate-template-bindings](docs/rules/no-duplicate-template-bindings.md)
