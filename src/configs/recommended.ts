@@ -1,4 +1,5 @@
 const config = {
+  extends: ['wc/recommended'],
   plugins: ['lit'],
 
   rules: {

@@ -40,6 +40,7 @@
     "node": ">= 12"
   },
   "dependencies": {
+    "eslint-plugin-wc": "^1.4.0",
     "parse5": "^6.0.1",
     "parse5-htmlparser2-tree-adapter": "^6.0.1",
     "requireindex": "^1.2.0"

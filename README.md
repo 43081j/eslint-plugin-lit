@@ -72,6 +72,9 @@ If you want more fine-grained configuration, you can instead add a snippet like 
 - [lit/no-value-attribute](docs/rules/no-value-attribute.md)
 - [lit/quoted-expressions](docs/rules/quoted-expressions.md)
 
+We also automatically include the recommended rules of
+[eslint-plugin-wc](https://github.com/43081j/eslint-plugin-wc).
+
 
 ## Shareable configurations
 
@@ -84,27 +87,6 @@ To enable this configuration use the `extends` property in your `.eslintrc` conf
 ```js
 {
   "extends": ["eslint:recommended", "plugin:lit/recommended"]
-}
-```
-
-## Usage with `eslint-plugin-wc`
-
-We **highly** recommend you also depend on
-[eslint-plugin-wc](https://github.com/43081j/eslint-plugin-wc) as it will
-provide additional rules for web components in general:
-
-```sh
-npm i -D eslint-plugin-wc
-```
-
-Then extend the recommended eslint config:
-
-```json
-{
-  "extends": [
-    "plugin:wc/recommended",
-    "plugin:lit/recommended"
-  ]
 }
 ```
 
