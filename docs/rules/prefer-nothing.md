@@ -1,4 +1,4 @@
-# Enforces `nothing` constant over empty templates (prefer-nothing)
+# Enforces use of `nothing` constant over empty templates (prefer-nothing)
 
 `nothing` is a constant provided by lit which may be used to render
 nothing. This is far more efficient than creating an empty template.

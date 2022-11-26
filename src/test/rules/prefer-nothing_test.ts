@@ -1,5 +1,5 @@
 /**
- * @fileoverview Enforces `nothing` constant over empty templates
+ * @fileoverview Enforces use of `nothing` constant over empty templates
  * @author James Garbutt <https://github.com/43081j>
  */
 

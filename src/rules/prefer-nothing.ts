@@ -1,5 +1,5 @@
 /**
- * @fileoverview Enforces `nothing` constant over empty templates
+ * @fileoverview Enforces use of `nothing` constant over empty templates
  * @author James Garbutt <https://github.com/43081j>
  */
 
@@ -13,7 +13,7 @@ import * as ESTree from 'estree';
 const rule: Rule.RuleModule = {
   meta: {
     docs: {
-      description: 'Enforces `nothing` constant over empty templates',
+      description: 'Enforces use of `nothing` constant over empty templates',
       category: 'Best Practices',
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/prefer-nothing.md'
     },
