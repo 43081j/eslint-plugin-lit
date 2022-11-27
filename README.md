@@ -69,11 +69,11 @@ If you want more fine-grained configuration, you can instead add a snippet like 
 - [lit/no-template-arrow](docs/rules/no-template-arrow.md)
 - [lit/no-template-bind](docs/rules/no-template-bind.md)
 - [lit/no-template-map](docs/rules/no-template-map.md)
+- [lit/no-this-assign-in-render](docs/rules/no-this-assign-in-render.md)
 - [lit/no-useless-template-literals](docs/rules/no-useless-template-literals.md)
 - [lit/no-value-attribute](docs/rules/no-value-attribute.md)
 - [lit/prefer-nothing](docs/rules/prefer-nothing.md)
 - [lit/quoted-expressions](docs/rules/quoted-expressions.md)
-
 
 ## Shareable configurations
 
