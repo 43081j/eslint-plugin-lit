@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/attribute-denylist');
+import rule = require('../../rules/ban-attributes');
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ const ruleTester = new RuleTester({
   }
 });
 
-ruleTester.run('attribute-denylist', rule, {
+ruleTester.run('ban-attributes', rule, {
   valid: [
     'css`whatever`',
     'html`foo bar`',
