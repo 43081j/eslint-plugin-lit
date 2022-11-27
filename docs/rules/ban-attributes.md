@@ -1,4 +1,4 @@
-# Disallows a set of attributes from being used (attribute-denylist)
+# Disallows a set of attributes from being used (ban-attributes)
 
 You may prefer to disallow some attributes for various reasons in templates,
 this simply allows you to create such a denylist.
@@ -10,7 +10,7 @@ This rule disallows a list of attributes within templates.
 The following patterns are considered warnings:
 
 ```ts
-/*eslint lit/attribute-denylist: ["error", "attr"] */
+/*eslint lit/ban-attributes: ["error", "attr"] */
 html`<x-foo attr>`;
 ```
 
