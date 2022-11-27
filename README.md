@@ -73,6 +73,7 @@ If you want more fine-grained configuration, you can instead add a snippet like 
 - [lit/no-value-attribute](docs/rules/no-value-attribute.md)
 - [lit/prefer-nothing](docs/rules/prefer-nothing.md)
 - [lit/quoted-expressions](docs/rules/quoted-expressions.md)
+- [lit/value-after-constraints](docs/rules/value-after-constraints.md)
 
 
 ## Shareable configurations
