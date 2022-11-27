@@ -44,6 +44,7 @@ ruleTester.run('no-property-change-update', rule, {
       }`,
     `class Foo extends LitElement {
         update() {
+          super.update();
           this.prop = 5;
         }
       }`,
@@ -52,6 +53,7 @@ ruleTester.run('no-property-change-update', rule, {
           return { prop: { type: Number } };
         }
         update() {
+          super.update();
           this.prop2 = 5;
         }
       }`,
@@ -60,12 +62,42 @@ ruleTester.run('no-property-change-update', rule, {
         @property({ type: String })
         prop = 'test';
         update() {
+          super.update();
           this.prop2 = 5;
         }
       }`,
       parser,
       parserOptions
-    }
+    },
+    `class Foo extends LitElement {
+      static get properties() {
+        return { prop: { type: String } };
+      }
+      update() {
+        this.prop = 'foo';
+        super.update();
+      }
+    }`,
+    `class Foo extends LitElement {
+      static get properties() {
+        return { prop: { type: String } };
+      }
+      someMethod() {
+        super.update();
+      }
+      update() {
+        this.prop = 'foo';
+      }
+    }`,
+    `class Foo extends LitElement {
+      static get properties() {
+        return { prop: { type: String } };
+      }
+      static update() {
+        super.update();
+        this.prop = 'foo';
+      }
+    }`
   ],
 
   invalid: [
@@ -75,13 +107,14 @@ ruleTester.run('no-property-change-update', rule, {
           return { prop: { type: String } };
         }
         update() {
+          super.update();
           this.prop = 'foo';
         }
       }`,
       errors: [
         {
           messageId: 'propertyChange',
-          line: 6,
+          line: 7,
           column: 11
         }
       ]
@@ -92,9 +125,29 @@ ruleTester.run('no-property-change-update', rule, {
           return { prop: { type: String } };
         }
         update() {
+          super.update();
           this.prop = 'foo';
         }
       }`,
+      errors: [
+        {
+          messageId: 'propertyChange',
+          line: 7,
+          column: 11
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        @property({ type: String })
+        prop = 'foo';
+        update() {
+          super.update();
+          this.prop = 'bar';
+        }
+      }`,
+      parser,
+      parserOptions,
       errors: [
         {
           messageId: 'propertyChange',
@@ -105,27 +158,10 @@ ruleTester.run('no-property-change-update', rule, {
     },
     {
       code: `class Foo extends LitElement {
-        @property({ type: String })
-        prop = 'foo';
-        update() {
-          this.prop = 'bar';
-        }
-      }`,
-      parser,
-      parserOptions,
-      errors: [
-        {
-          messageId: 'propertyChange',
-          line: 5,
-          column: 11
-        }
-      ]
-    },
-    {
-      code: `class Foo extends LitElement {
         @internalProperty()
         prop = 'foo';
         update() {
+          super.update();
           this.prop = 'bar';
         }
       }`,
@@ -134,7 +170,7 @@ ruleTester.run('no-property-change-update', rule, {
       errors: [
         {
           messageId: 'propertyChange',
-          line: 5,
+          line: 6,
           column: 11
         }
       ]
@@ -144,6 +180,7 @@ ruleTester.run('no-property-change-update', rule, {
         @property()
         prop = 'foo';
         update() {
+          super.update();
           this.prop = 'bar';
         }
       }`,
@@ -152,7 +189,7 @@ ruleTester.run('no-property-change-update', rule, {
       errors: [
         {
           messageId: 'propertyChange',
-          line: 5,
+          line: 6,
           column: 11
         }
       ]
@@ -162,6 +199,7 @@ ruleTester.run('no-property-change-update', rule, {
         @state()
         prop = 'foo';
         update() {
+          super.update();
           this.prop = 'bar';
         }
       }`,
@@ -170,7 +208,7 @@ ruleTester.run('no-property-change-update', rule, {
       errors: [
         {
           messageId: 'propertyChange',
-          line: 5,
+          line: 6,
           column: 11
         }
       ]
@@ -181,13 +219,14 @@ ruleTester.run('no-property-change-update', rule, {
           return { prop: { type: String } };
         }
         update(change) {
+          super.update();
           this.prop = 'foo';
         }
       }`,
       errors: [
         {
           messageId: 'propertyChange',
-          line: 6,
+          line: 7,
           column: 11
         }
       ]
