@@ -15,8 +15,7 @@ const rule: Rule.RuleModule = {
     docs: {
       description:
         'Disallows assignments to members of `this` in render methods',
-      category: 'Best Practices',
-      recommended: true,
+      recommended: false,
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-this-assign-in-render.md'
     },
     schema: [],

@@ -15,7 +15,7 @@ const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description: 'Disallows a set of attributes from being used in templates',
-      category: 'Best Practices',
+      recommended: false,
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/ban-attributes.md'
     },
     schema: {

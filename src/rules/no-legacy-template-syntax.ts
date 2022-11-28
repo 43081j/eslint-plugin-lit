@@ -15,7 +15,7 @@ const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description: 'Detects usages of legacy binding syntax',
-      category: 'Best Practices',
+      recommended: false,
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-legacy-template-syntax.md'
     },
     schema: [],

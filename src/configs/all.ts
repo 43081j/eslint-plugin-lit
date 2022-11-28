@@ -14,8 +14,10 @@ const config = {
     'lit/no-template-arrow': 'error',
     'lit/no-template-bind': 'error',
     'lit/no-template-map': 'error',
+    'lit/no-this-assign-in-render': 'error',
     'lit/no-useless-template-literals': 'error',
     'lit/no-value-attribute': 'error',
+    'lit/prefer-nothing': 'error',
     'lit/prefer-static-styles': 'error',
     'lit/quoted-expressions': 'error'
   }

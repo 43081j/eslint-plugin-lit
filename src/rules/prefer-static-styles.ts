@@ -15,7 +15,7 @@ const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description: 'Enforces the use of static styles in elements',
-      category: 'Best Practices',
+      recommended: false,
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/prefer-static-styles.md'
     },
     schema: [

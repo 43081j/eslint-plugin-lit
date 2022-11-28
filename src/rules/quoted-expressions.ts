@@ -15,7 +15,7 @@ const rule: Rule.RuleModule = {
     docs: {
       description:
         'Enforces the presence or absence of quotes around expressions',
-      category: 'Best Practices',
+      recommended: false,
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/quoted-expressions.md'
     },
     fixable: 'code',
