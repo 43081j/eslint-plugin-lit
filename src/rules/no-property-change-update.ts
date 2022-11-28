@@ -7,6 +7,11 @@ import {Rule} from 'eslint';
 import * as ESTree from 'estree';
 import {getPropertyMap, PropertyMapEntry} from '../util';
 
+const superUpdateQuery =
+  'CallExpression' +
+  '[callee.object.type = "Super"]' +
+  '[callee.property.name = "update"]';
+
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -31,6 +36,7 @@ const rule: Rule.RuleModule = {
     // variables should be defined here
     let propertyMap: ReadonlyMap<string, PropertyMapEntry> | null = null;
     let inUpdate = false;
+    let superSeen = false;
 
     //----------------------------------------------------------------------
     // Helpers
@@ -76,6 +82,7 @@ const rule: Rule.RuleModule = {
     function methodEnter(node: ESTree.MethodDefinition): void {
       if (
         !propertyMap ||
+        node.static === true ||
         node.kind !== 'method' ||
         node.key.type !== 'Identifier' ||
         node.key.name !== 'update'
@@ -93,6 +100,7 @@ const rule: Rule.RuleModule = {
      */
     function methodExit(): void {
       inUpdate = false;
+      superSeen = false;
     }
 
     /**
@@ -103,6 +111,7 @@ const rule: Rule.RuleModule = {
      */
     function assignmentFound(node: ESTree.AssignmentExpression): void {
       if (
+        !superSeen ||
         !propertyMap ||
         !inUpdate ||
         node.left.type !== 'MemberExpression' ||
@@ -124,6 +133,19 @@ const rule: Rule.RuleModule = {
       });
     }
 
+    /**
+     * `super.update()` call found
+     *
+     * @return {void}
+     */
+    function superUpdateFound(): void {
+      if (!inUpdate) {
+        return;
+      }
+
+      superSeen = true;
+    }
+
     //----------------------------------------------------------------------
     // Public
     //----------------------------------------------------------------------
@@ -139,7 +161,8 @@ const rule: Rule.RuleModule = {
         methodEnter(node as ESTree.MethodDefinition),
       'MethodDefinition:exit': methodExit,
       AssignmentExpression: (node: ESTree.Node): void =>
-        assignmentFound(node as ESTree.AssignmentExpression)
+        assignmentFound(node as ESTree.AssignmentExpression),
+      [superUpdateQuery]: (): void => superUpdateFound()
     };
   }
 };
