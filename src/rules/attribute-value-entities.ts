@@ -15,8 +15,7 @@ const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description: 'Disallows unencoded HTML entities in attribute values',
-      category: 'Best Practices',
-      recommended: true,
+      recommended: false,
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/attribute-value-entities.md'
     },
     schema: [],

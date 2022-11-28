@@ -14,7 +14,7 @@ const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description: 'Enforces use of `nothing` constant over empty templates',
-      category: 'Best Practices',
+      recommended: false,
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/prefer-nothing.md'
     },
     schema: [],

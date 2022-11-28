@@ -18,7 +18,7 @@ const rule: Rule.RuleModule = {
       description:
         'Detects usages of the `value` attribute where the ' +
         'equivalent property should be used instead',
-      category: 'Best Practices',
+      recommended: false,
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-value-attribute.md'
     },
     fixable: 'code',

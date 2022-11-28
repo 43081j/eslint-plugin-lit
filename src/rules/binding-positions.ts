@@ -14,8 +14,7 @@ const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description: 'Disallows invalid binding positions in templates',
-      category: 'Best Practices',
-      recommended: true,
+      recommended: false,
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/binding-positions.md'
     },
     schema: [],
