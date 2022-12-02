@@ -19,7 +19,8 @@ const config = {
     'lit/no-value-attribute': 'error',
     'lit/prefer-nothing': 'error',
     'lit/prefer-static-styles': 'error',
-    'lit/quoted-expressions': 'error'
+    'lit/quoted-expressions': 'error',
+    'lit/value-after-constraints': 'error'
   }
 };
 

@@ -18,6 +18,7 @@
     "eqeqeq": "error",
     "no-unused-vars": "off",
     "spaced-comment": "off",
+    "operator-linebreak": "off",
     "comma-dangle": [
       "error",
       "never"
