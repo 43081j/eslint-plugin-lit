@@ -58,9 +58,9 @@ const rule: Rule.RuleModule = {
             const previousQuasi = node.quasi.quasis[i];
             const nextQuasi = node.quasi.quasis[i + 1];
             const isQuoted =
-              (previousQuasi.value.raw.endsWith('"') &&
+              (previousQuasi.value.raw.endsWith('="') &&
                 nextQuasi.value.raw.startsWith('"')) ||
-              (previousQuasi.value.raw.endsWith("'") &&
+              (previousQuasi.value.raw.endsWith("='") &&
                 nextQuasi.value.raw.startsWith("'"));
 
             if (alwaysQuote && !isQuoted) {
