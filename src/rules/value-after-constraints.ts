@@ -51,7 +51,10 @@ const rule: Rule.RuleModule = {
 
           analyzer.traverse({
             enterElement: (element): void => {
-              if (element.tagName !== 'input' || !element.sourceCodeLocation) {
+              if (
+                element.tagName !== 'input' ||
+                !element.sourceCodeLocation?.attrs
+              ) {
                 return;
               }
 
