@@ -78,6 +78,24 @@ export function getPropertyMap(
 
   for (const member of node.body.body) {
     if (
+      member.type === 'PropertyDefinition' &&
+      member.static &&
+      member.key.type === 'Identifier' &&
+      member.key.name === 'properties'
+    ) {
+      const arg = member.value as ESTree.ObjectExpression;
+      for (const prop of arg.properties) {
+        if (prop.type === 'Property') {
+          const name = getIdentifierName(prop.key);
+
+          if (name && prop.value.type === 'ObjectExpression') {
+            result.set(name, extractPropertyEntry(prop.value));
+          }
+        }
+      }
+    }
+
+    if (
       member.type === 'MethodDefinition' &&
       member.static &&
       member.kind === 'get' &&
