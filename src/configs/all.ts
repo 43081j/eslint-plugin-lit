@@ -13,6 +13,7 @@ const config = {
     'lit/no-property-change-update': 'error',
     'lit/no-template-arrow': 'error',
     'lit/no-template-bind': 'error',
+    'lit/no-native-attributes': 'error',
     'lit/no-template-map': 'error',
     'lit/no-this-assign-in-render': 'error',
     'lit/no-useless-template-literals': 'error',
