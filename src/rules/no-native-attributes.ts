@@ -3,8 +3,44 @@
  * @author Pascal Schilp <https://github.com/thepassle>
  */
 
-import { Rule } from 'eslint';
+import {Rule} from 'eslint';
 import * as ESTree from 'estree';
+import {getPropertyMap} from '../util';
+
+// Taken from https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes
+const NATIVE_ATTRS = [
+  'accesskey',
+  'autocapitalize',
+  'autofocus',
+  'class',
+  'contenteditable',
+  'contextmenu',
+  'dir',
+  'draggable',
+  'enterkeyhint',
+  'exportparts',
+  'hidden',
+  'id',
+  'inert',
+  'inputmode',
+  'is',
+  'itemid',
+  'itemprop',
+  'itemref',
+  'itemscope',
+  'itemtype',
+  'lang',
+  'nonce',
+  'part',
+  'role',
+  'slot',
+  'spellcheck',
+  'style',
+  'tabindex',
+  'title',
+  'translate',
+  'virtualkeyboardpolicy'
+];
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -20,48 +56,13 @@ const rule: Rule.RuleModule = {
     schema: [],
     messages: {
       noNativeAttributes:
-        'Avoid using global native attributes as properties, ' +
-        'this can have unintended effects'
+        'The {{ prop }} attribute is a native global attribute. ' +
+        'Using it as a property could have unintended side-affects.'
     }
   },
 
   create(context): Rule.RuleListener {
     // variables should be defined here
-
-    // Taken from https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes
-    const NATIVE_ATTRS = [
-      'accesskey',
-      'autocapitalize',
-      'autofocus',
-      'class',
-      'contenteditable',
-      'contextmenu',
-      'dir',
-      'draggable',
-      'enterkeyhint',
-      'exportparts',
-      'hidden',
-      'id',
-      'inert',
-      'inputmode',
-      'is',
-      'itemid',
-      'itemprop',
-      'itemref',
-      'itemscope',
-      'itemtype',
-      'lang',
-      'nonce',
-      'part',
-      'role',
-      'slot',
-      'spellcheck',
-      'style',
-      'tabindex',
-      'title',
-      'translate',
-      'virtualkeyboardpolicy'
-    ];
 
     //----------------------------------------------------------------------
     // Public
@@ -69,54 +70,15 @@ const rule: Rule.RuleModule = {
 
     return {
       'ClassExpression,ClassDeclaration': (node: ESTree.Class): void => {
-        for (const member of node.body.body) {
-          if (
-            member.type === 'MethodDefinition' &&
-            member.kind === 'get' &&
-            member.static &&
-            member.key.type === 'Identifier' &&
-            member.key.name === 'properties'
-          ) {
-            const returnValue = member.value.body.body
-              .find((statement) => statement.type === 'ReturnStatement');
+        const propertyMap = getPropertyMap(node);
 
-            if (returnValue) {
-              const object = returnValue.argument;
-
-              if (object) {
-                for (const property of object.properties) {
-                  if (
-                    property.type === 'Property' &&
-                    NATIVE_ATTRS.includes((property.key as ESTree.Identifier).name)
-                  ) {
-                    context.report({
-                      node: member,
-                      messageId: 'noNativeAttributes'
-                    });
-                  }
-                }
-              }
-            }
-          }
-
-          if (
-            member.type === 'PropertyDefinition' &&
-            member.static &&
-            member.key.type === 'Identifier' &&
-            member.key.name === 'properties'
-          ) {
-            const value = member.value as ESTree.ObjectExpression;
-            for (const property of value.properties) {
-              if (
-                property.type === 'Property' &&
-                NATIVE_ATTRS.includes((property.key as ESTree.Identifier).name)
-              ) {
-                context.report({
-                  node: member,
-                  messageId: 'noNativeAttributes'
-                });
-              }
-            }
+        for (const [prop] of propertyMap.entries()) {
+          if (NATIVE_ATTRS.includes(prop)) {
+            context.report({
+              node: node,
+              messageId: 'noNativeAttributes',
+              data: {prop}
+            });
           }
         }
       }

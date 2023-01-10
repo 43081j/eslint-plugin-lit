@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 
 import rule = require('../../rules/no-native-attributes');
-import { RuleTester } from 'eslint';
+import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------
 // Tests
@@ -17,7 +17,7 @@ import { RuleTester } from 'eslint';
 const ruleTester = new RuleTester({
   parserOptions: {
     sourceType: 'module',
-    ecmaVersion: 2015
+    ecmaVersion: 'latest'
   }
 });
 
@@ -53,7 +53,9 @@ ruleTester.run('no-native-attributes', rule, {
       }`,
       errors: [
         {
-          messageId: 'noNativeAttributes'
+          message:
+            'The title attribute is a native global attribute. ' +
+            'Using it as a property could have unintended side-affects.'
         }
       ]
     }

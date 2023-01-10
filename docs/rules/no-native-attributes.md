@@ -1,7 +1,7 @@
 # Disallows use of native attributes as properties (no-native-attributes)
 
 Using global native attributes as lit properties can have unintended effects,
-like for example the native `title` attribute will cause a tiny popup to show up
+like for example the native `title` attribute will display a tooltip on hover
 over your custom element, and may mess up the accessibility tree for your
 component unintentionally.
 
@@ -13,10 +13,12 @@ The following patterns are considered warnings:
 
 ```ts
 class MyEl extends LitElement {
-  static properties = {
-    title: { type: String },
-    role: { type: String },
-  };
+  static get properties() {
+    return {
+      title: { type: String },
+      role: { type: String },
+    };
+  }
 }
 ```
 
@@ -24,9 +26,11 @@ The following patterns are not warnings:
 
 ```ts
 class MyEl extends LitElement {
-  static properties = {
-    foo: { type: String },
-  };
+  static get properties() {
+    return {
+      foo: { type: String },
+    };
+  }
 }
 ```
 
