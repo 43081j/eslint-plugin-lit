@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 
 import rule = require('../../rules/no-native-attributes');
-import { RuleTester } from 'eslint';
+import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------
 // Tests
