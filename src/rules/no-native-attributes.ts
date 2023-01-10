@@ -3,9 +3,9 @@
  * @author Pascal Schilp <https://github.com/thepassle>
  */
 
-import {Rule} from 'eslint';
+import { Rule } from 'eslint';
 import * as ESTree from 'estree';
-import {getPropertyMap} from '../util';
+import { getPropertyMap } from '../util';
 
 // Taken from https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes
 const NATIVE_ATTRS = [
@@ -57,7 +57,7 @@ const rule: Rule.RuleModule = {
     messages: {
       noNativeAttributes:
         'The {{ prop }} attribute is a native global attribute. ' +
-        'Using it as a property could have unintended side-affects.'
+        'Using it as a property could have unintended side-effects.'
     }
   },
 
@@ -77,7 +77,7 @@ const rule: Rule.RuleModule = {
             context.report({
               node: node,
               messageId: 'noNativeAttributes',
-              data: {prop}
+              data: { prop }
             });
           }
         }

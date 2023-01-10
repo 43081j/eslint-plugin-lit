@@ -2,8 +2,8 @@
 
 Using global native attributes as lit properties can have unintended effects,
 like for example the native `title` attribute will display a tooltip on hover
-over your custom element, and may mess up the accessibility tree for your
-component unintentionally.
+over your custom element, and and may affect the accessibility of your component
+unintentionally.
 
 ## Rule Details
 

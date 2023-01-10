@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 
 import rule = require('../../rules/no-native-attributes');
-import {RuleTester} from 'eslint';
+import { RuleTester } from 'eslint';
 
 //------------------------------------------------------------------------------
 // Tests
@@ -55,7 +55,7 @@ ruleTester.run('no-native-attributes', rule, {
         {
           message:
             'The title attribute is a native global attribute. ' +
-            'Using it as a property could have unintended side-affects.'
+            'Using it as a property could have unintended side-effects.'
         }
       ]
     }
