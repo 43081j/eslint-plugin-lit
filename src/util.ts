@@ -81,10 +81,10 @@ export function getPropertyMap(
       member.type === 'PropertyDefinition' &&
       member.static &&
       member.key.type === 'Identifier' &&
-      member.key.name === 'properties'
+      member.key.name === 'properties' &&
+      member.value?.type === 'ObjectExpression'
     ) {
-      const arg = member.value as ESTree.ObjectExpression;
-      for (const prop of arg.properties) {
+      for (const prop of member.value.properties) {
         if (prop.type === 'Property') {
           const name = getIdentifierName(prop.key);
 

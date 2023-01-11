@@ -64,6 +64,7 @@ If you want more fine-grained configuration, you can instead add a snippet like 
 - [lit/no-invalid-html](docs/rules/no-invalid-html.md)
 - [lit/no-legacy-imports](docs/rules/no-legacy-imports.md)
 - [lit/no-legacy-template-syntax](docs/rules/no-legacy-template-syntax.md)
+- [lit/no-native-attributes](docs/rules/no-native-attributes.md)
 - [lit/no-private-properties](docs/rules/no-private-properties.md)
 - [lit/no-property-change-update](docs/rules/no-property-change-update.md)
 - [lit/no-template-arrow](docs/rules/no-template-arrow.md)
