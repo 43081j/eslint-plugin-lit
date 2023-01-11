@@ -16,7 +16,7 @@ class MyEl extends LitElement {
   static get properties() {
     return {
       title: { type: String },
-      role: { type: String },
+      role: { type: String }
     };
   }
 }
