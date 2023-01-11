@@ -28,7 +28,7 @@ The following patterns are not warnings:
 class MyEl extends LitElement {
   static get properties() {
     return {
-      foo: { type: String },
+      foo: { type: String }
     };
   }
 }
