@@ -39,7 +39,8 @@ ruleTester.run('no-native-attributes', rule, {
       }`,
       errors: [
         {
-          messageId: 'noNativeAttributes'
+          messageId: 'noNativeAttributes',
+          data: {prop: 'title'}
         }
       ]
     },
@@ -53,9 +54,8 @@ ruleTester.run('no-native-attributes', rule, {
       }`,
       errors: [
         {
-          message:
-            'The title attribute is a native global attribute. ' +
-            'Using it as a property could have unintended side-effects.'
+          messageId: 'noNativeAttributes',
+          data: {prop: 'title'}
         }
       ]
     }
