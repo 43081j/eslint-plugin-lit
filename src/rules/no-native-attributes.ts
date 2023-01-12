@@ -72,10 +72,10 @@ const rule: Rule.RuleModule = {
       'ClassExpression,ClassDeclaration': (node: ESTree.Class): void => {
         const propertyMap = getPropertyMap(node);
 
-        for (const [prop] of propertyMap.entries()) {
+        for (const [prop, {key}] of propertyMap.entries()) {
           if (NATIVE_ATTRS.includes(prop)) {
             context.report({
-              node: node,
+              node: key,
               messageId: 'noNativeAttributes',
               data: {prop}
             });

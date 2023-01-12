@@ -26,6 +26,7 @@ export function getIdentifierName(node: ESTree.Node): string | undefined {
 }
 
 export interface PropertyMapEntry {
+  key: ESTree.Node;
   expr: ESTree.ObjectExpression | null;
   state: boolean;
   attribute: boolean;
@@ -33,16 +34,18 @@ export interface PropertyMapEntry {
 
 /**
  * Extracts property metadata from a given property object
- * @param {ESTree.ObjectExpression} node Node to extract from
+ * @param {ESTree.Node} key Node to extract from
+ * @param {ESTree.ObjectExpression} value Node to extract from
  * @return {object}
  */
 export function extractPropertyEntry(
-  node: ESTree.ObjectExpression
+  key: ESTree.Node,
+  value: ESTree.ObjectExpression
 ): PropertyMapEntry {
   let state = false;
   let attribute = true;
 
-  for (const prop of node.properties) {
+  for (const prop of value.properties) {
     if (
       prop.type === 'Property' &&
       prop.key.type === 'Identifier' &&
@@ -57,7 +60,8 @@ export function extractPropertyEntry(
   }
 
   return {
-    expr: node,
+    expr: value,
+    key,
     state,
     attribute
   };
@@ -89,7 +93,7 @@ export function getPropertyMap(
           const name = getIdentifierName(prop.key);
 
           if (name && prop.value.type === 'ObjectExpression') {
-            result.set(name, extractPropertyEntry(prop.value));
+            result.set(name, extractPropertyEntry(prop.key, prop.value));
           }
         }
       }
@@ -115,7 +119,7 @@ export function getPropertyMap(
             const name = getIdentifierName(prop.key);
 
             if (name && prop.value.type === 'ObjectExpression') {
-              result.set(name, extractPropertyEntry(prop.value));
+              result.set(name, extractPropertyEntry(prop.key, prop.value));
             }
           }
         }
@@ -127,7 +131,8 @@ export function getPropertyMap(
       member.type === 'PropertyDefinition'
     ) {
       const babelProp = member as BabelProperty;
-      const memberName = getIdentifierName(member.key);
+      const key = member.key;
+      const memberName = getIdentifierName(key);
 
       if (memberName && babelProp.decorators) {
         for (const decorator of babelProp.decorators) {
@@ -141,7 +146,7 @@ export function getPropertyMap(
               const state = internalDecorators.includes(
                 decorator.expression.callee.name
               );
-              const entry = extractPropertyEntry(dArg);
+              const entry = extractPropertyEntry(key, dArg);
               if (state) {
                 entry.state = true;
               }
@@ -150,7 +155,12 @@ export function getPropertyMap(
               const state = internalDecorators.includes(
                 decorator.expression.callee.name
               );
-              result.set(memberName, {expr: null, state, attribute: true});
+              result.set(memberName, {
+                key,
+                expr: null,
+                state,
+                attribute: true
+              });
             }
           }
         }

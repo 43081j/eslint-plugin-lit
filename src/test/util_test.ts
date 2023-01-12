@@ -46,9 +46,34 @@ describe('util', () => {
         type: 'ObjectExpression',
         properties: []
       };
-      const entry = util.extractPropertyEntry(node);
+      const key: ESTree.Identifier = {
+        type: 'Identifier',
+        name: 'foo'
+      };
+      const entry = util.extractPropertyEntry(key, node);
 
       expect(entry).to.deep.equal({
+        key,
+        expr: node,
+        state: false,
+        attribute: true
+      });
+    });
+
+    it('should extract property config with non-identifier key', () => {
+      const node: ESTree.ObjectExpression = {
+        type: 'ObjectExpression',
+        properties: []
+      };
+      const key: ESTree.Literal = {
+        type: 'Literal',
+        value: 'foo',
+        raw: "'foo'"
+      };
+      const entry = util.extractPropertyEntry(key, node);
+
+      expect(entry).to.deep.equal({
+        key,
         expr: node,
         state: false,
         attribute: true
@@ -76,9 +101,14 @@ describe('util', () => {
           }
         ]
       };
-      const entry = util.extractPropertyEntry(node);
+      const key: ESTree.Identifier = {
+        type: 'Identifier',
+        name: 'foo'
+      };
+      const entry = util.extractPropertyEntry(key, node);
 
       expect(entry).to.deep.equal({
+        key,
         expr: node,
         state: true,
         attribute: true
@@ -106,9 +136,14 @@ describe('util', () => {
           }
         ]
       };
-      const entry = util.extractPropertyEntry(node);
+      const key: ESTree.Identifier = {
+        type: 'Identifier',
+        name: 'foo'
+      };
+      const entry = util.extractPropertyEntry(key, node);
 
       expect(entry).to.deep.equal({
+        key,
         expr: node,
         state: false,
         attribute: false
@@ -136,10 +171,15 @@ describe('util', () => {
           }
         ]
       };
+      const key: ESTree.Identifier = {
+        type: 'Identifier',
+        name: 'foo'
+      };
 
-      const entry = util.extractPropertyEntry(node);
+      const entry = util.extractPropertyEntry(key, node);
 
       expect(entry).to.deep.equal({
+        key,
         expr: node,
         state: false,
         attribute: true
