@@ -26,7 +26,7 @@ export function getIdentifierName(node: ESTree.Node): string | undefined {
 }
 
 export interface PropertyMapEntry {
-  key: ESTree.Identifier;
+  key: ESTree.Node;
   expr: ESTree.ObjectExpression | null;
   state: boolean;
   attribute: boolean;
@@ -39,7 +39,7 @@ export interface PropertyMapEntry {
  * @return {object}
  */
 export function extractPropertyEntry(
-  key: ESTree.Identifier,
+  key: ESTree.Node,
   value: ESTree.ObjectExpression
 ): PropertyMapEntry {
   let state = false;
@@ -85,16 +85,15 @@ export function getPropertyMap(
       member.type === 'PropertyDefinition' &&
       member.static &&
       member.key.type === 'Identifier' &&
-      member.key.name === 'properties'
+      member.key.name === 'properties' &&
+      member.value?.type === 'ObjectExpression'
     ) {
-      const arg = member.value as ESTree.ObjectExpression;
-      for (const prop of arg.properties) {
+      for (const prop of member.value.properties) {
         if (prop.type === 'Property') {
-          const key = prop.key as ESTree.Identifier;
-          const name = getIdentifierName(key);
+          const name = getIdentifierName(prop.key);
 
           if (name && prop.value.type === 'ObjectExpression') {
-            result.set(name, extractPropertyEntry(key, prop.value));
+            result.set(name, extractPropertyEntry(prop.key, prop.value));
           }
         }
       }
@@ -117,11 +116,10 @@ export function getPropertyMap(
         const arg = ret.argument as ESTree.ObjectExpression;
         for (const prop of arg.properties) {
           if (prop.type === 'Property') {
-            const key = prop.key as ESTree.Identifier;
-            const name = getIdentifierName(key);
+            const name = getIdentifierName(prop.key);
 
             if (name && prop.value.type === 'ObjectExpression') {
-              result.set(name, extractPropertyEntry(key, prop.value));
+              result.set(name, extractPropertyEntry(prop.key, prop.value));
             }
           }
         }
@@ -133,7 +131,7 @@ export function getPropertyMap(
       member.type === 'PropertyDefinition'
     ) {
       const babelProp = member as BabelProperty;
-      const key = member.key as ESTree.Identifier;
+      const key = member.key;
       const memberName = getIdentifierName(key);
 
       if (memberName && babelProp.decorators) {
