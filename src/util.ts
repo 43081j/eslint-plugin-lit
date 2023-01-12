@@ -158,7 +158,7 @@ export function getPropertyMap(
                 decorator.expression.callee.name
               );
               result.set(memberName, {
-                key: null,
+                key,
                 expr: null,
                 state,
                 attribute: true

@@ -3,9 +3,9 @@
  * @author Pascal Schilp <https://github.com/thepassle>
  */
 
-import { Rule } from 'eslint';
+import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import { getPropertyMap } from '../util';
+import {getPropertyMap} from '../util';
 
 // Taken from https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes
 const NATIVE_ATTRS = [
@@ -72,12 +72,12 @@ const rule: Rule.RuleModule = {
       'ClassExpression,ClassDeclaration': (node: ESTree.Class): void => {
         const propertyMap = getPropertyMap(node);
 
-        for (const [prop, { key }] of propertyMap.entries()) {
+        for (const [prop, {key}] of propertyMap.entries()) {
           if (NATIVE_ATTRS.includes(prop)) {
             context.report({
               node: key,
               messageId: 'noNativeAttributes',
-              data: { prop }
+              data: {prop}
             });
           }
         }

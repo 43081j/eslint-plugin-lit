@@ -16,7 +16,7 @@ class MyEl extends LitElement {
   static get properties() {
     return {
       title: { type: String },
-      role: { type: String },
+      role: { type: String }
     };
   }
 }
@@ -28,7 +28,7 @@ The following patterns are not warnings:
 class MyEl extends LitElement {
   static get properties() {
     return {
-      foo: { type: String },
+      foo: { type: String }
     };
   }
 }
