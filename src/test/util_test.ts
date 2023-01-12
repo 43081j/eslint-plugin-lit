@@ -60,6 +60,26 @@ describe('util', () => {
       });
     });
 
+    it('should extract property config with non-identifier key', () => {
+      const node: ESTree.ObjectExpression = {
+        type: 'ObjectExpression',
+        properties: []
+      };
+      const key: ESTree.Literal = {
+        type: 'Literal',
+        value: 'foo',
+        raw: "'foo'"
+      };
+      const entry = util.extractPropertyEntry(key, node);
+
+      expect(entry).to.deep.equal({
+        key,
+        expr: node,
+        state: false,
+        attribute: true
+      });
+    });
+
     it('should extract state flag', () => {
       const node: ESTree.ObjectExpression = {
         type: 'ObjectExpression',

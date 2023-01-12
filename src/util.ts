@@ -34,7 +34,7 @@ export interface PropertyMapEntry {
 
 /**
  * Extracts property metadata from a given property object
- * @param {ESTree.Identifier} key Node to extract from
+ * @param {ESTree.Node} key Node to extract from
  * @param {ESTree.ObjectExpression} value Node to extract from
  * @return {object}
  */
