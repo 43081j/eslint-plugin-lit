@@ -32,6 +32,7 @@ const NATIVE_ATTRS = [
   'lang',
   'nonce',
   'part',
+  'popover',
   'role',
   'slot',
   'spellcheck',
