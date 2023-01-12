@@ -46,9 +46,14 @@ describe('util', () => {
         type: 'ObjectExpression',
         properties: []
       };
-      const entry = util.extractPropertyEntry(node);
+      const key: ESTree.Identifier = {
+        type: 'Identifier',
+        name: 'foo'
+      };
+      const entry = util.extractPropertyEntry(key, node);
 
       expect(entry).to.deep.equal({
+        key,
         expr: node,
         state: false,
         attribute: true
@@ -76,9 +81,14 @@ describe('util', () => {
           }
         ]
       };
-      const entry = util.extractPropertyEntry(node);
+      const key: ESTree.Identifier = {
+        type: 'Identifier',
+        name: 'foo'
+      };
+      const entry = util.extractPropertyEntry(key, node);
 
       expect(entry).to.deep.equal({
+        key,
         expr: node,
         state: true,
         attribute: true
@@ -106,9 +116,14 @@ describe('util', () => {
           }
         ]
       };
-      const entry = util.extractPropertyEntry(node);
+      const key: ESTree.Identifier = {
+        type: 'Identifier',
+        name: 'foo'
+      };
+      const entry = util.extractPropertyEntry(key, node);
 
       expect(entry).to.deep.equal({
+        key,
         expr: node,
         state: false,
         attribute: false
@@ -136,10 +151,15 @@ describe('util', () => {
           }
         ]
       };
+      const key: ESTree.Identifier = {
+        type: 'Identifier',
+        name: 'foo'
+      };
 
-      const entry = util.extractPropertyEntry(node);
+      const entry = util.extractPropertyEntry(key, node);
 
       expect(entry).to.deep.equal({
+        key,
         expr: node,
         state: false,
         attribute: true
@@ -236,6 +256,96 @@ describe('util', () => {
                     }
                   ]
                 }
+              }
+            }
+          ]
+        }
+      };
+
+      const map = util.getPropertyMap(node);
+
+      expect(map.size).to.equal(0);
+    });
+
+    it('should retrieve from static field', () => {
+      const node: ESTree.ClassExpression = {
+        type: 'ClassExpression',
+        body: {
+          type: 'ClassBody',
+          body: [
+            {
+              type: 'PropertyDefinition',
+              static: true,
+              computed: false,
+              key: {
+                type: 'Identifier',
+                name: 'properties'
+              },
+              value: {
+                type: 'ObjectExpression',
+                properties: [
+                  {
+                    type: 'Property',
+                    kind: 'init',
+                    shorthand: false,
+                    computed: false,
+                    method: false,
+                    key: {
+                      type: 'Identifier',
+                      name: 'someProp'
+                    },
+                    value: {
+                      type: 'ObjectExpression',
+                      properties: []
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      };
+
+      const map = util.getPropertyMap(node);
+
+      expect(map.size).to.equal(1);
+      expect(map.has('someProp')).to.equal(true);
+    });
+
+    it('should skip non-standard static fields', () => {
+      const node: ESTree.ClassExpression = {
+        type: 'ClassExpression',
+        body: {
+          type: 'ClassBody',
+          body: [
+            {
+              type: 'PropertyDefinition',
+              static: true,
+              computed: false,
+              key: {
+                type: 'Identifier',
+                name: 'properties'
+              },
+              value: {
+                type: 'ObjectExpression',
+                properties: [
+                  {
+                    type: 'Property',
+                    kind: 'init',
+                    shorthand: false,
+                    computed: false,
+                    method: false,
+                    key: {
+                      type: 'Identifier',
+                      name: 'someProp'
+                    },
+                    value: {
+                      type: 'Literal',
+                      value: 'foo',
+                      raw: 'foo'
+                    }
+                  }
+                ]
               }
             }
           ]
