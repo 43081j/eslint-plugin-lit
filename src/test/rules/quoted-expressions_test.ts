@@ -33,6 +33,10 @@ ruleTester.run('quoted-expressions', rule, {
     'html`<x-foo attr="${v} bar"></x-foo>`',
     'html`<p>something with "${v}" here</p>`;',
     {
+      code: 'html`<p>${expr}</p>`',
+      options: ['always']
+    },
+    {
       code: 'html`<x-foo attr="${v}"></x-foo>`',
       options: ['always']
     },
