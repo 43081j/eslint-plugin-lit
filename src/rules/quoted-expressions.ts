@@ -57,6 +57,13 @@ const rule: Rule.RuleModule = {
             const expression = node.quasi.expressions[i];
             const previousQuasi = node.quasi.quasis[i];
             const nextQuasi = node.quasi.quasis[i + 1];
+            const isAttribute = /=["']?$/.test(previousQuasi.value.raw);
+
+            // don't care about non-attribute bindings
+            if (!isAttribute) {
+              continue;
+            }
+
             const isQuoted =
               (previousQuasi.value.raw.endsWith('="') &&
                 nextQuasi.value.raw.startsWith('"')) ||
