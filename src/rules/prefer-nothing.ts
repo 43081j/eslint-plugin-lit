@@ -17,11 +17,13 @@ const rule: Rule.RuleModule = {
       recommended: false,
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/prefer-nothing.md'
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
       preferNothing:
         '`nothing` is preferred over empty templates when you want to render' +
-        ' nothing'
+        ' nothing',
+      useNothing: 'Replace empty template with `nothing` constant'
     }
   },
 
@@ -40,7 +42,15 @@ const rule: Rule.RuleModule = {
           ) {
             context.report({
               node,
-              messageId: 'preferNothing'
+              messageId: 'preferNothing',
+              suggest: [
+                {
+                  messageId: 'useNothing',
+                  fix: (fixer) => {
+                    return fixer.replaceText(node, 'nothing');
+                  }
+                }
+              ]
             });
           }
         }

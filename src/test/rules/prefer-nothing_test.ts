@@ -41,7 +41,13 @@ ruleTester.run('prefer-nothing', rule, {
         {
           messageId: 'preferNothing',
           line: 1,
-          column: 11
+          column: 11,
+          suggestions: [
+            {
+              messageId: 'useNothing',
+              output: 'const x = nothing;'
+            }
+          ]
         }
       ]
     },
@@ -51,7 +57,13 @@ ruleTester.run('prefer-nothing', rule, {
         {
           messageId: 'preferNothing',
           line: 1,
-          column: 28
+          column: 28,
+          suggestions: [
+            {
+              messageId: 'useNothing',
+              output: 'function render() { return nothing; }'
+            }
+          ]
         }
       ]
     }
