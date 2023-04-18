@@ -49,6 +49,18 @@ ruleTester.run('no-this-assign-in-render', rule, {
         static render() {
           this.foo = 5;
         }
+      }`,
+    `class Foo extends LitElement {
+        render() {
+          let x;
+          x = this.prop;
+        }
+      }`,
+    `class Foo extends LitElement {
+        render() {
+          let x;
+          x = 5;
+        }
       }`
   ],
 
