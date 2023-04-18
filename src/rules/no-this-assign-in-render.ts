@@ -114,7 +114,7 @@ const rule: Rule.RuleModule = {
       MethodDefinition: (node: ESTree.Node): void =>
         methodEnter(node as ESTree.MethodDefinition),
       'MethodDefinition:exit': methodExit,
-      'AssignmentExpression:has([left] ThisExpression)': (
+      'AssignmentExpression:has(.left ThisExpression)': (
         node: ESTree.Node
       ): void => assignmentFound(node as ESTree.AssignmentExpression)
     };
