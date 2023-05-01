@@ -59,6 +59,7 @@ If you want more fine-grained configuration, you can instead add a snippet like 
 - [lit/attribute-value-entities](docs/rules/attribute-value-entities.md)
 - [lit/ban-attributes](docs/rules/ban-attributes.md)
 - [lit/binding-positions](docs/rules/binding-positions.md)
+- [lit/lifecycle-super](docs/rules/lifecycle-super.md)
 - [lit/no-duplicate-template-bindings](docs/rules/no-duplicate-template-bindings.md)
 - [lit/no-invalid-escape-sequences](docs/rules/no-invalid-escape-sequences.md)
 - [lit/no-invalid-html](docs/rules/no-invalid-html.md)
