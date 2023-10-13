@@ -1,6 +1,7 @@
 # Disallows class fields with same name as static properties
 
-Using class fields with same name as static property can have unintended effects.
+Class fields set with same names as properties will not trigger updates as expected. They will overwrite accessors
+used for detecting changes. See https://lit.dev/msg/class-field-shadowing for more information.
 
 ## Rule Details
 
