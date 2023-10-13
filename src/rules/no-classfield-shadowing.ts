@@ -15,7 +15,7 @@ const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description: 'Disallows properties shadowed as class field',
-      recommended: false,
+      recommended: true,
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-classfield-shadowing.md'
     },
     schema: [],
