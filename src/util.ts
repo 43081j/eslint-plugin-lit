@@ -1,4 +1,5 @@
 import * as ESTree from 'estree';
+import {PropertyDefinition} from 'estree';
 
 export interface BabelDecorator extends ESTree.BaseNode {
   type: 'Decorator';
@@ -65,6 +66,27 @@ export function extractPropertyEntry(
     state,
     attribute
   };
+}
+
+/**
+ * Returns the class fields of a class
+ * @param {ESTree.Class} node Class to retrieve class fields for
+ * @return {ReadonlyMap<string, ESTreeObjectExpression>}
+ */
+export function getClassFields(
+  node: ESTree.Class
+): ReadonlyMap<string, PropertyDefinition> {
+  const result = new Map<string, PropertyDefinition>();
+
+  for (const member of node.body.body) {
+    if (
+      member.type === 'PropertyDefinition' &&
+      member.key.type === 'Identifier'
+    ) {
+      result.set(member.key.name, member);
+    }
+  }
+  return result;
 }
 
 /**
