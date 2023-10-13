@@ -23,8 +23,14 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-classfield-shadowing', rule, {
   valid: [
-    `class MyEl extends LitElement {
+    `class MyElement extends LitElement {
       static properties = {
+        foo: { type: String }
+      }
+    }`,
+    `class MyElement extends LitElement {
+      foo;
+      properties = {
         foo: { type: String }
       }
     }`
