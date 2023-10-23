@@ -45,7 +45,9 @@ ruleTester.run('no-classfield-shadowing', rule, {
       errors: [
         {
           messageId: 'noClassfieldShadowing',
-          data: {prop: 'foo'}
+          data: {prop: 'foo'},
+          line: 3,
+          column: 30
         }
       ]
     },
@@ -57,7 +59,9 @@ ruleTester.run('no-classfield-shadowing', rule, {
       errors: [
         {
           messageId: 'noClassfieldShadowing',
-          data: {prop: 'foo'}
+          data: {prop: 'foo'},
+          line: 2,
+          column: 30
         }
       ]
     },
@@ -69,7 +73,9 @@ ruleTester.run('no-classfield-shadowing', rule, {
       errors: [
         {
           messageId: 'noClassfieldShadowing',
-          data: {prop: 'foo'}
+          data: {prop: 'foo'},
+          line: 3,
+          column: 44
         }
       ]
     },
@@ -81,7 +87,9 @@ ruleTester.run('no-classfield-shadowing', rule, {
       errors: [
         {
           messageId: 'noClassfieldShadowing',
-          data: {prop: 'foo'}
+          data: {prop: 'foo'},
+          line: 2,
+          column: 44
         }
       ]
     }
