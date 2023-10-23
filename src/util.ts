@@ -48,9 +48,11 @@ function isLitByExpression(
  * @return { boolean }
  */
 export function isLitClass(clazz: ESTree.Class): boolean {
-  return hasLitIdentifier(clazz) ||
+  return (
+    hasLitIdentifier(clazz) ||
     hasLitIdentifier(clazz.superClass) ||
-    isLitByExpression(clazz.superClass);
+    isLitByExpression(clazz.superClass)
+  );
 }
 
 /**

@@ -6,6 +6,7 @@
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
 import {TemplateAnalyzer} from '../template-analyzer';
+import {isLitClass} from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -35,12 +36,7 @@ const rule: Rule.RuleModule = {
 
     return {
       'ClassExpression,ClassDeclaration': (node: ESTree.Class): void => {
-        if (
-          !prefer &&
-          node.superClass &&
-          node.superClass.type === 'Identifier' &&
-          node.superClass.name === 'LitElement'
-        ) {
+        if (!prefer && isLitClass(node)) {
           for (const member of node.body.body) {
             if (
               member.type === 'MethodDefinition' &&
