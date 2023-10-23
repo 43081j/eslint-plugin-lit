@@ -21,6 +21,16 @@ const ruleTester = new RuleTester({
   }
 });
 
+const parser = require.resolve('@babel/eslint-parser');
+const parserOptions = {
+  requireConfigFile: false,
+  babelOptions: {
+    plugins: [
+      ['@babel/plugin-proposal-decorators', {decoratorsBeforeExport: true}]
+    ]
+  }
+};
+
 ruleTester.run('no-classfield-shadowing', rule, {
   valid: [
     `class MyElement extends LitElement {
@@ -131,6 +141,24 @@ ruleTester.run('no-classfield-shadowing', rule, {
           messageId: 'noClassfieldShadowing',
           data: {prop: 'foo'},
           line: 3,
+          column: 31
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        @property({ type: String })
+        foo = 'test';
+
+        static properties = { foo: {} };
+      }`,
+      parser,
+      parserOptions,
+      errors: [
+        {
+          messageId: 'noClassfieldShadowing',
+          data: {prop: 'foo'},
+          line: 5,
           column: 31
         }
       ]
