@@ -5,7 +5,7 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {getClassFields, getPropertyMap} from '../util';
+import {getClassFields, getPropertyMap, isLitClass} from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -29,16 +29,18 @@ const rule: Rule.RuleModule = {
   create(context): Rule.RuleListener {
     return {
       ClassDeclaration: (node: ESTree.Class): void => {
-        const propertyMap = getPropertyMap(node);
-        const classMembers = getClassFields(node);
+        if (isLitClass(node)) {
+          const propertyMap = getPropertyMap(node);
+          const classMembers = getClassFields(node);
 
-        for (const [prop, {key}] of propertyMap.entries()) {
-          if (classMembers.has(prop)) {
-            context.report({
-              node: key,
-              messageId: 'noClassfieldShadowing',
-              data: {prop}
-            });
+          for (const [prop, {key}] of propertyMap.entries()) {
+            if (classMembers.has(prop)) {
+              context.report({
+                node: key,
+                messageId: 'noClassfieldShadowing',
+                data: {prop}
+              });
+            }
           }
         }
       }

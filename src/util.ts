@@ -10,6 +10,50 @@ export interface BabelProperty extends ESTree.MethodDefinition {
 }
 
 /**
+ * Returns if given node has a lit identifier
+ * @param {ESTree.Node} node
+ * @return {boolean}
+ */
+function hasLitIdentifier(
+  node:
+    | ESTree.Node
+    | ESTree.Expression
+    | ESTree.SpreadElement
+    | null
+    | undefined
+): boolean {
+  return node?.type === 'Identifier' && node?.name === 'LitElement';
+}
+
+/**
+ * Returns if the given node is a lit element by expression
+ * @param {ESTree.Node} node
+ * @return {boolean}
+ */
+function isLitByExpression(
+  node: ESTree.Node | ESTree.Expression | undefined | null
+): boolean {
+  if (hasLitIdentifier(node)) {
+    return true;
+  }
+  if (node?.type === 'CallExpression') {
+    return node.arguments?.some(isLitByExpression);
+  }
+  return false;
+}
+
+/**
+ * Returns if the given node is a lit class
+ * @param {ESTree.Class} clazz
+ * @return { boolean }
+ */
+export function isLitClass(clazz: ESTree.Class): boolean {
+  return hasLitIdentifier(clazz) ||
+    hasLitIdentifier(clazz.superClass) ||
+    isLitByExpression(clazz.superClass);
+}
+
+/**
  * Get the name of a node
  *
  * @param {ESTree.Node} node Node to retrieve name of

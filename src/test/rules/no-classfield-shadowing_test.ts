@@ -92,6 +92,48 @@ ruleTester.run('no-classfield-shadowing', rule, {
           column: 44
         }
       ]
+    },
+    {
+      code: `class Foo extends A(LitElement) {
+        foo;
+        static properties = { foo: {} };
+      }`,
+      errors: [
+        {
+          messageId: 'noClassfieldShadowing',
+          data: {prop: 'foo'},
+          line: 3,
+          column: 31
+        }
+      ]
+    },
+    {
+      code: `class Foo extends A(B(LitElement)) {
+        foo;
+        static properties = { foo: {} };
+      }`,
+      errors: [
+        {
+          messageId: 'noClassfieldShadowing',
+          data: {prop: 'foo'},
+          line: 3,
+          column: 31
+        }
+      ]
+    },
+    {
+      code: `class Foo extends A(B(C(LitElement))) {
+        foo;
+        static properties = { foo: {} };
+      }`,
+      errors: [
+        {
+          messageId: 'noClassfieldShadowing',
+          data: {prop: 'foo'},
+          line: 3,
+          column: 31
+        }
+      ]
     }
   ]
 });
