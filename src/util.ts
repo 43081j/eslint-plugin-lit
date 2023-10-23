@@ -1,5 +1,4 @@
 import * as ESTree from 'estree';
-import {PropertyDefinition} from 'estree';
 
 export interface BabelDecorator extends ESTree.BaseNode {
   type: 'Decorator';
@@ -75,8 +74,8 @@ export function extractPropertyEntry(
  */
 export function getClassFields(
   node: ESTree.Class
-): ReadonlyMap<string, PropertyDefinition> {
-  const result = new Map<string, PropertyDefinition>();
+): ReadonlyMap<string, ESTree.PropertyDefinition> {
+  const result = new Map<string, ESTree.PropertyDefinition>();
 
   for (const member of node.body.body) {
     if (

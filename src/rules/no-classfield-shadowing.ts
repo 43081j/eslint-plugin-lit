@@ -14,14 +14,14 @@ import {getClassFields, getPropertyMap} from '../util';
 const rule: Rule.RuleModule = {
   meta: {
     docs: {
-      description: 'Disallows properties shadowed as class field',
+      description: 'Disallows properties shadowed as class fields',
       recommended: true,
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/no-classfield-shadowing.md'
     },
     schema: [],
     messages: {
       noClassfieldShadowing:
-        'The {{ prop }} property is a class field which has the same as ' +
+        'The {{ prop }} property is a class field which has the same name as ' +
         'static property which could have unintended side-effects.'
     }
   },
