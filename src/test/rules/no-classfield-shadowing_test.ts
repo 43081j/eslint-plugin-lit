@@ -14,16 +14,6 @@ import {RuleTester} from 'eslint';
 // Tests
 //------------------------------------------------------------------------------
 
-const parser = require.resolve('@babel/eslint-parser');
-const parserOptions = {
-  requireConfigFile: false,
-  babelOptions: {
-    plugins: [
-      ['@babel/plugin-proposal-decorators', {decoratorsBeforeExport: true}]
-    ]
-  }
-};
-
 const ruleTester = new RuleTester({
   parserOptions: {
     sourceType: 'module',
