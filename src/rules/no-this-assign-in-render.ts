@@ -88,18 +88,18 @@ const rule: Rule.RuleModule = {
     }
 
     /**
-     * Assignment expression entered
+     * Left side of an assignment expr found
      *
-     * @param {ESTree.AssignmentExpression} node Node entered
+     * @param {Rule.Node} node Node entered
      * @return {void}
      */
-    function assignmentFound(node: ESTree.AssignmentExpression): void {
+    function assignmentFound(node: Rule.Node): void {
       if (!inRender) {
         return;
       }
 
       context.report({
-        node,
+        node: node.parent,
         messageId: 'noThis'
       });
     }
@@ -114,9 +114,9 @@ const rule: Rule.RuleModule = {
       MethodDefinition: (node: ESTree.Node): void =>
         methodEnter(node as ESTree.MethodDefinition),
       'MethodDefinition:exit': methodExit,
-      'AssignmentExpression:has(.left ThisExpression)': (
-        node: ESTree.Node
-      ): void => assignmentFound(node as ESTree.AssignmentExpression)
+      'AssignmentExpression > .left:has(ThisExpression)': (
+        node: Rule.Node
+      ): void => assignmentFound(node)
     };
   }
 };
