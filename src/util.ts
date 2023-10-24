@@ -37,7 +37,7 @@ function isLitByExpression(
     return true;
   }
   if (node?.type === 'CallExpression') {
-    return node.arguments?.some(isLitByExpression);
+    return node.arguments.some(isLitByExpression);
   }
   return false;
 }
