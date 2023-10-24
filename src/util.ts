@@ -10,6 +10,46 @@ export interface BabelProperty extends ESTree.MethodDefinition {
 }
 
 /**
+ * Returns if given node has a lit identifier
+ * @param {ESTree.Node} node
+ * @return {boolean}
+ */
+function hasLitIdentifier(node: ESTree.Node): boolean {
+  return node.type === 'Identifier' && node.name === 'LitElement';
+}
+
+/**
+ * Returns if the given node is a lit element by expression
+ * @param {ESTree.Node} node
+ * @return {boolean}
+ */
+function isLitByExpression(node: ESTree.Node): boolean {
+  if (node) {
+    if (hasLitIdentifier(node)) {
+      return true;
+    }
+    if (node.type === 'CallExpression') {
+      return node.arguments.some(isLitByExpression);
+    }
+  }
+  return false;
+}
+
+/**
+ * Returns if the given node is a lit class
+ * @param {ESTree.Class} clazz
+ * @return { boolean }
+ */
+export function isLitClass(clazz: ESTree.Class): boolean {
+  if (clazz.superClass) {
+    return (
+      hasLitIdentifier(clazz.superClass) || isLitByExpression(clazz.superClass)
+    );
+  }
+  return hasLitIdentifier(clazz);
+}
+
+/**
  * Get the name of a node
  *
  * @param {ESTree.Node} node Node to retrieve name of
@@ -65,6 +105,29 @@ export function extractPropertyEntry(
     state,
     attribute
   };
+}
+
+/**
+ * Returns the class fields of a class
+ * @param {ESTree.Class} node Class to retrieve class fields for
+ * @return {ReadonlyMap<string, ESTreeObjectExpression>}
+ */
+export function getClassFields(
+  node: ESTree.Class
+): ReadonlyMap<string, ESTree.PropertyDefinition> {
+  const result = new Map<string, ESTree.PropertyDefinition>();
+
+  for (const member of node.body.body) {
+    if (
+      member.type === 'PropertyDefinition' &&
+      member.key.type === 'Identifier' &&
+      // TODO: we should cast as the equivalent tsestree PropertyDefinition
+      !(member as ESTree.PropertyDefinition & {declare?: boolean}).declare
+    ) {
+      result.set(member.key.name, member);
+    }
+  }
+  return result;
 }
 
 /**
