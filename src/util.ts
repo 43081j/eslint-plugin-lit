@@ -126,7 +126,9 @@ export function getClassFields(
   for (const member of node.body.body) {
     if (
       member.type === 'PropertyDefinition' &&
-      member.key.type === 'Identifier'
+      member.key.type === 'Identifier' &&
+      // TODO: we should cast as the equivalent tsestree PropertyDefinition
+      !(member as ESTree.PropertyDefinition & {declare?: boolean}).declare
     ) {
       result.set(member.key.name, member);
     }
