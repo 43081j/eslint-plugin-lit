@@ -19,8 +19,6 @@ function hasLitIdentifier(
     | ESTree.Node
     | ESTree.Expression
     | ESTree.SpreadElement
-    | null
-    | undefined
 ): boolean {
   return node?.type === 'Identifier' && node?.name === 'LitElement';
 }
@@ -31,13 +29,15 @@ function hasLitIdentifier(
  * @return {boolean}
  */
 function isLitByExpression(
-  node: ESTree.Node | ESTree.Expression | undefined | null
+  node: ESTree.Node | ESTree.Expression
 ): boolean {
-  if (hasLitIdentifier(node)) {
-    return true;
-  }
-  if (node?.type === 'CallExpression') {
-    return node.arguments.some(isLitByExpression);
+  if (node) {
+    if (hasLitIdentifier(node)) {
+      return true;
+    }
+    if (node.type === 'CallExpression') {
+      return node.arguments.some(isLitByExpression);
+    }
   }
   return false;
 }
@@ -48,11 +48,12 @@ function isLitByExpression(
  * @return { boolean }
  */
 export function isLitClass(clazz: ESTree.Class): boolean {
-  return (
-    hasLitIdentifier(clazz) ||
-    hasLitIdentifier(clazz.superClass) ||
-    isLitByExpression(clazz.superClass)
-  );
+  if (clazz.superClass) {
+    return (
+      hasLitIdentifier(clazz.superClass) || isLitByExpression(clazz.superClass)
+    );
+  }
+  return hasLitIdentifier(clazz);
 }
 
 /**
