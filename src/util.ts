@@ -23,7 +23,7 @@ function hasLitIdentifier(node: ESTree.Node): boolean {
  * @param {ESTree.Node} node
  * @return {boolean}
  */
-function isLitByExpression(node: ESTree.Node | ESTree.Expression): boolean {
+function isLitByExpression(node: ESTree.Node): boolean {
   if (node) {
     if (hasLitIdentifier(node)) {
       return true;
