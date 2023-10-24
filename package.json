@@ -55,21 +55,21 @@
     "@types/eslint": "^8.4.6",
     "@types/estree": "^1.0.0",
     "@types/mocha": "^10.0.0",
-    "@types/node": "^18.7.13",
+    "@types/node": "^20.8.8",
     "@types/parse5": "^6.0.0",
     "@types/parse5-htmlparser2-tree-adapter": "^6.0.0",
-    "@typescript-eslint/eslint-plugin": "^5.44.0",
-    "@typescript-eslint/parser": "^5.44.0",
+    "@typescript-eslint/eslint-plugin": "^6.9.0",
+    "@typescript-eslint/parser": "^6.9.0",
     "chai": "^4.2.0",
     "eslint": "^8.23.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-eslint-plugin": "^5.0.6",
     "espree": "^9.0.0",
     "mocha": "^10.0.0",
-    "nodemon": "^2.0.7",
+    "nodemon": "^3.0.1",
     "nyc": "^15.1.0",
-    "prettier": "^2.1.2",
-    "rimraf": "^3.0.2",
-    "typescript": "^4.0.3"
+    "prettier": "^3.0.3",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.2.2"
   }
 }
