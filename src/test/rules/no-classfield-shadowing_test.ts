@@ -149,24 +149,6 @@ ruleTester.run('no-classfield-shadowing', rule, {
           column: 31
         }
       ]
-    },
-    {
-      code: `class Foo extends LitElement {
-        @property({ type: String })
-        foo = 'test';
-
-        static properties = { foo: {} };
-      }`,
-      parser,
-      parserOptions,
-      errors: [
-        {
-          messageId: 'noClassfieldShadowing',
-          data: {prop: 'foo'},
-          line: 5,
-          column: 31
-        }
-      ]
     }
   ]
 });

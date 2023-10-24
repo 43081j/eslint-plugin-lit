@@ -15,10 +15,7 @@ export interface BabelProperty extends ESTree.MethodDefinition {
  * @return {boolean}
  */
 function hasLitIdentifier(
-  node:
-    | ESTree.Node
-    | ESTree.Expression
-    | ESTree.SpreadElement
+  node: ESTree.Node | ESTree.Expression | ESTree.SpreadElement
 ): boolean {
   return node?.type === 'Identifier' && node?.name === 'LitElement';
 }
@@ -28,9 +25,7 @@ function hasLitIdentifier(
  * @param {ESTree.Node} node
  * @return {boolean}
  */
-function isLitByExpression(
-  node: ESTree.Node | ESTree.Expression
-): boolean {
+function isLitByExpression(node: ESTree.Node | ESTree.Expression): boolean {
   if (node) {
     if (hasLitIdentifier(node)) {
       return true;
