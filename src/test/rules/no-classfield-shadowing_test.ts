@@ -14,13 +14,6 @@ import {RuleTester} from 'eslint';
 // Tests
 //------------------------------------------------------------------------------
 
-const ruleTester = new RuleTester({
-  parserOptions: {
-    sourceType: 'module',
-    ecmaVersion: 'latest'
-  }
-});
-
 const parser = require.resolve('@babel/eslint-parser');
 const parserOptions = {
   requireConfigFile: false,
@@ -30,6 +23,13 @@ const parserOptions = {
     ]
   }
 };
+
+const ruleTester = new RuleTester({
+  parserOptions: {
+    sourceType: 'module',
+    ecmaVersion: 'latest'
+  }
+});
 
 ruleTester.run('no-classfield-shadowing', rule, {
   valid: [
