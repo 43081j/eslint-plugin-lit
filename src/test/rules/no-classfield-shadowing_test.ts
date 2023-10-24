@@ -35,6 +35,7 @@ ruleTester.run('no-classfield-shadowing', rule, {
       }
     }`,
     `class MyElement {
+      foo;
       properties = {
         foo: { type: String }
       }
