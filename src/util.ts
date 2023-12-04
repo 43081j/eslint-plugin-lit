@@ -70,6 +70,7 @@ export interface PropertyMapEntry {
   expr: ESTree.ObjectExpression | null;
   state: boolean;
   attribute: boolean;
+  attributeName?: string;
 }
 
 /**
@@ -84,6 +85,7 @@ export function extractPropertyEntry(
 ): PropertyMapEntry {
   let state = false;
   let attribute = true;
+  let attributeName: string | undefined = undefined;
 
   for (const prop of value.properties) {
     if (
@@ -93,8 +95,14 @@ export function extractPropertyEntry(
     ) {
       if (prop.key.name === 'state' && prop.value.value === true) {
         state = true;
-      } else if (prop.key.name === 'attribute' && prop.value.value === false) {
-        attribute = false;
+      }
+
+      if (prop.key.name === 'attribute') {
+        if (prop.value.value === false) {
+          attribute = false;
+        } else if (typeof prop.value.value === 'string') {
+          attributeName = prop.value.value;
+        }
       }
     }
   }
@@ -103,7 +111,8 @@ export function extractPropertyEntry(
     expr: value,
     key,
     state,
-    attribute
+    attribute,
+    attributeName
   };
 }
 

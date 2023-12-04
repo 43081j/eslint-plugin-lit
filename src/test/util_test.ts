@@ -56,7 +56,8 @@ describe('util', () => {
         key,
         expr: node,
         state: false,
-        attribute: true
+        attribute: true,
+        attributeName: undefined
       });
     });
 
@@ -76,7 +77,8 @@ describe('util', () => {
         key,
         expr: node,
         state: false,
-        attribute: true
+        attribute: true,
+        attributeName: undefined
       });
     });
 
@@ -111,7 +113,8 @@ describe('util', () => {
         key,
         expr: node,
         state: true,
-        attribute: true
+        attribute: true,
+        attributeName: undefined
       });
     });
 
@@ -146,7 +149,44 @@ describe('util', () => {
         key,
         expr: node,
         state: false,
-        attribute: false
+        attribute: false,
+        attributeName: undefined
+      });
+    });
+
+    it('should extract attribute names', () => {
+      const node: ESTree.ObjectExpression = {
+        type: 'ObjectExpression',
+        properties: [
+          {
+            type: 'Property',
+            kind: 'init',
+            method: false,
+            shorthand: false,
+            computed: false,
+            key: {
+              type: 'Identifier',
+              name: 'attribute'
+            },
+            value: {
+              type: 'Literal',
+              value: 'boop'
+            }
+          }
+        ]
+      };
+      const key: ESTree.Identifier = {
+        type: 'Identifier',
+        name: 'foo'
+      };
+      const entry = util.extractPropertyEntry(key, node);
+
+      expect(entry).to.deep.equal({
+        key,
+        expr: node,
+        state: false,
+        attribute: true,
+        attributeName: 'boop'
       });
     });
 
@@ -182,7 +222,8 @@ describe('util', () => {
         key,
         expr: node,
         state: false,
-        attribute: true
+        attribute: true,
+        attributeName: undefined
       });
     });
   });

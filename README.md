@@ -56,6 +56,7 @@ If you want more fine-grained configuration, you can instead add a snippet like 
 
 ## List of supported rules
 
+- [lit/attribute-names](docs/rules/attribute-names.md)
 - [lit/attribute-value-entities](docs/rules/attribute-value-entities.md)
 - [lit/ban-attributes](docs/rules/ban-attributes.md)
 - [lit/binding-positions](docs/rules/binding-positions.md)
