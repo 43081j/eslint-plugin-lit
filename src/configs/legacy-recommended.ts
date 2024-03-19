@@ -1,4 +1,6 @@
-export const config = {
+import type {ESLint} from 'eslint';
+
+export const config: ESLint.ConfigData = {
   plugins: ['lit'],
 
   rules: {

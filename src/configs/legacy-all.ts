@@ -1,9 +1,7 @@
-import type {ESLint, Linter} from 'eslint';
+import type {ESLint} from 'eslint';
 
-export const configFactory = (plugin: ESLint.Plugin): Linter.FlatConfig => ({
-  plugins: {
-    lit: plugin
-  },
+export const config: ESLint.ConfigData = {
+  plugins: ['lit'],
 
   rules: {
     'lit/attribute-names': 'error',
@@ -31,4 +29,4 @@ export const configFactory = (plugin: ESLint.Plugin): Linter.FlatConfig => ({
     'lit/quoted-expressions': 'error',
     'lit/value-after-constraints': 'error'
   }
-});
+};
