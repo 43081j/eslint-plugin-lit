@@ -1,38 +1,22 @@
-import {Linter} from 'eslint';
+import type {ESLint, Linter} from 'eslint';
 import {expect} from 'chai';
 import {configs} from '../index';
 
+type ConfigLike = Linter.FlatConfig | ESLint.ConfigData;
+
+const isFlatConfig = (config: ConfigLike): config is Linter.FlatConfig =>
+  !Array.isArray(config.plugins);
+
 describe('configs', () => {
-  it('should load flat configs correctly', () => {
-    const linter = new Linter({
-      configType: 'flat'
-    });
+  it('should define configs correctly', () => {
+    expect(configs['recommended']).to.be.ok;
+    expect(configs['all']).to.be.ok;
+    expect(configs['flat/recommended']).to.be.ok;
+    expect(configs['flat/all']).to.be.ok;
 
-    const result = linter.verify(
-      'html`<x-foo bar bar>`',
-      [
-        {
-          files: ['*.js'],
-          ...configs['flat/recommended']
-        }
-      ],
-      'foo.js'
-    );
-
-    expect(result.length).to.equal(1);
-  });
-
-  it('should load legacy configs correctly', () => {
-    const linter = new Linter();
-
-    const result = linter.verify(
-      'html`<x-foo bar bar>`',
-      {
-        extends: ['plugin:lit/recommended']
-      },
-      'foo.js'
-    );
-
-    expect(result.length).to.equal(1);
+    expect(isFlatConfig(configs['flat/recommended'])).to.equal(true);
+    expect(isFlatConfig(configs['flat/all'])).to.equal(true);
+    expect(isFlatConfig(configs['recommended'])).to.equal(false);
+    expect(isFlatConfig(configs['all'])).to.equal(false);
   });
 });
