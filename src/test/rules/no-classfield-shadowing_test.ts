@@ -21,6 +21,23 @@ const ruleTester = new RuleTester({
   }
 });
 
+const parser = require.resolve('@babel/eslint-parser');
+const parserOptions = {
+  requireConfigFile: false,
+  babelOptions: {
+    plugins: [
+      [
+        '@babel/plugin-proposal-decorators',
+        {
+          version: '2023-11'
+        }
+      ]
+    ]
+  }
+};
+
+const tsParser = require.resolve('@typescript-eslint/parser');
+
 ruleTester.run('no-classfield-shadowing', rule, {
   valid: [
     `class MyElement extends LitElement {
@@ -39,7 +56,32 @@ ruleTester.run('no-classfield-shadowing', rule, {
       properties = {
         foo: { type: String }
       }
-    }`
+    }`,
+    {
+      code: `class MyElement extends LitElement {
+        @property()
+        foo;
+      }`,
+      parser,
+      parserOptions
+    },
+    {
+      code: `class MyElement extends LitElement {
+        @property()
+        accessor foo;
+      }`,
+      parser,
+      parserOptions
+    },
+    {
+      code: `class MyElement extends LitElement {
+        declare foo;
+        static properties = {
+          foo: { type: String }
+        };
+      }`,
+      parser: tsParser
+    }
   ],
 
   invalid: [

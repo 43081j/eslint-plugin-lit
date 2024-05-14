@@ -1,11 +1,11 @@
-# Disallows class fields with same name as static properties
+# Disallows class fields with same name as reactive properties
 
-Class fields set with same names as static properties will not trigger updates as expected. They will overwrite
+Class fields set with same names as reactive properties will not trigger updates as expected. They will overwrite
 accessors used for detecting changes. See https://lit.dev/msg/class-field-shadowing for more information.
 
 ## Rule Details
 
-This rule disallows class fields with same name as static properties.
+This rule disallows class fields with same name as reactive properties.
 
 The following patterns are considered warnings:
 
