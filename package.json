@@ -49,8 +49,8 @@
     "eslint": ">= 5"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.18.9",
-    "@babel/plugin-proposal-decorators": "^7.18.10",
+    "@babel/eslint-parser": "^7.24.5",
+    "@babel/plugin-proposal-decorators": "^7.24.1",
     "@types/chai": "^4.2.16",
     "@types/eslint": "^8.4.6",
     "@types/estree": "^1.0.0",

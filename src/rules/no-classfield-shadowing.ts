@@ -5,7 +5,12 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {getClassFields, getPropertyMap, isLitClass} from '../util';
+import {
+  getClassFields,
+  getPropertyMap,
+  isLitClass,
+  hasLitPropertyDecorator
+} from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -22,7 +27,7 @@ const rule: Rule.RuleModule = {
     messages: {
       noClassfieldShadowing:
         'The {{ prop }} property is a class field which has the same name as ' +
-        'static property which could have unintended side-effects.'
+        'a reactive property which could have unintended side-effects.'
     }
   },
 
@@ -34,7 +39,8 @@ const rule: Rule.RuleModule = {
           const classMembers = getClassFields(node);
 
           for (const [prop, {key}] of propertyMap.entries()) {
-            if (classMembers.has(prop)) {
+            const member = classMembers.get(prop);
+            if (member && !hasLitPropertyDecorator(member)) {
               context.report({
                 node: key,
                 messageId: 'noClassfieldShadowing',

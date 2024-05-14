@@ -9,6 +9,10 @@ export interface BabelProperty extends ESTree.MethodDefinition {
   decorators?: BabelDecorator[];
 }
 
+export type DecoratedNode = ESTree.Node & {
+  decorators?: BabelDecorator[];
+};
+
 /**
  * Returns if given node has a lit identifier
  * @param {ESTree.Node} node
@@ -139,6 +143,9 @@ export function getClassFields(
   return result;
 }
 
+const propertyDecorators = ['state', 'property', 'internalProperty'];
+const internalDecorators = ['state', 'internalProperty'];
+
 /**
  * Get the properties object of an element class
  *
@@ -149,8 +156,6 @@ export function getPropertyMap(
   node: ESTree.Class
 ): ReadonlyMap<string, PropertyMapEntry> {
   const result = new Map<string, PropertyMapEntry>();
-  const propertyDecorators = ['state', 'property', 'internalProperty'];
-  const internalDecorators = ['state', 'internalProperty'];
 
   for (const member of node.body.body) {
     if (
@@ -241,6 +246,31 @@ export function getPropertyMap(
   }
 
   return result;
+}
+
+/**
+ * Determines if a node has a lit property decorator
+ * @param {ESTree.Node} node Node to test
+ * @return {boolean}
+ */
+export function hasLitPropertyDecorator(node: ESTree.Node): boolean {
+  const decoratedNode = node as DecoratedNode;
+
+  if (!decoratedNode.decorators || !Array.isArray(decoratedNode.decorators)) {
+    return false;
+  }
+
+  for (const decorator of decoratedNode.decorators) {
+    if (
+      decorator.expression.type === 'CallExpression' &&
+      decorator.expression.callee.type === 'Identifier' &&
+      propertyDecorators.includes(decorator.expression.callee.name)
+    ) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 /**
