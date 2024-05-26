@@ -38,7 +38,7 @@ ruleTester.run('attribute-names', rule, {
         };
       }
     }`,
-    `class Foo extends Litelement {
+    `class Foo extends LitElement {
       static get properties() {
         return {
           camelCase: {type: String, attribute: 'lowercase'}
