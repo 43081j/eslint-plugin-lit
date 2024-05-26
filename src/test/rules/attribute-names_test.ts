@@ -41,6 +41,13 @@ ruleTester.run('attribute-names', rule, {
     `class Foo extends LitElement {
       static get properties() {
         return {
+          internalState: {type: String, state: true}
+        };
+      }
+    }`,
+    `class Foo extends LitElement {
+      static get properties() {
+        return {
           camelCase: {type: String, attribute: 'lowercase'}
         };
       }
