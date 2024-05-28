@@ -37,7 +37,7 @@ const rule: Rule.RuleModule = {
           const propertyMap = getPropertyMap(node);
 
           for (const [prop, propConfig] of propertyMap.entries()) {
-            if (!propConfig.attribute) {
+            if (!propConfig.attribute || propConfig.state) {
               continue;
             }
 
