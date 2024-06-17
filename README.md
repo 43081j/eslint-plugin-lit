@@ -36,6 +36,22 @@ Then extend the recommended eslint config:
 }
 ```
 
+Or if you're using (flat) config files, add to your `eslint.config.js`:
+
+```ts
+import {configs} from 'eslint-plugin-lit';
+
+export default [
+  configs['flat/recommended'],
+
+  // or if you want to specify `files`, or other options
+  {
+    ...configs['flat/recommended'],
+    files: ['test/**/*.js']
+  }
+];
+```
+
 ### Custom Configuration
 
 If you want more fine-grained configuration, you can instead add a snippet like this to your ESLint configuration file:
