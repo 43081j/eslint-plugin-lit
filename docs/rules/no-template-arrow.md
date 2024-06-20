@@ -7,14 +7,31 @@ loss.
 Instead, you should do something like so:
 
 ```ts
-_render() {
-  return html`<x-foo @event=${this._onClick}>`;
-}
+class MyElement extends LitElement {
+  render() {
+    return html`<x-foo @event=${this._onClick}>`;
+  }
 
-_onClick() { ... }
+  _onClick() { ... }
+}
 ```
 
-As lit will automatically bind it to the correct context.
+As LitElement will automatically bind event listeners to the correct context, or:
+
+```ts
+class MyElement extends LitElement {
+  constructor () {
+    super();
+    this.someFunc = this.someFunc.bind(this);
+  }
+  
+  render() {
+    return html`<x-foo .funcProp=${this.someFunc}>`;
+  }
+
+  someFunc() { ... }
+}
+```
 
 ## Rule Details
 
