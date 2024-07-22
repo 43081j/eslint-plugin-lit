@@ -228,6 +228,27 @@ ruleTester.run('no-property-change-update', rule, {
           column: 11
         }
       ]
+    },
+    {
+      code: `@customElement('foo')
+      class Foo extends FooElement {
+        static get properties() {
+          return { prop: { type: String } };
+        }
+        update(change) {
+          super.update();
+          this.prop = 'foo';
+        }
+      }`,
+      parser,
+      parserOptions,
+      errors: [
+        {
+          messageId: 'propertyChange',
+          line: 8,
+          column: 11
+        }
+      ]
     }
   ]
 });

@@ -13,13 +13,39 @@ export type DecoratedNode = ESTree.Node & {
   decorators?: BabelDecorator[];
 };
 
+export type NodeWithParent = ESTree.Node & {
+  parent?: ESTree.Node;
+}
+
 /**
  * Returns if given node has a lit identifier
- * @param {ESTree.Node} node
+ * @param {NodeWithParent} node
  * @return {boolean}
  */
-function hasLitIdentifier(node: ESTree.Node): boolean {
-  return node.type === 'Identifier' && node.name === 'LitElement';
+function hasLitIdentifier(node: NodeWithParent): boolean {
+  if (node.type === 'Identifier' && node.name === 'LitElement') {
+    return true;
+  }
+
+  if (node.parent && node.parent.type === 'ClassDeclaration') {
+    const decoratedNode = node.parent as DecoratedNode;
+
+    if (!decoratedNode.decorators || !Array.isArray(decoratedNode.decorators)) {
+      return false;
+    }
+
+    for (const decorator of decoratedNode.decorators) {
+      if (
+        decorator.expression.type === 'CallExpression' &&
+        decorator.expression.callee.type === 'Identifier' &&
+        decorator.expression.callee.name === 'customElement'
+      ) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 /**

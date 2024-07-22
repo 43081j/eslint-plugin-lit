@@ -21,6 +21,14 @@ const ruleTester = new RuleTester({
   }
 });
 
+const parser = require.resolve('@babel/eslint-parser');
+const parserOptions = {
+  requireConfigFile: false,
+  babelOptions: {
+    plugins: [['@babel/plugin-proposal-decorators', {version: '2023-11'}]]
+  }
+};
+
 ruleTester.run('lifecycle-super', rule, {
   valid: [
     'class Foo { }',
@@ -181,6 +189,24 @@ ruleTester.run('lifecycle-super', rule, {
           messageId: 'callSuper',
           data: {method: 'connectedCallback'},
           line: 2,
+          column: 9
+        }
+      ]
+    },
+    {
+      code: `@customElement('foo')
+      class Foo extends FooElement {
+        connectedCallback() {
+          super.foo.connectedCallback();
+        }
+      }`,
+      parser,
+      parserOptions,
+      errors: [
+        {
+          messageId: 'callSuper',
+          data: {method: 'connectedCallback'},
+          line: 3,
           column: 9
         }
       ]
