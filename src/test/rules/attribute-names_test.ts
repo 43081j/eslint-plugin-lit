@@ -54,6 +54,66 @@ ruleTester.run('attribute-names', rule, {
     }`,
     {
       code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: 'camel-case'}
+          };
+        }
+      }`,
+      options: [{style: 'dash'}]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: false}
+          };
+        }
+      }`,
+      options: [{style: 'dash'}]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: 'camelcase'}
+          };
+        }
+      }`,
+      options: [{style: 'none'}]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: false}
+          };
+        }
+      }`,
+      options: [{style: 'none'}]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: 'camel_case'}
+          };
+        }
+      }`,
+      options: [{style: 'snake'}]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: false}
+          };
+        }
+      }`,
+      options: [{style: 'snake'}]
+    },
+    {
+      code: `class Foo extends LitElement {
         @property({ type: String })
         lowercase = 'foo';
       }`,
@@ -92,6 +152,125 @@ ruleTester.run('attribute-names', rule, {
           line: 4,
           column: 13,
           messageId: 'casedPropertyWithoutAttribute'
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String}
+          };
+        }
+      }`,
+      options: [{style: 'dash'}],
+      errors: [
+        {
+          line: 4,
+          column: 13,
+          messageId: 'casedPropertyWithoutAttribute'
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: 'stillCamelCase'}
+          };
+        }
+      }`,
+      options: [{style: 'dash'}],
+      errors: [
+        {
+          line: 4,
+          column: 24,
+          messageId: 'casedPropertyStyleDash'
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: 'camel-Case'}
+          };
+        }
+      }`,
+      options: [{style: 'dash'}],
+      errors: [
+        {
+          line: 4,
+          column: 24,
+          messageId: 'casedPropertyStyleDash'
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String}
+          };
+        }
+      }`,
+      options: [{style: 'none'}],
+      errors: [
+        {
+          line: 4,
+          column: 13,
+          messageId: 'casedPropertyWithoutAttribute'
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: 'camelCase'}
+          };
+        }
+      }`,
+      options: [{style: 'none'}],
+      errors: [
+        {
+          line: 4,
+          column: 24,
+          messageId: 'casedPropertyStyleNone'
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String}
+          };
+        }
+      }`,
+      options: [{style: 'snake'}],
+      errors: [
+        {
+          line: 4,
+          column: 13,
+          messageId: 'casedPropertyWithoutAttribute'
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: 'camel_Case'}
+          };
+        }
+      }`,
+      options: [{style: 'snake'}],
+      errors: [
+        {
+          line: 4,
+          column: 24,
+          messageId: 'casedPropertyStyleSnake'
         }
       ]
     },

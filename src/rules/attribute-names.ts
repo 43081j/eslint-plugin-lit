@@ -5,7 +5,7 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {getPropertyMap, isLitClass} from '../util';
+import {getPropertyMap, isLitClass, toDashCase, toSnakeCase} from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -18,7 +18,15 @@ const rule: Rule.RuleModule = {
       recommended: true,
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/attribute-names.md'
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          style: {type: 'string', enum: ['none', 'dash', 'snake']}
+        },
+        additionalProperties: false,
+        minProperties: 1
+      }],
     messages: {
       casedAttribute:
         'Attributes are case-insensitive and therefore should be ' +
@@ -26,11 +34,21 @@ const rule: Rule.RuleModule = {
       casedPropertyWithoutAttribute:
         'Property has non-lowercase casing but no attribute. It should ' +
         'instead have an explicit `attribute` set to the lower case ' +
-        'name (usually snake-case)'
+        'name (usually snake-case)',
+      casedPropertyStyleNone:
+        'Attributes should be defined with lower cased property name',
+      casedPropertyStyleSnake:
+        'Attributes should be defined with snake_cased property name',
+      casedPropertyStyleDash:
+        'Attributes should be defined with dash-cased property name'
     }
   },
 
   create(context): Rule.RuleListener {
+    const style: string = context.options.length && context.options[0].style
+      ? context.options[0].style
+      : null;
+
     return {
       ClassDeclaration: (node: ESTree.Class): void => {
         if (isLitClass(node)) {
@@ -49,14 +67,37 @@ const rule: Rule.RuleModule = {
                 });
               }
             } else {
-              if (
-                propConfig.attributeName.toLowerCase() !==
-                propConfig.attributeName
-              ) {
-                context.report({
-                  node: propConfig.expr ?? propConfig.key,
-                  messageId: 'casedAttribute'
-                });
+              if (style === 'none') {
+                if (propConfig.attributeName !== prop.toLowerCase()) {
+                  context.report({
+                    node: propConfig.expr ?? propConfig.key,
+                    messageId: 'casedPropertyStyleNone'
+                  });
+                }
+              } else if (style === 'snake') {
+                if (propConfig.attributeName !== toSnakeCase(prop)) {
+                  context.report({
+                    node: propConfig.expr ?? propConfig.key,
+                    messageId: 'casedPropertyStyleSnake'
+                  });
+                }
+              } else if (style === 'dash') {
+                if (propConfig.attributeName !== toDashCase(prop)) {
+                  context.report({
+                    node: propConfig.expr ?? propConfig.key,
+                    messageId: 'casedPropertyStyleDash'
+                  });
+                }
+              } else if (style === null) {
+                if (
+                  propConfig.attributeName.toLowerCase() !==
+                  propConfig.attributeName
+                ) {
+                  context.report({
+                    node: propConfig.expr ?? propConfig.key,
+                    messageId: 'casedAttribute'
+                  });
+                }
               }
             }
           }
