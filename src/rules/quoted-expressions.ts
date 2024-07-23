@@ -37,6 +37,7 @@ const rule: Rule.RuleModule = {
   create(context): Rule.RuleListener {
     // variables should be defined here
     const alwaysQuote = context.options[0] === 'always';
+    const quotePattern = /=(["'])?$/;
 
     //----------------------------------------------------------------------
     // Helpers
@@ -57,20 +58,18 @@ const rule: Rule.RuleModule = {
             const expression = node.quasi.expressions[i];
             const previousQuasi = node.quasi.quasis[i];
             const nextQuasi = node.quasi.quasis[i + 1];
-            const isAttribute = /=["']?$/.test(previousQuasi.value.raw);
+            const quoteMatch = previousQuasi.value.raw.match(quotePattern);
 
             // don't care about non-attribute bindings
-            if (!isAttribute) {
+            if (!quoteMatch) {
               continue;
             }
 
+            const hasStartQuote = quoteMatch[1] !== undefined;
             const isQuoted =
-              (previousQuasi.value.raw.endsWith('="') &&
-                nextQuasi.value.raw.startsWith('"')) ||
-              (previousQuasi.value.raw.endsWith("='") &&
-                nextQuasi.value.raw.startsWith("'"));
+              hasStartQuote && nextQuasi.value.raw.startsWith(quoteMatch[1]);
 
-            if (alwaysQuote && !isQuoted) {
+            if (alwaysQuote && !hasStartQuote) {
               context.report({
                 node: expression,
                 messageId: 'alwaysQuote',
