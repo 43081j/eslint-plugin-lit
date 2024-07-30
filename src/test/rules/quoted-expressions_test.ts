@@ -43,6 +43,38 @@ ruleTester.run('quoted-expressions', rule, {
     {
       code: "html`<x-foo attr='${v}'></x-foo>`",
       options: ['always']
+    },
+    {
+      code: 'html`<x-foo attr="${v} foo">${expr}</x-foo>`',
+      options: ['always']
+    },
+    {
+      code: 'html`<x-foo attr="foo ${v} bar">${expr}</x-foo>`',
+      options: ['always']
+    },
+    {
+      code: 'html`<x-foo attr="foo ${v}${w} bar">${expr}</x-foo>`',
+      options: ['always']
+    },
+    {
+      code: 'html`<x-foo attr="foo ${v} bar ${w} baz">${expr}</x-foo>`',
+      options: ['always']
+    },
+    {
+      code: 'html`<x-foo attr="${v ? "foo" : "bar"} baz">${expr}</x-foo>`',
+      options: ['always']
+    },
+    {
+      code: 'html`<x-foo attr="foo ${v}">${expr}</x-foo>`',
+      options: ['always']
+    },
+    {
+      code: 'html`<p attr="${v} foo">${expr}</p>`',
+      options: ['never']
+    },
+    {
+      code: 'html`<p attr="foo ${v} bar">${expr}</p>`',
+      options: ['never']
     }
   ],
 
