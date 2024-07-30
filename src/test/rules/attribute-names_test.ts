@@ -185,7 +185,8 @@ ruleTester.run('attribute-names', rule, {
         {
           line: 4,
           column: 24,
-          messageId: 'casedPropertyStyleKebab'
+          messageId: 'casedAttributeStyled',
+          data: {style: 'kebab-case'}
         }
       ]
     },
@@ -202,7 +203,8 @@ ruleTester.run('attribute-names', rule, {
         {
           line: 4,
           column: 24,
-          messageId: 'casedPropertyStyleKebab'
+          messageId: 'casedAttributeStyled',
+          data: {style: 'kebab-case'}
         }
       ]
     },
@@ -236,7 +238,8 @@ ruleTester.run('attribute-names', rule, {
         {
           line: 4,
           column: 24,
-          messageId: 'casedPropertyStyleNone'
+          messageId: 'casedAttributeStyled',
+          data: {style: 'lower case'}
         }
       ]
     },
@@ -270,7 +273,8 @@ ruleTester.run('attribute-names', rule, {
         {
           line: 4,
           column: 24,
-          messageId: 'casedPropertyStyleSnake'
+          messageId: 'casedAttributeStyled',
+          data: {style: 'snake_case'}
         }
       ]
     },

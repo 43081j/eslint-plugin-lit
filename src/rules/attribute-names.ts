@@ -35,12 +35,9 @@ const rule: Rule.RuleModule = {
         'Property has non-lowercase casing but no attribute. It should ' +
         'instead have an explicit `attribute` set to the lower case ' +
         'name (usually snake-case)',
-      casedPropertyStyleNone:
-        'Attributes should be defined with lower cased property name',
-      casedPropertyStyleSnake:
-        'Attributes should be defined with snake_cased property name',
-      casedPropertyStyleKebab:
-        'Attributes should be defined with kebab-cased property name'
+      casedAttributeStyled:
+        'Attributes are case-insensitive. Attributes should be written as a ' +
+        '{{style}} name'
     }
   },
 
@@ -67,28 +64,7 @@ const rule: Rule.RuleModule = {
                 });
               }
             } else {
-              if (style === 'none') {
-                if (propConfig.attributeName !== prop.toLowerCase()) {
-                  context.report({
-                    node: propConfig.expr ?? propConfig.key,
-                    messageId: 'casedPropertyStyleNone'
-                  });
-                }
-              } else if (style === 'snake') {
-                if (propConfig.attributeName !== toSnakeCase(prop)) {
-                  context.report({
-                    node: propConfig.expr ?? propConfig.key,
-                    messageId: 'casedPropertyStyleSnake'
-                  });
-                }
-              } else if (style === 'kebab') {
-                if (propConfig.attributeName !== toKebabCase(prop)) {
-                  context.report({
-                    node: propConfig.expr ?? propConfig.key,
-                    messageId: 'casedPropertyStyleKebab'
-                  });
-                }
-              } else if (style === null) {
+              if (style === null) {
                 if (
                   propConfig.attributeName.toLowerCase() !==
                   propConfig.attributeName
@@ -96,6 +72,32 @@ const rule: Rule.RuleModule = {
                   context.report({
                     node: propConfig.expr ?? propConfig.key,
                     messageId: 'casedAttribute'
+                  });
+                }
+              } else {
+                let styleName: string;
+                let styledKey: string;
+
+                switch (style) {
+                  case 'snake':
+                    styleName = 'snake_case';
+                    styledKey = toSnakeCase(prop);
+                    break;
+                  case 'kebab':
+                    styleName = 'kebab-case';
+                    styledKey = toKebabCase(prop);
+                    break;
+                  default:
+                    styleName = 'lower case';
+                    styledKey = prop.toLowerCase();
+                    break;
+                }
+
+                if (propConfig.attributeName !== styledKey) {
+                  context.report({
+                    node: propConfig.expr ?? propConfig.key,
+                    messageId: 'casedAttributeStyled',
+                    data: {style: styleName}
                   });
                 }
               }

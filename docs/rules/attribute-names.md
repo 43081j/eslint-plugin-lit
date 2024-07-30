@@ -46,7 +46,7 @@ lower: string;
 ## Options
 
 You can specify `style` to one of these values `none`, `snake`, `kebab` to
-enforce that attribute name is the styled version of property, or `false`.
+enforce that the attribute name is cased using the specified casing style.
 
 For example for a property named `camelCaseProp`, expected attribute names are:
 
