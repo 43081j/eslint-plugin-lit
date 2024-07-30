@@ -60,7 +60,7 @@ ruleTester.run('attribute-names', rule, {
           };
         }
       }`,
-      options: [{style: 'dash'}]
+      options: [{style: 'kebab'}]
     },
     {
       code: `class Foo extends LitElement {
@@ -70,7 +70,7 @@ ruleTester.run('attribute-names', rule, {
           };
         }
       }`,
-      options: [{style: 'dash'}]
+      options: [{style: 'kebab'}]
     },
     {
       code: `class Foo extends LitElement {
@@ -163,7 +163,7 @@ ruleTester.run('attribute-names', rule, {
           };
         }
       }`,
-      options: [{style: 'dash'}],
+      options: [{style: 'kebab'}],
       errors: [
         {
           line: 4,
@@ -180,12 +180,12 @@ ruleTester.run('attribute-names', rule, {
           };
         }
       }`,
-      options: [{style: 'dash'}],
+      options: [{style: 'kebab'}],
       errors: [
         {
           line: 4,
           column: 24,
-          messageId: 'casedPropertyStyleDash'
+          messageId: 'casedPropertyStyleKebab'
         }
       ]
     },
@@ -197,12 +197,12 @@ ruleTester.run('attribute-names', rule, {
           };
         }
       }`,
-      options: [{style: 'dash'}],
+      options: [{style: 'kebab'}],
       errors: [
         {
           line: 4,
           column: 24,
-          messageId: 'casedPropertyStyleDash'
+          messageId: 'casedPropertyStyleKebab'
         }
       ]
     },

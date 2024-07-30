@@ -339,11 +339,11 @@ export function toSnakeCase(camelCaseStr: string): string {
 }
 
 /**
- * Converts a camelCase string to dash-case string
+ * Converts a camelCase string to kebab-case string
  *
  * @param {string} camelCaseStr String to convert
  * @return {string}
  */
-export function toDashCase(camelCaseStr: string): string {
+export function toKebabCase(camelCaseStr: string): string {
   return camelCaseStr.replace(/[A-Z]/g, (m) => '-' + m.toLowerCase());
 }

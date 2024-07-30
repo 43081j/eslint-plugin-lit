@@ -5,7 +5,7 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {getPropertyMap, isLitClass, toDashCase, toSnakeCase} from '../util';
+import {getPropertyMap, isLitClass, toKebabCase, toSnakeCase} from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -22,7 +22,7 @@ const rule: Rule.RuleModule = {
       {
         type: 'object',
         properties: {
-          style: {type: 'string', enum: ['none', 'dash', 'snake']}
+          style: {type: 'string', enum: ['none', 'kebab', 'snake']}
         },
         additionalProperties: false,
         minProperties: 1
@@ -39,8 +39,8 @@ const rule: Rule.RuleModule = {
         'Attributes should be defined with lower cased property name',
       casedPropertyStyleSnake:
         'Attributes should be defined with snake_cased property name',
-      casedPropertyStyleDash:
-        'Attributes should be defined with dash-cased property name'
+      casedPropertyStyleKebab:
+        'Attributes should be defined with kebab-cased property name'
     }
   },
 
@@ -81,11 +81,11 @@ const rule: Rule.RuleModule = {
                     messageId: 'casedPropertyStyleSnake'
                   });
                 }
-              } else if (style === 'dash') {
-                if (propConfig.attributeName !== toDashCase(prop)) {
+              } else if (style === 'kebab') {
+                if (propConfig.attributeName !== toKebabCase(prop)) {
                   context.report({
                     node: propConfig.expr ?? propConfig.key,
-                    messageId: 'casedPropertyStyleDash'
+                    messageId: 'casedPropertyStyleKebab'
                   });
                 }
               } else if (style === null) {
