@@ -22,7 +22,7 @@ const rule: Rule.RuleModule = {
       {
         type: 'object',
         properties: {
-          style: {type: 'string', enum: ['none', 'kebab', 'snake']}
+          convention: {type: 'string', enum: ['none', 'kebab', 'snake']}
         },
         additionalProperties: false,
         minProperties: 1
@@ -35,15 +35,15 @@ const rule: Rule.RuleModule = {
         'Property has non-lowercase casing but no attribute. It should ' +
         'instead have an explicit `attribute` set to the lower case ' +
         'name (usually snake-case)',
-      casedAttributeStyled:
-        'Attributes are case-insensitive. Attributes should be written as a ' +
-        '{{style}} name'
+      casedAttributeConvention:
+        'Attribute should be property name written in {{convention}}'
     }
   },
 
   create(context): Rule.RuleListener {
-    const style: string = context.options.length && context.options[0].style
-      ? context.options[0].style
+    const convention: string = context.options.length
+        && context.options[0].convention
+      ? context.options[0].convention
       : null;
 
     return {
@@ -64,7 +64,7 @@ const rule: Rule.RuleModule = {
                 });
               }
             } else {
-              if (style === null) {
+              if (convention === null) {
                 if (
                   propConfig.attributeName.toLowerCase() !==
                   propConfig.attributeName
@@ -75,29 +75,29 @@ const rule: Rule.RuleModule = {
                   });
                 }
               } else {
-                let styleName: string;
-                let styledKey: string;
+                let conventionName: string;
+                let expectedAttributeName: string;
 
-                switch (style) {
+                switch (convention) {
                   case 'snake':
-                    styleName = 'snake_case';
-                    styledKey = toSnakeCase(prop);
+                    conventionName = 'snake_case';
+                    expectedAttributeName = toSnakeCase(prop);
                     break;
                   case 'kebab':
-                    styleName = 'kebab-case';
-                    styledKey = toKebabCase(prop);
+                    conventionName = 'kebab-case';
+                    expectedAttributeName = toKebabCase(prop);
                     break;
                   default:
-                    styleName = 'lower case';
-                    styledKey = prop.toLowerCase();
+                    conventionName = 'lower case';
+                    expectedAttributeName = prop.toLowerCase();
                     break;
                 }
 
-                if (propConfig.attributeName !== styledKey) {
+                if (propConfig.attributeName !== expectedAttributeName) {
                   context.report({
                     node: propConfig.expr ?? propConfig.key,
-                    messageId: 'casedAttributeStyled',
-                    data: {style: styleName}
+                    messageId: 'casedAttributeConvention',
+                    data: {convention: conventionName}
                   });
                 }
               }

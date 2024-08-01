@@ -45,18 +45,18 @@ lower: string;
 
 ## Options
 
-You can specify `style` to one of these values `none`, `snake`, `kebab` to
-enforce that the attribute name is cased using the specified casing style.
+You can specify `convention` to one of these values `none`, `snake`, `kebab` to
+enforce that the attribute name is cased using the specified casing convention.
 
 For example for a property named `camelCaseProp`, expected attribute names are:
 
-| Style | Attribute       |
-|-------|-----------------|
-| none  | camelcaseprop   |
-| kebab | camel-case-prop |
-| snake | camel_case_prop |
+| Convention | Attribute       |
+|------------|-----------------|
+| none       | camelcaseprop   |
+| kebab      | camel-case-prop |
+| snake      | camel_case_prop |
 
-The following patterns are considered warnings with `{"style": "kebab"}`
+The following patterns are considered warnings with `{"convention": "kebab"}`
 specified:
 
 ```ts
@@ -66,7 +66,8 @@ specified:
 camelCaseName: string;
 ```
 
-The following patterns are not warnings with `{"style": "kebab"}` specified:
+The following patterns are not warnings with `{"convention": "kebab"}`
+specified:
 
 ```ts
 @property({attribute: 'camel-case-name'})

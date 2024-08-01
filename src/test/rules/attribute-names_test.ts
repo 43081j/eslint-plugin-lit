@@ -60,7 +60,7 @@ ruleTester.run('attribute-names', rule, {
           };
         }
       }`,
-      options: [{style: 'kebab'}]
+      options: [{convention: 'kebab'}]
     },
     {
       code: `class Foo extends LitElement {
@@ -70,7 +70,7 @@ ruleTester.run('attribute-names', rule, {
           };
         }
       }`,
-      options: [{style: 'kebab'}]
+      options: [{convention: 'kebab'}]
     },
     {
       code: `class Foo extends LitElement {
@@ -80,7 +80,7 @@ ruleTester.run('attribute-names', rule, {
           };
         }
       }`,
-      options: [{style: 'none'}]
+      options: [{convention: 'none'}]
     },
     {
       code: `class Foo extends LitElement {
@@ -90,7 +90,7 @@ ruleTester.run('attribute-names', rule, {
           };
         }
       }`,
-      options: [{style: 'none'}]
+      options: [{convention: 'none'}]
     },
     {
       code: `class Foo extends LitElement {
@@ -100,7 +100,7 @@ ruleTester.run('attribute-names', rule, {
           };
         }
       }`,
-      options: [{style: 'snake'}]
+      options: [{convention: 'snake'}]
     },
     {
       code: `class Foo extends LitElement {
@@ -110,7 +110,7 @@ ruleTester.run('attribute-names', rule, {
           };
         }
       }`,
-      options: [{style: 'snake'}]
+      options: [{convention: 'snake'}]
     },
     {
       code: `class Foo extends LitElement {
@@ -163,7 +163,7 @@ ruleTester.run('attribute-names', rule, {
           };
         }
       }`,
-      options: [{style: 'kebab'}],
+      options: [{convention: 'kebab'}],
       errors: [
         {
           line: 4,
@@ -180,13 +180,13 @@ ruleTester.run('attribute-names', rule, {
           };
         }
       }`,
-      options: [{style: 'kebab'}],
+      options: [{convention: 'kebab'}],
       errors: [
         {
           line: 4,
           column: 24,
-          messageId: 'casedAttributeStyled',
-          data: {style: 'kebab-case'}
+          messageId: 'casedAttributeConvention',
+          data: {convention: 'kebab-case'}
         }
       ]
     },
@@ -198,13 +198,13 @@ ruleTester.run('attribute-names', rule, {
           };
         }
       }`,
-      options: [{style: 'kebab'}],
+      options: [{convention: 'kebab'}],
       errors: [
         {
           line: 4,
           column: 24,
-          messageId: 'casedAttributeStyled',
-          data: {style: 'kebab-case'}
+          messageId: 'casedAttributeConvention',
+          data: {convention: 'kebab-case'}
         }
       ]
     },
@@ -216,7 +216,7 @@ ruleTester.run('attribute-names', rule, {
           };
         }
       }`,
-      options: [{style: 'none'}],
+      options: [{convention: 'none'}],
       errors: [
         {
           line: 4,
@@ -233,13 +233,13 @@ ruleTester.run('attribute-names', rule, {
           };
         }
       }`,
-      options: [{style: 'none'}],
+      options: [{convention: 'none'}],
       errors: [
         {
           line: 4,
           column: 24,
-          messageId: 'casedAttributeStyled',
-          data: {style: 'lower case'}
+          messageId: 'casedAttributeConvention',
+          data: {convention: 'lower case'}
         }
       ]
     },
@@ -251,7 +251,7 @@ ruleTester.run('attribute-names', rule, {
           };
         }
       }`,
-      options: [{style: 'snake'}],
+      options: [{convention: 'snake'}],
       errors: [
         {
           line: 4,
@@ -268,13 +268,13 @@ ruleTester.run('attribute-names', rule, {
           };
         }
       }`,
-      options: [{style: 'snake'}],
+      options: [{convention: 'snake'}],
       errors: [
         {
           line: 4,
           column: 24,
-          messageId: 'casedAttributeStyled',
-          data: {style: 'snake_case'}
+          messageId: 'casedAttributeConvention',
+          data: {convention: 'snake_case'}
         }
       ]
     },
