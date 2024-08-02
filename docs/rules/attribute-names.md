@@ -6,9 +6,6 @@ be supplied.
 
 Further, camelCase names should ideally be exposed as kebab-case attributes.
 
-If you want to force attribute to be exact styled version of property,
-consider using `style` option.
-
 ## Rule Details
 
 This rule enforces that all lit properties have equivalent lower case attributes
@@ -45,8 +42,16 @@ lower: string;
 
 ## Options
 
-You can specify `convention` to one of these values `none`, `snake`, `kebab` to
-enforce that the attribute name is cased using the specified casing convention.
+### `convention`
+
+You can specify a `convention` to enforce a particular naming convention
+on element attributes.
+
+The available values are:
+
+- `none` (default, no convention is enforced)
+- `kebab`
+- `snake`
 
 For example for a property named `camelCaseProp`, expected attribute names are:
 
@@ -60,8 +65,10 @@ The following patterns are considered warnings with `{"convention": "kebab"}`
 specified:
 
 ```ts
+// Should have an attribute set to `camel-case-name`
 @property() camelCaseName: string;
 
+// Attribute should match the property name when a convention is set
 @property({attribute: 'camel-case-other-name'})
 camelCaseName: string;
 ```

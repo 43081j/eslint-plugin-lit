@@ -24,9 +24,9 @@ const rule: Rule.RuleModule = {
         properties: {
           convention: {type: 'string', enum: ['none', 'kebab', 'snake']}
         },
-        additionalProperties: false,
-        minProperties: 1
-      }],
+        additionalProperties: false
+      }
+    ],
     messages: {
       casedAttribute:
         'Attributes are case-insensitive and therefore should be ' +
@@ -36,15 +36,13 @@ const rule: Rule.RuleModule = {
         'instead have an explicit `attribute` set to the lower case ' +
         'name (usually snake-case)',
       casedAttributeConvention:
-        'Attribute should be property name written in {{convention}}'
+        'Attribute should be property name written in {{convention}} ' +
+        'as "{{name}}"'
     }
   },
 
   create(context): Rule.RuleListener {
-    const convention: string = context.options.length
-        && context.options[0].convention
-      ? context.options[0].convention
-      : null;
+    const convention = context.options[0]?.convention ?? 'none';
 
     return {
       ClassDeclaration: (node: ESTree.Class): void => {
@@ -64,19 +62,17 @@ const rule: Rule.RuleModule = {
                 });
               }
             } else {
-              if (convention === null) {
-                if (
-                  propConfig.attributeName.toLowerCase() !==
-                  propConfig.attributeName
-                ) {
-                  context.report({
-                    node: propConfig.expr ?? propConfig.key,
-                    messageId: 'casedAttribute'
-                  });
-                }
-              } else {
-                let conventionName: string;
-                let expectedAttributeName: string;
+              if (
+                propConfig.attributeName.toLowerCase() !==
+                propConfig.attributeName
+              ) {
+                context.report({
+                  node: propConfig.expr ?? propConfig.key,
+                  messageId: 'casedAttribute'
+                });
+              } else if (convention !== 'none') {
+                let conventionName;
+                let expectedAttributeName;
 
                 switch (convention) {
                   case 'snake':
@@ -87,17 +83,20 @@ const rule: Rule.RuleModule = {
                     conventionName = 'kebab-case';
                     expectedAttributeName = toKebabCase(prop);
                     break;
-                  default:
-                    conventionName = 'lower case';
-                    expectedAttributeName = prop.toLowerCase();
-                    break;
                 }
 
-                if (propConfig.attributeName !== expectedAttributeName) {
+                if (
+                  expectedAttributeName &&
+                  conventionName &&
+                  propConfig.attributeName !== expectedAttributeName
+                ) {
                   context.report({
                     node: propConfig.expr ?? propConfig.key,
                     messageId: 'casedAttributeConvention',
-                    data: {convention: conventionName}
+                    data: {
+                      convention: conventionName,
+                      name: expectedAttributeName
+                    }
                   });
                 }
               }

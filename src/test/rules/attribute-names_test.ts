@@ -86,6 +86,16 @@ ruleTester.run('attribute-names', rule, {
       code: `class Foo extends LitElement {
         static get properties() {
           return {
+            camelCase: {type: String, attribute: 'camel-case'}
+          };
+        }
+      }`,
+      options: [{convention: 'none'}]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
             camelCase: {type: String, attribute: false}
           };
         }
@@ -185,8 +195,7 @@ ruleTester.run('attribute-names', rule, {
         {
           line: 4,
           column: 24,
-          messageId: 'casedAttributeConvention',
-          data: {convention: 'kebab-case'}
+          messageId: 'casedAttribute'
         }
       ]
     },
@@ -194,7 +203,7 @@ ruleTester.run('attribute-names', rule, {
       code: `class Foo extends LitElement {
         static get properties() {
           return {
-            camelCase: {type: String, attribute: 'camel-Case'}
+            camelCase: {type: String, attribute: 'wrong-name'}
           };
         }
       }`,
@@ -204,7 +213,7 @@ ruleTester.run('attribute-names', rule, {
           line: 4,
           column: 24,
           messageId: 'casedAttributeConvention',
-          data: {convention: 'kebab-case'}
+          data: {convention: 'kebab-case', name: 'camel-case'}
         }
       ]
     },
@@ -238,8 +247,7 @@ ruleTester.run('attribute-names', rule, {
         {
           line: 4,
           column: 24,
-          messageId: 'casedAttributeConvention',
-          data: {convention: 'lower case'}
+          messageId: 'casedAttribute'
         }
       ]
     },
@@ -264,7 +272,7 @@ ruleTester.run('attribute-names', rule, {
       code: `class Foo extends LitElement {
         static get properties() {
           return {
-            camelCase: {type: String, attribute: 'camel_Case'}
+            camelCase: {type: String, attribute: 'wrong-name'}
           };
         }
       }`,
@@ -274,7 +282,7 @@ ruleTester.run('attribute-names', rule, {
           line: 4,
           column: 24,
           messageId: 'casedAttributeConvention',
-          data: {convention: 'snake_case'}
+          data: {convention: 'snake_case', name: 'camel_case'}
         }
       ]
     },
