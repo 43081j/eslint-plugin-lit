@@ -5,7 +5,7 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {isLitClass} from "../util";
+import {isLitClass} from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition

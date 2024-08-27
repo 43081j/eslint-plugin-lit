@@ -13,39 +13,38 @@ export type DecoratedNode = ESTree.Node & {
   decorators?: BabelDecorator[];
 };
 
-export type NodeWithParent = ESTree.Node & {
-  parent?: ESTree.Node;
-}
-
 /**
- * Returns if given node has a lit identifier
- * @param {NodeWithParent} node
+ * Returns if given node has a customElement decorator
+ * @param {ESTree.Class} node
  * @return {boolean}
  */
-function hasLitIdentifier(node: NodeWithParent): boolean {
-  if (node.type === 'Identifier' && node.name === 'LitElement') {
-    return true;
+function hasCustomElementDecorator(node: ESTree.Class): boolean {
+  const decoratedNode = node as DecoratedNode;
+
+  if (!decoratedNode.decorators || !Array.isArray(decoratedNode.decorators)) {
+    return false;
   }
 
-  if (node.parent && node.parent.type === 'ClassDeclaration') {
-    const decoratedNode = node.parent as DecoratedNode;
-
-    if (!decoratedNode.decorators || !Array.isArray(decoratedNode.decorators)) {
-      return false;
-    }
-
-    for (const decorator of decoratedNode.decorators) {
-      if (
-        decorator.expression.type === 'CallExpression' &&
-        decorator.expression.callee.type === 'Identifier' &&
-        decorator.expression.callee.name === 'customElement'
-      ) {
-        return true;
-      }
+  for (const decorator of decoratedNode.decorators) {
+    if (
+      decorator.expression.type === 'CallExpression' &&
+      decorator.expression.callee.type === 'Identifier' &&
+      decorator.expression.callee.name === 'customElement'
+    ) {
+      return true;
     }
   }
 
   return false;
+}
+
+/**
+ * Returns if given node has a lit identifier
+ * @param {ESTree.Node} node
+ * @return {boolean}
+ */
+function hasLitIdentifier(node: ESTree.Node): boolean {
+  return node.type === 'Identifier' && node.name === 'LitElement';
 }
 
 /**
@@ -71,6 +70,9 @@ function isLitByExpression(node: ESTree.Node): boolean {
  * @return { boolean }
  */
 export function isLitClass(clazz: ESTree.Class): boolean {
+  if (hasCustomElementDecorator(clazz)) {
+    return true;
+  }
   if (clazz.superClass) {
     return (
       hasLitIdentifier(clazz.superClass) || isLitByExpression(clazz.superClass)
