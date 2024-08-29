@@ -54,6 +54,76 @@ ruleTester.run('attribute-names', rule, {
     }`,
     {
       code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: 'camel-case'}
+          };
+        }
+      }`,
+      options: [{convention: 'kebab'}]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: false}
+          };
+        }
+      }`,
+      options: [{convention: 'kebab'}]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: 'camelcase'}
+          };
+        }
+      }`,
+      options: [{convention: 'none'}]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: 'camel-case'}
+          };
+        }
+      }`,
+      options: [{convention: 'none'}]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: false}
+          };
+        }
+      }`,
+      options: [{convention: 'none'}]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: 'camel_case'}
+          };
+        }
+      }`,
+      options: [{convention: 'snake'}]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: false}
+          };
+        }
+      }`,
+      options: [{convention: 'snake'}]
+    },
+    {
+      code: `class Foo extends LitElement {
         @property({ type: String })
         lowercase = 'foo';
       }`,
@@ -92,6 +162,127 @@ ruleTester.run('attribute-names', rule, {
           line: 4,
           column: 13,
           messageId: 'casedPropertyWithoutAttribute'
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String}
+          };
+        }
+      }`,
+      options: [{convention: 'kebab'}],
+      errors: [
+        {
+          line: 4,
+          column: 13,
+          messageId: 'casedPropertyWithoutAttribute'
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: 'stillCamelCase'}
+          };
+        }
+      }`,
+      options: [{convention: 'kebab'}],
+      errors: [
+        {
+          line: 4,
+          column: 24,
+          messageId: 'casedAttribute'
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: 'wrong-name'}
+          };
+        }
+      }`,
+      options: [{convention: 'kebab'}],
+      errors: [
+        {
+          line: 4,
+          column: 24,
+          messageId: 'casedAttributeConvention',
+          data: {convention: 'kebab-case', name: 'camel-case'}
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String}
+          };
+        }
+      }`,
+      options: [{convention: 'none'}],
+      errors: [
+        {
+          line: 4,
+          column: 13,
+          messageId: 'casedPropertyWithoutAttribute'
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: 'camelCase'}
+          };
+        }
+      }`,
+      options: [{convention: 'none'}],
+      errors: [
+        {
+          line: 4,
+          column: 24,
+          messageId: 'casedAttribute'
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String}
+          };
+        }
+      }`,
+      options: [{convention: 'snake'}],
+      errors: [
+        {
+          line: 4,
+          column: 13,
+          messageId: 'casedPropertyWithoutAttribute'
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            camelCase: {type: String, attribute: 'wrong-name'}
+          };
+        }
+      }`,
+      options: [{convention: 'snake'}],
+      errors: [
+        {
+          line: 4,
+          column: 24,
+          messageId: 'casedAttributeConvention',
+          data: {convention: 'snake_case', name: 'camel_case'}
         }
       ]
     },

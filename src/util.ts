@@ -355,3 +355,23 @@ export function templateExpressionToHtml(
 
   return html;
 }
+
+/**
+ * Converts a camelCase string to snake_case string
+ *
+ * @param {string} camelCaseStr String to convert
+ * @return {string}
+ */
+export function toSnakeCase(camelCaseStr: string): string {
+  return camelCaseStr.replace(/[A-Z]/g, (m) => '_' + m.toLowerCase());
+}
+
+/**
+ * Converts a camelCase string to kebab-case string
+ *
+ * @param {string} camelCaseStr String to convert
+ * @return {string}
+ */
+export function toKebabCase(camelCaseStr: string): string {
+  return camelCaseStr.replace(/[A-Z]/g, (m) => '-' + m.toLowerCase());
+}

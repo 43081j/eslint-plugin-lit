@@ -5,7 +5,7 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {getPropertyMap, isLitClass} from '../util';
+import {getPropertyMap, isLitClass, toKebabCase, toSnakeCase} from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -18,7 +18,15 @@ const rule: Rule.RuleModule = {
       recommended: true,
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/attribute-names.md'
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          convention: {type: 'string', enum: ['none', 'kebab', 'snake']}
+        },
+        additionalProperties: false
+      }
+    ],
     messages: {
       casedAttribute:
         'Attributes are case-insensitive and therefore should be ' +
@@ -26,11 +34,16 @@ const rule: Rule.RuleModule = {
       casedPropertyWithoutAttribute:
         'Property has non-lowercase casing but no attribute. It should ' +
         'instead have an explicit `attribute` set to the lower case ' +
-        'name (usually snake-case)'
+        'name (usually snake-case)',
+      casedAttributeConvention:
+        'Attribute should be property name written in {{convention}} ' +
+        'as "{{name}}"'
     }
   },
 
   create(context): Rule.RuleListener {
+    const convention = context.options[0]?.convention ?? 'none';
+
     return {
       ClassDeclaration: (node: ESTree.Class): void => {
         if (isLitClass(node)) {
@@ -57,6 +70,35 @@ const rule: Rule.RuleModule = {
                   node: propConfig.expr ?? propConfig.key,
                   messageId: 'casedAttribute'
                 });
+              } else if (convention !== 'none') {
+                let conventionName;
+                let expectedAttributeName;
+
+                switch (convention) {
+                  case 'snake':
+                    conventionName = 'snake_case';
+                    expectedAttributeName = toSnakeCase(prop);
+                    break;
+                  case 'kebab':
+                    conventionName = 'kebab-case';
+                    expectedAttributeName = toKebabCase(prop);
+                    break;
+                }
+
+                if (
+                  expectedAttributeName &&
+                  conventionName &&
+                  propConfig.attributeName !== expectedAttributeName
+                ) {
+                  context.report({
+                    node: propConfig.expr ?? propConfig.key,
+                    messageId: 'casedAttributeConvention',
+                    data: {
+                      convention: conventionName,
+                      name: expectedAttributeName
+                    }
+                  });
+                }
               }
             }
           }
