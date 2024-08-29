@@ -55,11 +55,11 @@ The available values are:
 
 For example for a property named `camelCaseProp`, expected attribute names are:
 
-| Convention | Attribute       |
-|------------|-----------------|
-| none       | camelcaseprop   |
-| kebab      | camel-case-prop |
-| snake      | camel_case_prop |
+| Convention | Attribute            |
+|------------|----------------------|
+| none       | any lower case value |
+| kebab      | camel-case-prop      |
+| snake      | camel_case_prop      |
 
 The following patterns are considered warnings with `{"convention": "kebab"}`
 specified:
