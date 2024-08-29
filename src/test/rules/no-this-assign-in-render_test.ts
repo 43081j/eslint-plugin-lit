@@ -21,6 +21,14 @@ const ruleTester = new RuleTester({
   }
 });
 
+const parser = require.resolve('@babel/eslint-parser');
+const parserOptions = {
+  requireConfigFile: false,
+  babelOptions: {
+    plugins: [['@babel/plugin-proposal-decorators', {version: '2023-11'}]]
+  }
+};
+
 ruleTester.run('no-this-assign-in-render', rule, {
   valid: [
     'const x = 808;',
@@ -123,6 +131,23 @@ ruleTester.run('no-this-assign-in-render', rule, {
         {
           messageId: 'noThis',
           line: 3,
+          column: 11
+        }
+      ]
+    },
+    {
+      code: `@customElement('foo')
+      class Foo extends FooElement {
+        render() {
+          this['prop'] = 'foo';
+        }
+      }`,
+      parser,
+      parserOptions,
+      errors: [
+        {
+          messageId: 'noThis',
+          line: 4,
           column: 11
         }
       ]

@@ -5,7 +5,7 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {getPropertyMap, PropertyMapEntry} from '../util';
+import {getPropertyMap, isLitClass, PropertyMapEntry} from '../util';
 
 const superUpdateQuery =
   'CallExpression' +
@@ -49,11 +49,7 @@ const rule: Rule.RuleModule = {
      * @return {void}
      */
     function classEnter(node: ESTree.Class): void {
-      if (
-        !node.superClass ||
-        node.superClass.type !== 'Identifier' ||
-        node.superClass.name !== 'LitElement'
-      ) {
+      if (!isLitClass(node)) {
         return;
       }
 

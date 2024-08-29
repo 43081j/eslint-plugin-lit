@@ -14,6 +14,31 @@ export type DecoratedNode = ESTree.Node & {
 };
 
 /**
+ * Returns if given node has a customElement decorator
+ * @param {ESTree.Class} node
+ * @return {boolean}
+ */
+function hasCustomElementDecorator(node: ESTree.Class): boolean {
+  const decoratedNode = node as DecoratedNode;
+
+  if (!decoratedNode.decorators || !Array.isArray(decoratedNode.decorators)) {
+    return false;
+  }
+
+  for (const decorator of decoratedNode.decorators) {
+    if (
+      decorator.expression.type === 'CallExpression' &&
+      decorator.expression.callee.type === 'Identifier' &&
+      decorator.expression.callee.name === 'customElement'
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
  * Returns if given node has a lit identifier
  * @param {ESTree.Node} node
  * @return {boolean}
@@ -45,6 +70,9 @@ function isLitByExpression(node: ESTree.Node): boolean {
  * @return { boolean }
  */
 export function isLitClass(clazz: ESTree.Class): boolean {
+  if (hasCustomElementDecorator(clazz)) {
+    return true;
+  }
   if (clazz.superClass) {
     return (
       hasLitIdentifier(clazz.superClass) || isLitByExpression(clazz.superClass)

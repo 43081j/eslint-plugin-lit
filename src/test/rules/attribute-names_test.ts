@@ -125,6 +125,40 @@ ruleTester.run('attribute-names', rule, {
           messageId: 'casedPropertyWithoutAttribute'
         }
       ]
+    },
+    {
+      code: `@customElement('foo-bar')
+      class FooBar extends FooElement {
+        @property({ type: String })
+        camelCase = 'foo';
+      }`,
+      parser,
+      parserOptions,
+      errors: [
+        {
+          line: 4,
+          column: 9,
+          messageId: 'casedPropertyWithoutAttribute'
+        }
+      ]
+    },
+    {
+      code: `@foo
+      @customElement('foo-bar')
+      @bar
+      class FooBar extends FooElement {
+        @property({ type: String })
+        camelCase = 'foo';
+      }`,
+      parser,
+      parserOptions,
+      errors: [
+        {
+          line: 6,
+          column: 9,
+          messageId: 'casedPropertyWithoutAttribute'
+        }
+      ]
     }
   ]
 });
