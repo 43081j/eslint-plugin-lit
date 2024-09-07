@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-lit",
-  "version": "1.14.0",
+  "version": "0.0.0-dev",
   "description": "lit-html support for ESLint",
   "main": "lib/index.js",
   "files": [
