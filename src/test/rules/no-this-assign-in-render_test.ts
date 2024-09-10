@@ -81,6 +81,12 @@ ruleTester.run('no-this-assign-in-render', rule, {
           const x = {};
           x[this.prop] = 123;
         }
+      }`,
+    `class Foo extends LitElement {
+        render() {
+          const x = () => ({});
+          x(this.prop).y = 123;
+        }
       }`
   ],
 
