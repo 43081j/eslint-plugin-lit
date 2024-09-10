@@ -111,7 +111,8 @@ const rule: Rule.RuleModule = {
       MethodDefinition: (node: ESTree.Node): void =>
         methodEnter(node as ESTree.MethodDefinition),
       'MethodDefinition:exit': methodExit,
-      'AssignmentExpression > .left:has(> ThisExpression)': (
+      // eslint-disable-next-line max-len
+      'AssignmentExpression > .left:has(ThisExpression:not(:matches(.property ThisExpression)))': (
         node: Rule.Node
       ): void => assignmentFound(node)
     };
