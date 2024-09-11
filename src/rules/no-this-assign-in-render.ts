@@ -5,7 +5,7 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {isLitClass} from '../util';
+import {getPropertyMap, isLitClass, PropertyMapEntry} from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -31,6 +31,7 @@ const rule: Rule.RuleModule = {
   create(context): Rule.RuleListener {
     let inRender = false;
     let inComponent = false;
+    let propertyMap: ReadonlyMap<string, PropertyMapEntry> | null = null;
 
     /**
      * Class entered
@@ -43,6 +44,12 @@ const rule: Rule.RuleModule = {
         return;
       }
 
+      const props = getPropertyMap(node);
+
+      if (props) {
+        propertyMap = props;
+      }
+
       inComponent = true;
     }
 
@@ -52,6 +59,7 @@ const rule: Rule.RuleModule = {
      * @return {void}
      */
     function classExit(): void {
+      propertyMap = null;
       inComponent = false;
     }
 
@@ -105,17 +113,30 @@ const rule: Rule.RuleModule = {
      * @return {void}
      */
     function assignmentFound(node: Rule.Node): void {
-      if (!inRender || node.type !== 'MemberExpression') {
+      if (!inRender ||
+        !propertyMap ||
+        node.type !== 'MemberExpression') {
         return;
       }
 
-      const nonMember = walkMembers(node);
-
+      const nonMember = walkMembers(node) as Rule.Node;
       if (nonMember.type === 'ThisExpression') {
+        const parent = nonMember.parent as ESTree.MemberExpression;
+
+        let propertyName = '';
+        if (parent.property.type === 'Identifier' && !parent.computed) {
+          propertyName = parent.property.name;
+        } else if (parent.property.type === 'Literal') {
+          propertyName = String(parent.property.value);
+        }
+
+        if (propertyMap.has(propertyName) ||
+          parent.property.type === 'Identifier' && parent.computed) {
           context.report({
             node: node.parent,
             messageId: 'noThis'
           });
+        }
       }
     }
 
@@ -129,7 +150,6 @@ const rule: Rule.RuleModule = {
       MethodDefinition: (node: ESTree.Node): void =>
         methodEnter(node as ESTree.MethodDefinition),
       'MethodDefinition:exit': methodExit,
-      // eslint-disable-next-line max-len
       'AssignmentExpression > .left:has(ThisExpression)': (
         node: Rule.Node
       ): void => assignmentFound(node)

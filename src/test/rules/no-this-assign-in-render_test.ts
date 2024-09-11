@@ -43,7 +43,18 @@ ruleTester.run('no-this-assign-in-render', rule, {
           this.deep.prop = 5;
         }
       }`,
+    `class Foo {
+        static get properties() {
+          return { prop: { type: Number } };
+        }
+        render() {
+          this.deep.prop = 5;
+        }
+      }`,
     `class Foo extends LitElement {
+        static get properties() {
+          return { x: { type: Number } };
+        }
         render() {
           const x = this.prop;
         }
@@ -54,38 +65,72 @@ ruleTester.run('no-this-assign-in-render', rule, {
         }
       }`,
     `class Foo extends LitElement {
+        static get properties() {
+          return { foo: { type: Number } };
+        }
         static render() {
           this.foo = 5;
         }
       }`,
     `class Foo extends LitElement {
+        static get properties() {
+          return { prop: { type: Number } };
+        }
         render() {
           let x;
           x = this.prop;
         }
       }`,
     `class Foo extends LitElement {
+        static get properties() {
+          return { x: { type: Number } };
+        }
         render() {
           let x;
           x = 5;
         }
       }`,
     `class Foo extends LitElement {
+        static get properties() {
+          return { foo: { type: Number } };
+        }
         render() {
           let x;
           x = this.foo || 123;
         }
       }`,
     `class Foo extends LitElement {
+        static get properties() {
+          return { prop: { type: Number } };
+        }
         render() {
           const x = {};
           x[this.prop] = 123;
         }
       }`,
     `class Foo extends LitElement {
+        static get properties() {
+          return { prop: { type: Number } };
+        }
         render() {
           const x = () => ({});
           x(this.prop).y = 123;
+        }
+      }`,
+    `class Foo extends LitElement {
+        static get properties() {
+          return { prop: { type: Number } };
+        }
+        render() {
+          this.unreactive = 123;
+        }
+      }`,
+    `class Foo extends LitElement {
+        static get properties() {
+          return { prop: { type: Number } };
+        }
+        render() {
+          this.unreactive.prop = 123;
         }
       }`
   ],
@@ -93,6 +138,9 @@ ruleTester.run('no-this-assign-in-render', rule, {
   invalid: [
     {
       code: `class Foo extends LitElement {
+        static get properties() {
+          return { prop: { type: String } };
+        }
         render() {
           this.prop = 'foo';
         }
@@ -100,13 +148,16 @@ ruleTester.run('no-this-assign-in-render', rule, {
       errors: [
         {
           messageId: 'noThis',
-          line: 3,
+          line: 6,
           column: 11
         }
       ]
     },
     {
       code: `class Foo extends LitElement {
+        static get properties() {
+          return { deep: { type: Object } };
+        }
         render() {
           this.deep.prop = 'foo';
         }
@@ -114,13 +165,16 @@ ruleTester.run('no-this-assign-in-render', rule, {
       errors: [
         {
           messageId: 'noThis',
-          line: 3,
+          line: 6,
           column: 11
         }
       ]
     },
     {
       code: `const foo = class extends LitElement {
+        static get properties() {
+          return { prop: { type: String } };
+        }
         render() {
           this.prop = 'foo';
         }
@@ -128,13 +182,16 @@ ruleTester.run('no-this-assign-in-render', rule, {
       errors: [
         {
           messageId: 'noThis',
-          line: 3,
+          line: 6,
           column: 11
         }
       ]
     },
     {
       code: `class Foo extends LitElement {
+        static get properties() {
+          return { prop: { type: String } };
+        }
         render() {
           this['prop'] = 'foo';
         }
@@ -142,7 +199,7 @@ ruleTester.run('no-this-assign-in-render', rule, {
       errors: [
         {
           messageId: 'noThis',
-          line: 3,
+          line: 6,
           column: 11
         }
       ]
@@ -150,12 +207,29 @@ ruleTester.run('no-this-assign-in-render', rule, {
     {
       code: `@customElement('foo')
       class Foo extends FooElement {
+        @property({ type: String })
+        prop = '';
         render() {
           this['prop'] = 'foo';
         }
       }`,
       parser,
       parserOptions,
+      errors: [
+        {
+          messageId: 'noThis',
+          line: 6,
+          column: 11
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        render() {
+          const x = 'prop';
+          this[x] = 'foo';
+        }
+      }`,
       errors: [
         {
           messageId: 'noThis',
