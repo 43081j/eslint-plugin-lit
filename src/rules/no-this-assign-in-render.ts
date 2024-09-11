@@ -85,20 +85,38 @@ const rule: Rule.RuleModule = {
     }
 
     /**
+     * Walk left side assignment members and return first non-member
+     *
+     * @param {ESTree.MemberExpression} member Member entered
+     * @return {ESTree.Node}
+     */
+    function walkMembers(member: ESTree.MemberExpression): ESTree.Node {
+      if (member.object.type === 'MemberExpression') {
+        return walkMembers(member.object);
+      } else {
+        return member.object;
+      }
+    }
+
+    /**
      * Left side of an assignment expr found
      *
      * @param {Rule.Node} node Node entered
      * @return {void}
      */
     function assignmentFound(node: Rule.Node): void {
-      if (!inRender) {
+      if (!inRender || node.type !== 'MemberExpression') {
         return;
       }
 
-      context.report({
-        node: node.parent,
-        messageId: 'noThis'
-      });
+      const nonMember = walkMembers(node);
+
+      if (nonMember.type === 'ThisExpression') {
+          context.report({
+            node: node.parent,
+            messageId: 'noThis'
+          });
+      }
     }
 
     return {
@@ -112,7 +130,7 @@ const rule: Rule.RuleModule = {
         methodEnter(node as ESTree.MethodDefinition),
       'MethodDefinition:exit': methodExit,
       // eslint-disable-next-line max-len
-      'AssignmentExpression > .left:has(ThisExpression:not(:matches(.property ThisExpression, CallExpression ThisExpression)))': (
+      'AssignmentExpression > .left:has(ThisExpression)': (
         node: Rule.Node
       ): void => assignmentFound(node)
     };
