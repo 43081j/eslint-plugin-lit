@@ -130,8 +130,7 @@ const rule: Rule.RuleModule = {
           propertyName = String(parent.property.value);
         }
 
-        if (propertyMap.has(propertyName) ||
-          parent.property.type === 'Identifier' && parent.computed) {
+        if (propertyMap.has(propertyName) || parent.computed) {
           context.report({
             node: node.parent,
             messageId: 'noThis'
