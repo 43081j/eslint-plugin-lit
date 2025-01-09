@@ -5,7 +5,7 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {isLitClass} from '../util';
+import {getPropertyMap, isLitClass, PropertyMapEntry} from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -31,6 +31,7 @@ const rule: Rule.RuleModule = {
   create(context): Rule.RuleListener {
     let inRender = false;
     let inComponent = false;
+    let propertyMap: ReadonlyMap<string, PropertyMapEntry> | null = null;
 
     /**
      * Class entered
@@ -43,6 +44,12 @@ const rule: Rule.RuleModule = {
         return;
       }
 
+      const props = getPropertyMap(node);
+
+      if (props) {
+        propertyMap = props;
+      }
+
       inComponent = true;
     }
 
@@ -52,6 +59,7 @@ const rule: Rule.RuleModule = {
      * @return {void}
      */
     function classExit(): void {
+      propertyMap = null;
       inComponent = false;
     }
 
@@ -85,20 +93,50 @@ const rule: Rule.RuleModule = {
     }
 
     /**
+     * Walk left side assignment members and return first non-member
+     *
+     * @param {ESTree.MemberExpression} member Member entered
+     * @return {ESTree.Node}
+     */
+    function walkMembers(member: ESTree.MemberExpression): ESTree.Node {
+      if (member.object.type === 'MemberExpression') {
+        return walkMembers(member.object);
+      } else {
+        return member.object;
+      }
+    }
+
+    /**
      * Left side of an assignment expr found
      *
      * @param {Rule.Node} node Node entered
      * @return {void}
      */
     function assignmentFound(node: Rule.Node): void {
-      if (!inRender) {
+      if (!inRender ||
+        !propertyMap ||
+        node.type !== 'MemberExpression') {
         return;
       }
 
-      context.report({
-        node: node.parent,
-        messageId: 'noThis'
-      });
+      const nonMember = walkMembers(node) as Rule.Node;
+      if (nonMember.type === 'ThisExpression') {
+        const parent = nonMember.parent as ESTree.MemberExpression;
+
+        let propertyName = '';
+        if (parent.property.type === 'Identifier' && !parent.computed) {
+          propertyName = parent.property.name;
+        } else if (parent.property.type === 'Literal') {
+          propertyName = String(parent.property.value);
+        }
+
+        if (propertyMap.has(propertyName) || parent.computed) {
+          context.report({
+            node: node.parent,
+            messageId: 'noThis'
+          });
+        }
+      }
     }
 
     return {

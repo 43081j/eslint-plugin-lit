@@ -32,5 +32,5 @@ updated() {
 
 ## When Not To Use It
 
-If you have non-observed properties you wish to update per render, you may
+If you have non-observed properties you wish to update per render via computed property accessors, you may
 want to disable this rule.
