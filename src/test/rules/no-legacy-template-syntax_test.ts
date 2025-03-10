@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/no-legacy-template-syntax');
+import {rule} from '../../rules/no-legacy-template-syntax.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------

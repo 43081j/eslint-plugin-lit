@@ -3,7 +3,8 @@
  * @author James Garbutt <https://github.com/43081j>
  */
 
-import rule = require('../../rules/attribute-names');
+import {fileURLToPath} from 'node:url';
+import {rule} from '../../rules/attribute-names.js';
 import {RuleTester} from 'eslint';
 
 const ruleTester = new RuleTester({
@@ -13,7 +14,7 @@ const ruleTester = new RuleTester({
   }
 });
 
-const parser = require.resolve('@babel/eslint-parser');
+const parser = fileURLToPath(import.meta.resolve('@babel/eslint-parser'));
 const parserOptions = {
   requireConfigFile: false,
   babelOptions: {

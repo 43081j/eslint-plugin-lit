@@ -7,7 +7,8 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/prefer-static-styles');
+import {fileURLToPath} from 'node:url';
+import {rule} from '../../rules/prefer-static-styles.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------
@@ -21,7 +22,7 @@ const ruleTester = new RuleTester({
   }
 });
 
-const parser = require.resolve('@babel/eslint-parser');
+const parser = fileURLToPath(import.meta.resolve('@babel/eslint-parser'));
 const parserOptions = {requireConfigFile: false};
 
 ruleTester.run('prefer-static-styles', rule, {

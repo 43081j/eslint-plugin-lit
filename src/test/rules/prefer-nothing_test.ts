@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/prefer-nothing');
+import {rule} from '../../rules/prefer-nothing.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------

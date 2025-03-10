@@ -5,7 +5,7 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {getPropertyMap, isLitClass, PropertyMapEntry} from '../util';
+import {getPropertyMap, isLitClass, PropertyMapEntry} from '../util.js';
 
 const superUpdateQuery =
   'CallExpression' +
@@ -16,7 +16,7 @@ const superUpdateQuery =
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: Rule.RuleModule = {
+export const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description:
@@ -162,5 +162,3 @@ const rule: Rule.RuleModule = {
     };
   }
 };
-
-export = rule;

@@ -1,4 +1,4 @@
-import {TemplateAnalyzer} from '../template-analyzer';
+import {TemplateAnalyzer} from '../template-analyzer.js';
 import {parse} from 'espree';
 import * as ESTree from 'estree';
 import {SourceCode} from 'eslint';

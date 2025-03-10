@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/binding-positions');
+import {rule} from '../../rules/binding-positions.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------

@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/attribute-value-entities');
+import {rule} from '../../rules/attribute-value-entities.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------

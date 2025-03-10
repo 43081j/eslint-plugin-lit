@@ -1,6 +1,7 @@
 {
   "name": "eslint-plugin-lit",
   "version": "0.0.0-dev",
+  "type": "module",
   "description": "lit-html support for ESLint",
   "main": "lib/index.js",
   "files": [
@@ -10,13 +11,12 @@
     "custom_types"
   ],
   "scripts": {
-    "clean": "rimraf ./lib",
+    "clean": "premove ./lib ./coverage",
     "lint": "eslint \"src/**/*.ts\"",
     "prebuild": "npm run clean",
     "build": "tsc",
-    "start": "nodemon --watch src --ext ts --exec \"npm run dev\"",
-    "dev": "npm run lint && npm run build && npm run test ",
-    "test": "nyc --reporter=html --reporter=text-summary --reporter=lcov mocha \"lib/test/**/*_test.js\"",
+    "dev": "npm run lint && npm run build && npm run test",
+    "test": "c8 --reporter=lcov --reporter=text-summary mocha \"lib/test/**/*_test.js\"",
     "format": "prettier --write \"src/**/*.ts\"",
     "prepare": "npm run build",
     "prepublishOnly": "npm run lint && npm run test"
@@ -38,15 +38,14 @@
   },
   "homepage": "https://github.com/43081j/eslint-plugin-lit#readme",
   "engines": {
-    "node": ">= 12"
+    "node": ">= 18"
   },
   "dependencies": {
     "parse5": "^6.0.1",
-    "parse5-htmlparser2-tree-adapter": "^6.0.1",
-    "requireindex": "^1.2.0"
+    "parse5-htmlparser2-tree-adapter": "^6.0.1"
   },
   "peerDependencies": {
-    "eslint": ">= 5"
+    "eslint": ">= 8"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.24.5",
@@ -60,16 +59,15 @@
     "@types/parse5-htmlparser2-tree-adapter": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^6.9.0",
+    "c8": "^10.1.3",
     "chai": "^4.2.0",
     "eslint": "^8.23.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-eslint-plugin": "^5.0.6",
     "espree": "^9.0.0",
     "mocha": "^10.0.0",
-    "nodemon": "^3.0.1",
-    "nyc": "^15.1.0",
+    "premove": "^4.0.0",
     "prettier": "^3.0.3",
-    "rimraf": "^5.0.5",
     "typescript": "^5.2.2"
   }
 }

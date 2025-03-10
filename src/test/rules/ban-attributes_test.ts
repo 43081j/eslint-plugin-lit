@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/ban-attributes');
+import {rule} from '../../rules/ban-attributes.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------

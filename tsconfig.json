@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    // https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping
-    // https://stackoverflow.com/questions/59787574/typescript-tsconfig-settings-for-node-js-12
     "lib": [
       "es2019",
       "es2020.bigint",
@@ -9,7 +7,8 @@
       "es2020.symbol.wellknown"
     ],
     "target": "ES2019",
-    "module": "commonjs",
+    "module": "node16",
+    "moduleResolution": "node16",
     "declaration": true,
     "outDir": "./lib",
     "strict": true,

@@ -5,13 +5,13 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {isLitClass} from '../util';
+import {isLitClass} from '../util.js';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: Rule.RuleModule = {
+export const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description:
@@ -117,5 +117,3 @@ const rule: Rule.RuleModule = {
     };
   }
 };
-
-export = rule;

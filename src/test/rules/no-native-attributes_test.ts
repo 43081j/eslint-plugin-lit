@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/no-native-attributes');
+import {rule} from '../../rules/no-native-attributes.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------

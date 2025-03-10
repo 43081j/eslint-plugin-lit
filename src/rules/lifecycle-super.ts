@@ -5,7 +5,7 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {isLitClass} from '../util';
+import {isLitClass} from '../util.js';
 
 const methodNames = ['connectedCallback', 'disconnectedCallback', 'update'];
 
@@ -13,7 +13,7 @@ const methodNames = ['connectedCallback', 'disconnectedCallback', 'update'];
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: Rule.RuleModule = {
+export const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description: 'Enforces calling `super` in lifecycle methods',
@@ -141,5 +141,3 @@ const rule: Rule.RuleModule = {
     };
   }
 };
-
-export = rule;

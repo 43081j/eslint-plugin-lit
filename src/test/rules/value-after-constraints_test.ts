@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/value-after-constraints');
+import {rule} from '../../rules/value-after-constraints.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------

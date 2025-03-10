@@ -5,13 +5,13 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {getPropertyMap, isLitClass, toKebabCase, toSnakeCase} from '../util';
+import {getPropertyMap, isLitClass, toKebabCase, toSnakeCase} from '../util.js';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: Rule.RuleModule = {
+export const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description: 'Enforces attribute naming conventions',
@@ -107,5 +107,3 @@ const rule: Rule.RuleModule = {
     };
   }
 };
-
-export = rule;

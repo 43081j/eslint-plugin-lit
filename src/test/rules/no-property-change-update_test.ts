@@ -7,7 +7,8 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/no-property-change-update');
+import {fileURLToPath} from 'node:url';
+import {rule} from '../../rules/no-property-change-update.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------
@@ -21,7 +22,7 @@ const ruleTester = new RuleTester({
   }
 });
 
-const parser = require.resolve('@babel/eslint-parser');
+const parser = fileURLToPath(import.meta.resolve('@babel/eslint-parser'));
 const parserOptions = {
   requireConfigFile: false,
   babelOptions: {

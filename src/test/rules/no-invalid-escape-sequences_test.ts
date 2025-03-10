@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/no-invalid-escape-sequences');
+import {rule} from '../../rules/no-invalid-escape-sequences.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------

@@ -10,7 +10,7 @@ import * as ESTree from 'estree';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: Rule.RuleModule = {
+export const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description: 'Detects usages of legacy lit imports',
@@ -98,5 +98,3 @@ const rule: Rule.RuleModule = {
     };
   }
 };
-
-export = rule;

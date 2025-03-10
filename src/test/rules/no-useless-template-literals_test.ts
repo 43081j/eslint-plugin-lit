@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/no-useless-template-literals');
+import {rule} from '../../rules/no-useless-template-literals.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------

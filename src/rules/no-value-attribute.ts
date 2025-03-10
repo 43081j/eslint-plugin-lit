@@ -5,14 +5,14 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {TemplateAnalyzer} from '../template-analyzer';
-import {isExpressionPlaceholder} from '../util';
+import {TemplateAnalyzer} from '../template-analyzer.js';
+import {isExpressionPlaceholder} from '../util.js';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: Rule.RuleModule = {
+export const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description:
@@ -83,5 +83,3 @@ const rule: Rule.RuleModule = {
     };
   }
 };
-
-export = rule;

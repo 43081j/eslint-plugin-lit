@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/no-private-properties');
+import {rule} from '../../rules/no-private-properties.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------

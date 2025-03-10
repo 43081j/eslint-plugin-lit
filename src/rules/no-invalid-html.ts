@@ -5,13 +5,13 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {TemplateAnalyzer} from '../template-analyzer';
+import {TemplateAnalyzer} from '../template-analyzer.js';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: Rule.RuleModule = {
+export const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description: 'Disallows invalid HTML in templates',
@@ -65,5 +65,3 @@ const rule: Rule.RuleModule = {
     };
   }
 };
-
-export = rule;

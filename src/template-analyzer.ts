@@ -1,8 +1,8 @@
 import * as ESTree from 'estree';
 import * as parse5 from 'parse5';
 import {SourceCode} from 'eslint';
-import treeAdapter = require('parse5-htmlparser2-tree-adapter');
-import {templateExpressionToHtml, getExpressionPlaceholder} from './util';
+import treeAdapter from 'parse5-htmlparser2-tree-adapter';
+import {templateExpressionToHtml, getExpressionPlaceholder} from './util.js';
 
 export interface RawAttribute {
   name: string;

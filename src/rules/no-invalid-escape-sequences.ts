@@ -10,7 +10,7 @@ import * as ESTree from 'estree';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: Rule.RuleModule = {
+export const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description: 'Disallows invalid escape sequences in template strings',
@@ -63,5 +63,3 @@ const rule: Rule.RuleModule = {
     };
   }
 };
-
-export = rule;
