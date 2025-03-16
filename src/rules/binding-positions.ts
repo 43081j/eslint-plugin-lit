@@ -10,7 +10,7 @@ import * as ESTree from 'estree';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: Rule.RuleModule = {
+export const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description: 'Disallows invalid binding positions in templates',
@@ -96,5 +96,3 @@ const rule: Rule.RuleModule = {
     };
   }
 };
-
-export = rule;

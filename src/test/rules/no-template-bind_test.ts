@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/no-template-bind');
+import {rule} from '../../rules/no-template-bind.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------

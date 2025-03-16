@@ -7,7 +7,8 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/no-classfield-shadowing');
+import {fileURLToPath} from 'node:url';
+import {rule} from '../../rules/no-classfield-shadowing.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------
@@ -21,7 +22,7 @@ const ruleTester = new RuleTester({
   }
 });
 
-const parser = require.resolve('@babel/eslint-parser');
+const parser = fileURLToPath(import.meta.resolve('@babel/eslint-parser'));
 const parserOptions = {
   requireConfigFile: false,
   babelOptions: {
@@ -36,7 +37,9 @@ const parserOptions = {
   }
 };
 
-const tsParser = require.resolve('@typescript-eslint/parser');
+const tsParser = fileURLToPath(
+  import.meta.resolve('@typescript-eslint/parser')
+);
 
 ruleTester.run('no-classfield-shadowing', rule, {
   valid: [

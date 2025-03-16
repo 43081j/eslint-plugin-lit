@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/no-value-attribute');
+import {rule} from '../../rules/no-value-attribute.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------

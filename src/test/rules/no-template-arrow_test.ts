@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/no-template-arrow');
+import {rule} from '../../rules/no-template-arrow.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------

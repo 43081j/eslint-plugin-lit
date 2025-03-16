@@ -5,7 +5,7 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {getPropertyMap} from '../util';
+import {getPropertyMap} from '../util.js';
 
 // Taken from https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes
 const NATIVE_ATTRS = [
@@ -47,7 +47,7 @@ const NATIVE_ATTRS = [
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: Rule.RuleModule = {
+export const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description: 'Disallows use of native attributes as properties',
@@ -86,5 +86,3 @@ const rule: Rule.RuleModule = {
     };
   }
 };
-
-export = rule;

@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/quoted-expressions');
+import {rule} from '../../rules/quoted-expressions.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------

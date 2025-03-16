@@ -1,6 +1,6 @@
 import type {ESLint, Linter} from 'eslint';
 import {expect} from 'chai';
-import {configs} from '../index';
+import {configs} from '../index.js';
 
 type ConfigLike = Linter.FlatConfig | ESLint.ConfigData;
 

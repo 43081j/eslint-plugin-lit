@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/no-template-map');
+import {rule} from '../../rules/no-template-map.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------

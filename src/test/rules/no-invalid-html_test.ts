@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/no-invalid-html');
+import {rule} from '../../rules/no-invalid-html.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------

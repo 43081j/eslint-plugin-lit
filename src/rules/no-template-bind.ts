@@ -10,7 +10,7 @@ import * as ESTree from 'estree';
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: Rule.RuleModule = {
+export const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description: 'Disallows `.bind` in templates',
@@ -85,5 +85,3 @@ const rule: Rule.RuleModule = {
     };
   }
 };
-
-export = rule;

@@ -7,7 +7,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import rule = require('../../rules/no-duplicate-template-bindings');
+import {rule} from '../../rules/no-duplicate-template-bindings.js';
 import {RuleTester} from 'eslint';
 
 //------------------------------------------------------------------------------

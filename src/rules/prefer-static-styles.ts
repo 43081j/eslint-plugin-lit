@@ -5,14 +5,14 @@
 
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
-import {TemplateAnalyzer} from '../template-analyzer';
-import {isLitClass} from '../util';
+import {TemplateAnalyzer} from '../template-analyzer.js';
+import {isLitClass} from '../util.js';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: Rule.RuleModule = {
+export const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description: 'Enforces the use of static styles in elements',
@@ -107,5 +107,3 @@ const rule: Rule.RuleModule = {
     };
   }
 };
-
-export = rule;

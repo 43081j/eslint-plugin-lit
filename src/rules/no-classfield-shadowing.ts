@@ -10,13 +10,13 @@ import {
   getPropertyMap,
   isLitClass,
   hasLitPropertyDecorator
-} from '../util';
+} from '../util.js';
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const rule: Rule.RuleModule = {
+export const rule: Rule.RuleModule = {
   meta: {
     docs: {
       description: 'Disallows properties shadowed as class fields',
@@ -53,5 +53,3 @@ const rule: Rule.RuleModule = {
     };
   }
 };
-
-export = rule;
