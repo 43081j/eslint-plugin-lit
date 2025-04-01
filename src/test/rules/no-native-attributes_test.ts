@@ -18,6 +18,11 @@ const ruleTester = new RuleTester({
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 'latest'
+  },
+  settings: {
+    lit: {
+      elementBaseClasses: ['SubClass']
+    }
   }
 });
 
@@ -33,6 +38,19 @@ ruleTester.run('no-native-attributes', rule, {
   invalid: [
     {
       code: `class Foo extends LitElement {
+        static properties = {
+          title: { type: String }
+        }
+      }`,
+      errors: [
+        {
+          messageId: 'noNativeAttributes',
+          data: {prop: 'title'}
+        }
+      ]
+    },
+    {
+      code: `class Foo extends SubClass {
         static properties = {
           title: { type: String }
         }

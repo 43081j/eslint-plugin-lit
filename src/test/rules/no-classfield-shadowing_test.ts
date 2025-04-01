@@ -19,6 +19,11 @@ const ruleTester = new RuleTester({
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 'latest'
+  },
+  settings: {
+    lit: {
+      elementBaseClasses: ['SubClass']
+    }
   }
 });
 
@@ -90,6 +95,20 @@ ruleTester.run('no-classfield-shadowing', rule, {
   invalid: [
     {
       code: `class MyElement extends LitElement {
+        foo;
+        static properties = {foo: {}}
+      }`,
+      errors: [
+        {
+          messageId: 'noClassfieldShadowing',
+          data: {prop: 'foo'},
+          line: 3,
+          column: 30
+        }
+      ]
+    },
+    {
+      code: `class MyElement extends SubClass {
         foo;
         static properties = {foo: {}}
       }`,

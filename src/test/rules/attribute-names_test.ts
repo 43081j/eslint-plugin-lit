@@ -11,6 +11,11 @@ const ruleTester = new RuleTester({
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 2015
+  },
+  settings: {
+    lit: {
+      elementBaseClasses: ['SubClass']
+    }
   }
 });
 
@@ -305,6 +310,21 @@ ruleTester.run('attribute-names', rule, {
     },
     {
       code: `class Foo extends LitElement {
+        @property({ type: String })
+        camelCase = 'foo';
+      }`,
+      parser,
+      parserOptions,
+      errors: [
+        {
+          line: 3,
+          column: 9,
+          messageId: 'casedPropertyWithoutAttribute'
+        }
+      ]
+    },
+    {
+      code: `class Foo extends SubClass {
         @property({ type: String })
         camelCase = 'foo';
       }`,

@@ -19,6 +19,11 @@ const ruleTester = new RuleTester({
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 2015
+  },
+  settings: {
+    lit: {
+      elementBaseClasses: ['SubClass']
+    }
   }
 });
 
@@ -102,6 +107,24 @@ ruleTester.run('no-property-change-update', rule, {
   invalid: [
     {
       code: `class Foo extends LitElement {
+        static get properties() {
+          return { prop: { type: String } };
+        }
+        update() {
+          super.update();
+          this.prop = 'foo';
+        }
+      }`,
+      errors: [
+        {
+          messageId: 'propertyChange',
+          line: 7,
+          column: 11
+        }
+      ]
+    },
+    {
+      code: `class Foo extends SubClass {
         static get properties() {
           return { prop: { type: String } };
         }
