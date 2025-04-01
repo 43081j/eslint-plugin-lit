@@ -19,6 +19,11 @@ const ruleTester = new RuleTester({
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 2015
+  },
+  settings: {
+    lit: {
+      elementBaseClasses: ['SubClass']
+    }
   }
 });
 
@@ -80,6 +85,21 @@ ruleTester.run('prefer-static-styles', rule, {
     },
     {
       code: `class Foo extends LitElement {
+        static get styles() { return css\`.foo {}\`; };
+      }`,
+      options: ['never'],
+      errors: [
+        {
+          messageId: 'never',
+          line: 2,
+          column: 9,
+          endLine: 2,
+          endColumn: 53
+        }
+      ]
+    },
+    {
+      code: `class Foo extends SubClass {
         static get styles() { return css\`.foo {}\`; };
       }`,
       options: ['never'],

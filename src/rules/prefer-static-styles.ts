@@ -36,7 +36,7 @@ export const rule: Rule.RuleModule = {
 
     return {
       'ClassExpression,ClassDeclaration': (node: ESTree.Class): void => {
-        if (!prefer && isLitClass(node)) {
+        if (!prefer && isLitClass(node, context)) {
           for (const member of node.body.body) {
             if (
               member.type === 'MethodDefinition' &&

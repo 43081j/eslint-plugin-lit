@@ -19,6 +19,11 @@ const ruleTester = new RuleTester({
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 2015
+  },
+  settings: {
+    lit: {
+      elementBaseClasses: ['SubClass']
+    }
   }
 });
 
@@ -67,6 +72,21 @@ ruleTester.run('lifecycle-super', rule, {
   invalid: [
     {
       code: `class Foo extends LitElement {
+        connectedCallback() {
+          808;
+        }
+      }`,
+      errors: [
+        {
+          messageId: 'callSuper',
+          data: {method: 'connectedCallback'},
+          line: 2,
+          column: 9
+        }
+      ]
+    },
+    {
+      code: `class Foo extends SubClass {
         connectedCallback() {
           808;
         }

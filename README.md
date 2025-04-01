@@ -52,6 +52,18 @@ export default [
 ];
 ```
 
+You can also specify settings that will be shared across all the plugin rules.
+
+```json
+{
+  "settings": {
+    "lit": {
+      "elementBaseClasses": ["ClassExtendingLitElement"] // Recognize `ClassExtendingLitElement` as a sub-class of LitElement
+    }
+  }
+}
+```
+
 ### Custom Configuration
 
 If you want more fine-grained configuration, you can instead add a snippet like this to your ESLint configuration file:
@@ -124,10 +136,7 @@ Then extend the recommended eslint config:
 
 ```json
 {
-  "extends": [
-    "plugin:wc/recommended",
-    "plugin:lit/recommended"
-  ]
+  "extends": ["plugin:wc/recommended", "plugin:lit/recommended"]
 }
 ```
 
