@@ -19,11 +19,6 @@ const ruleTester = new RuleTester({
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 2015
-  },
-  settings: {
-    lit: {
-      elementBaseClasses: ['SubClass']
-    }
   }
 });
 
@@ -111,7 +106,12 @@ ruleTester.run('prefer-static-styles', rule, {
           endLine: 2,
           endColumn: 53
         }
-      ]
+      ],
+      settings: {
+        lit: {
+          elementBaseClasses: ['SubClass']
+        }
+      }
     },
     {
       code: `class Foo extends LitElement {

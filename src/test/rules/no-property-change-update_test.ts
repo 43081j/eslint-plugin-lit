@@ -19,11 +19,6 @@ const ruleTester = new RuleTester({
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 2015
-  },
-  settings: {
-    lit: {
-      elementBaseClasses: ['SubClass']
-    }
   }
 });
 
@@ -139,7 +134,12 @@ ruleTester.run('no-property-change-update', rule, {
           line: 7,
           column: 11
         }
-      ]
+      ],
+      settings: {
+        lit: {
+          elementBaseClasses: ['SubClass']
+        }
+      }
     },
     {
       code: `const x = class extends LitElement {

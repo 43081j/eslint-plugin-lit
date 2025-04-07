@@ -54,11 +54,11 @@ export default [
 
 You can also specify settings that will be shared across all the plugin rules.
 
-```json
+```json5
 {
-  "settings": {
-    "lit": {
-      "elementBaseClasses": ["ClassExtendingLitElement"] // Recognize `ClassExtendingLitElement` as a sub-class of LitElement
+  settings: {
+    lit: {
+      elementBaseClasses: ['ClassExtendingLitElement'] // Recognize `ClassExtendingLitElement` as a sub-class of LitElement
     }
   }
 }

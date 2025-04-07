@@ -11,11 +11,6 @@ const ruleTester = new RuleTester({
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 2015
-  },
-  settings: {
-    lit: {
-      elementBaseClasses: ['SubClass']
-    }
   }
 });
 
@@ -336,7 +331,12 @@ ruleTester.run('attribute-names', rule, {
           column: 9,
           messageId: 'casedPropertyWithoutAttribute'
         }
-      ]
+      ],
+      settings: {
+        lit: {
+          elementBaseClasses: ['SubClass']
+        }
+      }
     },
     {
       code: `@customElement('foo-bar')

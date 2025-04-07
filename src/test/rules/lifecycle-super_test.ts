@@ -19,11 +19,6 @@ const ruleTester = new RuleTester({
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 2015
-  },
-  settings: {
-    lit: {
-      elementBaseClasses: ['SubClass']
-    }
   }
 });
 
@@ -98,7 +93,12 @@ ruleTester.run('lifecycle-super', rule, {
           line: 2,
           column: 9
         }
-      ]
+      ],
+      settings: {
+        lit: {
+          elementBaseClasses: ['SubClass']
+        }
+      }
     },
     {
       code: `const foo = class extends LitElement {

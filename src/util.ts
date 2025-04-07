@@ -400,11 +400,7 @@ export function toKebabCase(camelCaseStr: string): string {
  * @return {string[]}
  */
 export function getElementBaseClasses(context: Rule.RuleContext): Set<string> {
-  const bases = new Set<string>([
-    'HTMLElement',
-    'LitElement',
-    'ReactiveElement'
-  ]);
+  const bases = new Set<string>(['LitElement']);
 
   if (Array.isArray(context.settings.lit?.elementBaseClasses)) {
     const configuredBases = context.settings.lit.elementBaseClasses as string[];
