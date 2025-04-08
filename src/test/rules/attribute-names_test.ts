@@ -319,6 +319,26 @@ ruleTester.run('attribute-names', rule, {
       ]
     },
     {
+      code: `class Foo extends SubClass {
+        @property({ type: String })
+        camelCase = 'foo';
+      }`,
+      parser,
+      parserOptions,
+      errors: [
+        {
+          line: 3,
+          column: 9,
+          messageId: 'casedPropertyWithoutAttribute'
+        }
+      ],
+      settings: {
+        lit: {
+          elementBaseClasses: ['SubClass']
+        }
+      }
+    },
+    {
       code: `@customElement('foo-bar')
       class FooBar extends FooElement {
         @property({ type: String })

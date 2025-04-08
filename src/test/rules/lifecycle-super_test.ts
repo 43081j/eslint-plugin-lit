@@ -81,6 +81,26 @@ ruleTester.run('lifecycle-super', rule, {
       ]
     },
     {
+      code: `class Foo extends SubClass {
+        connectedCallback() {
+          808;
+        }
+      }`,
+      errors: [
+        {
+          messageId: 'callSuper',
+          data: {method: 'connectedCallback'},
+          line: 2,
+          column: 9
+        }
+      ],
+      settings: {
+        lit: {
+          elementBaseClasses: ['SubClass']
+        }
+      }
+    },
+    {
       code: `const foo = class extends LitElement {
         connectedCallback() {
           808;

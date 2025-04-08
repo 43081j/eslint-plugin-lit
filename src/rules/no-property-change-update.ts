@@ -49,7 +49,7 @@ export const rule: Rule.RuleModule = {
      * @return {void}
      */
     function classEnter(node: ESTree.Class): void {
-      if (!isLitClass(node)) {
+      if (!isLitClass(node, context)) {
         return;
       }
 

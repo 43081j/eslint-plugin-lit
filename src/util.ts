@@ -1,4 +1,5 @@
 import * as ESTree from 'estree';
+import {Rule} from 'eslint';
 
 export interface BabelDecorator extends ESTree.BaseNode {
   type: 'Decorator';
@@ -41,24 +42,34 @@ function hasCustomElementDecorator(node: ESTree.Class): boolean {
 /**
  * Returns if given node has a lit identifier
  * @param {ESTree.Node} node
+ * @param {Set<string>} customElementBases
  * @return {boolean}
  */
-function hasLitIdentifier(node: ESTree.Node): boolean {
-  return node.type === 'Identifier' && node.name === 'LitElement';
+function hasLitIdentifier(
+  node: ESTree.Node,
+  customElementBases: Set<string>
+): boolean {
+  return node.type === 'Identifier' && customElementBases.has(node.name);
 }
 
 /**
  * Returns if the given node is a lit element by expression
  * @param {ESTree.Node} node
+ * @param {Set<string>} customElementBases
  * @return {boolean}
  */
-function isLitByExpression(node: ESTree.Node): boolean {
+function isLitByExpression(
+  node: ESTree.Node,
+  customElementBases: Set<string>
+): boolean {
   if (node) {
-    if (hasLitIdentifier(node)) {
+    if (hasLitIdentifier(node, customElementBases)) {
       return true;
     }
     if (node.type === 'CallExpression') {
-      return node.arguments.some(isLitByExpression);
+      return node.arguments.some((n) =>
+        isLitByExpression(n, customElementBases)
+      );
     }
   }
   return false;
@@ -67,18 +78,24 @@ function isLitByExpression(node: ESTree.Node): boolean {
 /**
  * Returns if the given node is a lit class
  * @param {ESTree.Class} clazz
+ * @param {Rule.RuleContext} context
  * @return { boolean }
  */
-export function isLitClass(clazz: ESTree.Class): boolean {
+export function isLitClass(
+  clazz: ESTree.Class,
+  context: Rule.RuleContext
+): boolean {
   if (hasCustomElementDecorator(clazz)) {
     return true;
   }
+  const customElementBases = getElementBaseClasses(context);
   if (clazz.superClass) {
     return (
-      hasLitIdentifier(clazz.superClass) || isLitByExpression(clazz.superClass)
+      hasLitIdentifier(clazz.superClass, customElementBases) ||
+      isLitByExpression(clazz.superClass, customElementBases)
     );
   }
-  return hasLitIdentifier(clazz);
+  return hasLitIdentifier(clazz, customElementBases);
 }
 
 /**
@@ -374,4 +391,23 @@ export function toSnakeCase(camelCaseStr: string): string {
  */
 export function toKebabCase(camelCaseStr: string): string {
   return camelCaseStr.replace(/[A-Z]/g, (m) => '-' + m.toLowerCase());
+}
+
+/**
+ * Retrieves the configured element base class list
+ *
+ * @param {Rule.RuleContext} context ESLint rule context
+ * @return {string[]}
+ */
+export function getElementBaseClasses(context: Rule.RuleContext): Set<string> {
+  const bases = new Set<string>(['LitElement']);
+
+  if (Array.isArray(context.settings.lit?.elementBaseClasses)) {
+    const configuredBases = context.settings.lit.elementBaseClasses as string[];
+    for (const base of configuredBases) {
+      bases.add(base);
+    }
+  }
+
+  return bases;
 }

@@ -119,6 +119,29 @@ ruleTester.run('no-property-change-update', rule, {
       ]
     },
     {
+      code: `class Foo extends SubClass {
+        static get properties() {
+          return { prop: { type: String } };
+        }
+        update() {
+          super.update();
+          this.prop = 'foo';
+        }
+      }`,
+      errors: [
+        {
+          messageId: 'propertyChange',
+          line: 7,
+          column: 11
+        }
+      ],
+      settings: {
+        lit: {
+          elementBaseClasses: ['SubClass']
+        }
+      }
+    },
+    {
       code: `const x = class extends LitElement {
         static get properties() {
           return { prop: { type: String } };

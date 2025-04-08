@@ -46,7 +46,7 @@ export const rule: Rule.RuleModule = {
 
     return {
       ClassDeclaration: (node: ESTree.Class): void => {
-        if (isLitClass(node)) {
+        if (isLitClass(node, context)) {
           const propertyMap = getPropertyMap(node);
 
           for (const [prop, propConfig] of propertyMap.entries()) {

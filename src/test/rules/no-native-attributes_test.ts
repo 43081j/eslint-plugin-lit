@@ -45,6 +45,24 @@ ruleTester.run('no-native-attributes', rule, {
       ]
     },
     {
+      code: `class Foo extends SubClass {
+        static properties = {
+          title: { type: String }
+        }
+      }`,
+      errors: [
+        {
+          messageId: 'noNativeAttributes',
+          data: {prop: 'title'}
+        }
+      ],
+      settings: {
+        lit: {
+          elementBaseClasses: ['SubClass']
+        }
+      }
+    },
+    {
       code: `class Foo extends LitElement {
         static get properties() {
           return {

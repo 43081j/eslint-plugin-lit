@@ -103,6 +103,25 @@ ruleTester.run('no-classfield-shadowing', rule, {
       ]
     },
     {
+      code: `class MyElement extends SubClass {
+        foo;
+        static properties = {foo: {}}
+      }`,
+      errors: [
+        {
+          messageId: 'noClassfieldShadowing',
+          data: {prop: 'foo'},
+          line: 3,
+          column: 30
+        }
+      ],
+      settings: {
+        lit: {
+          elementBaseClasses: ['SubClass']
+        }
+      }
+    },
+    {
       code: `class MyElement extends LitElement {
         static properties = {foo: {}}
         foo;

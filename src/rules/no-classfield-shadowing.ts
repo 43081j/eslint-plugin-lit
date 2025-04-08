@@ -34,7 +34,7 @@ export const rule: Rule.RuleModule = {
   create(context): Rule.RuleListener {
     return {
       ClassDeclaration: (node: ESTree.Class): void => {
-        if (isLitClass(node)) {
+        if (isLitClass(node, context)) {
           const propertyMap = getPropertyMap(node);
           const classMembers = getClassFields(node);
 
