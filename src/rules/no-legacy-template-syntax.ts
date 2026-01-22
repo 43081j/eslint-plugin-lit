@@ -27,7 +27,7 @@ export const rule: Rule.RuleModule = {
   },
 
   create(context): Rule.RuleListener {
-    const source = context.getSourceCode();
+    const source = context.sourceCode;
     const legacyEventPattern = /^on-./;
 
     //----------------------------------------------------------------------

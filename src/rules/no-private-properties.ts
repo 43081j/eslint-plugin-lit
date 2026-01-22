@@ -36,7 +36,7 @@ export const rule: Rule.RuleModule = {
   },
 
   create(context): Rule.RuleListener {
-    const source = context.getSourceCode();
+    const source = context.sourceCode;
     const config: Partial<{private: string; protected: string}> =
       context.options[0] || {};
     const conventions = Object.entries(config).reduce<Record<string, RegExp>>(
