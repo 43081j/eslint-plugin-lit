@@ -33,7 +33,7 @@ export const rule: Rule.RuleModule = {
   },
 
   create(context): Rule.RuleListener {
-    const source = context.getSourceCode();
+    const source = context.sourceCode;
     const disallowedPattern = /([<>]|&(?!(#\d+|[a-z]+);))/;
 
     //----------------------------------------------------------------------
