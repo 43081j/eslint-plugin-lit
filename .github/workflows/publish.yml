@@ -38,6 +38,7 @@ jobs:
           cache: 'npm'
       - run: npm ci --ignore-scripts
       - run: npm i -g npm@latest
+      - run: npm run build
       - run: npm version ${TAG_NAME} --git-tag-version=false
         env:
           TAG_NAME: ${{ github.ref_name }}
