@@ -1,8 +1,21 @@
 import * as ESTree from 'estree';
 import * as parse5 from 'parse5';
 import {SourceCode} from 'eslint';
-import treeAdapter from 'parse5-htmlparser2-tree-adapter';
-import {templateExpressionToHtml, getExpressionPlaceholder} from './util.js';
+import {
+  adapter as treeAdapter,
+  type Htmlparser2TreeAdapterMap
+} from 'parse5-htmlparser2-tree-adapter';
+import {
+  templateExpressionToHtml,
+  getExpressionPlaceholder,
+  type Parse5Node,
+  type Parse5Document,
+  type Parse5DocumentFragment,
+  type Parse5Element,
+  type Parse5CommentNode,
+  type Parse5TextNode,
+  type AttributeLocation
+} from './util.js';
 
 export interface RawAttribute {
   name: string;
@@ -11,38 +24,32 @@ export interface RawAttribute {
 }
 
 const isRootNode = (
-  node: treeAdapter.Node
-): node is treeAdapter.Document | treeAdapter.DocumentFragment =>
-  node.type === 'root';
+  node: Parse5Node
+): node is Parse5Document | Parse5DocumentFragment => node.type === 'root';
 
 export interface Visitor {
-  enter: (node: treeAdapter.Node, parent: treeAdapter.Node | null) => void;
-  exit: (node: treeAdapter.Node, parent: treeAdapter.Node | null) => void;
-  enterElement: (
-    node: treeAdapter.Element,
-    parent: treeAdapter.Node | null
-  ) => void;
+  enter: (node: Parse5Node, parent: Parse5Node | null) => void;
+  exit: (node: Parse5Node, parent: Parse5Node | null) => void;
+  enterElement: (node: Parse5Element, parent: Parse5Node | null) => void;
   enterDocumentFragment: (
-    node: treeAdapter.DocumentFragment,
-    parent: treeAdapter.Node | null
+    node: Parse5DocumentFragment,
+    parent: Parse5Node | null
   ) => void;
   enterCommentNode: (
-    node: treeAdapter.CommentNode,
-    parent: treeAdapter.Node | null
+    node: Parse5CommentNode,
+    parent: Parse5Node | null
   ) => void;
-  enterTextNode: (
-    node: treeAdapter.TextNode,
-    parent: treeAdapter.Node | null
-  ) => void;
+  enterTextNode: (node: Parse5TextNode, parent: Parse5Node | null) => void;
 }
 
-export interface ParseError extends parse5.Location {
+export interface ParseError extends parse5.Token.Location {
   code: string;
 }
 
-type ParserOptionsWithError = parse5.ParserOptions<typeof treeAdapter> & {
-  onParseError?: (err: ParseError) => void;
-};
+type ParserOptionsWithError =
+  parse5.ParserOptions<Htmlparser2TreeAdapterMap> & {
+    onParseError?: (err: ParseError) => void;
+  };
 
 const analyzerCache = new WeakMap<
   ESTree.TaggedTemplateExpression,
@@ -57,7 +64,7 @@ export class TemplateAnalyzer {
   public errors: ReadonlyArray<ParseError> = [];
   public source: string = '';
   protected _node: ESTree.TaggedTemplateExpression;
-  protected _ast: treeAdapter.DocumentFragment;
+  protected _ast: Parse5DocumentFragment;
 
   /**
    * Create an analyzer instance for a given node
@@ -104,21 +111,26 @@ export class TemplateAnalyzer {
   /**
    * Returns the ESTree location equivalent of a given attribute
    *
-   * @param {treeAdapter.Element} element Element which owns this attribute
+   * @param {Parse5Element} element Element which owns this attribute
    * @param {string} attr Attribute name to retrieve
    * @param {SourceCode} source Source code from ESLint
    * @return {?ESTree.SourceLocation}
    */
   public getLocationForAttribute(
-    element: treeAdapter.Element,
+    element: Parse5Element,
     attr: string,
     source: SourceCode
   ): ESTree.SourceLocation | null | undefined {
-    if (!element.sourceCodeLocation || !element.sourceCodeLocation.attrs) {
+    if (
+      !element.sourceCodeLocation ||
+      !(element.sourceCodeLocation as AttributeLocation).attrs
+    ) {
       return null;
     }
 
-    const loc = element.sourceCodeLocation.attrs[attr.toLowerCase()];
+    const loc = (element.sourceCodeLocation as AttributeLocation).attrs[
+      attr.toLowerCase()
+    ];
 
     return loc ? this.resolveLocation(loc, source) : null;
   }
@@ -129,13 +141,13 @@ export class TemplateAnalyzer {
    * the raw value will be returned.
    * NOTE: if an attribute has multiple expressions in its value, this will
    * return the *first* expression.
-   * @param {treeAdapter.Element} element Element which owns this attribute
+   * @param {Parse5Element} element Element which owns this attribute
    * @param {string} attr Attribute name to retrieve
    * @param {SourceCode} source Source code from ESLint
    * @return {?ESTree.Expression|string}
    */
   public getAttributeValue(
-    element: treeAdapter.Element,
+    element: Parse5Element,
     attr: string,
     source: SourceCode
   ): ESTree.Expression | string | null {
@@ -177,12 +189,12 @@ export class TemplateAnalyzer {
   /**
    * Returns the raw attribute source of a given attribute
    *
-   * @param {treeAdapter.Element} element Element which owns this attribute
+   * @param {Parse5Element} element Element which owns this attribute
    * @param {string} attr Attribute name to retrieve
    * @return {string}
    */
   public getRawAttributeValue(
-    element: treeAdapter.Element,
+    element: Parse5Element,
     attr: string
   ): RawAttribute | null {
     if (!element.sourceCodeLocation) {
@@ -196,8 +208,13 @@ export class TemplateAnalyzer {
       originalAttr = `${xAttribs[attr]}:${attr}`;
     }
 
-    const loc = element.sourceCodeLocation.attrs[originalAttr];
-    const source = this.source.substring(loc.startOffset, loc.endOffset);
+    const loc = (element.sourceCodeLocation as AttributeLocation).attrs[
+      originalAttr
+    ];
+    const source = this.source.substring(
+      loc?.startOffset ?? 0,
+      loc?.endOffset ?? 0
+    );
     const firstEq = source.indexOf('=');
     const left = firstEq === -1 ? source : source.substr(0, firstEq);
     const right = firstEq === -1 ? undefined : source.substr(firstEq + 1);
@@ -226,7 +243,7 @@ export class TemplateAnalyzer {
    * @return {ESTree.SourceLocation}
    */
   public resolveLocation(
-    loc: parse5.Location,
+    loc: parse5.Token.Location,
     source: SourceCode
   ): ESTree.SourceLocation | null {
     if (!this._node.loc || !this._node.quasi.loc) {
@@ -329,10 +346,7 @@ export class TemplateAnalyzer {
    * @return {void}
    */
   public traverse(visitor: Partial<Visitor>): void {
-    const visit = (
-      node: treeAdapter.Node,
-      parent: treeAdapter.Node | null
-    ): void => {
+    const visit = (node: Parse5Node, parent: Parse5Node | null): void => {
       if (!node) {
         return;
       }

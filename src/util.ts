@@ -1,5 +1,20 @@
 import * as ESTree from 'estree';
 import {Rule} from 'eslint';
+import {type Htmlparser2TreeAdapterMap} from 'parse5-htmlparser2-tree-adapter';
+
+export type Parse5Node = Htmlparser2TreeAdapterMap['node'];
+export type Parse5Element = Htmlparser2TreeAdapterMap['element'];
+export type Parse5Document = Htmlparser2TreeAdapterMap['document'];
+export type Parse5DocumentFragment =
+  Htmlparser2TreeAdapterMap['documentFragment'];
+export type Parse5CommentNode = Htmlparser2TreeAdapterMap['commentNode'];
+export type Parse5TextNode = Htmlparser2TreeAdapterMap['textNode'];
+
+export type AttributeLocation = NonNullable<
+  Parse5Element['sourceCodeLocation']
+> & {
+  attrs: Record<string, Parse5Node['sourceCodeLocation']>;
+};
 
 export interface BabelDecorator extends ESTree.BaseNode {
   type: 'Decorator';

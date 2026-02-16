@@ -6,7 +6,7 @@
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
 import {TemplateAnalyzer} from '../template-analyzer.js';
-import {isExpressionPlaceholder} from '../util.js';
+import {isExpressionPlaceholder, type AttributeLocation} from '../util.js';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -53,13 +53,14 @@ export const rule: Rule.RuleModule = {
             enterElement: (element): void => {
               if (
                 element.tagName !== 'input' ||
-                !element.sourceCodeLocation?.attrs
+                !(element.sourceCodeLocation as AttributeLocation)?.attrs
               ) {
                 return;
               }
 
               const valueName = element.attribs['.value'] ? '.value' : 'value';
-              const attrLocs = element.sourceCodeLocation.attrs;
+              const attrLocs = (element.sourceCodeLocation as AttributeLocation)
+                .attrs;
               const valueLoc = attrLocs[valueName];
               const valueAttr = element.attribs[valueName];
 
