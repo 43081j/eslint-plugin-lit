@@ -3,7 +3,8 @@ import {parse} from 'espree';
 import * as ESTree from 'estree';
 import {SourceCode} from 'eslint';
 import {expect} from 'chai';
-import * as parse5 from 'parse5-htmlparser2-tree-adapter';
+import {adapter as parse5} from 'parse5-htmlparser2-tree-adapter';
+import type {Parse5Node, Parse5Element, AttributeLocation} from '../util.js';
 
 const parseOptions = {
   ecmaVersion: 6,
@@ -168,7 +169,7 @@ describe('TemplateAnalyzer', () => {
 
     describe('enter', () => {
       it('should be called for every node', () => {
-        const nodes: parse5.Node[] = [];
+        const nodes: Parse5Node[] = [];
 
         result.analyzer.traverse({
           enter: (node) => {
@@ -190,7 +191,7 @@ describe('TemplateAnalyzer', () => {
 
     describe('enterDocumentFragment', () => {
       it('should be called for the root fragment', () => {
-        const nodes: parse5.Node[] = [];
+        const nodes: Parse5Node[] = [];
 
         result.analyzer.traverse({
           enterDocumentFragment: (node) => {
@@ -205,7 +206,7 @@ describe('TemplateAnalyzer', () => {
 
     describe('enterCommentNode', () => {
       it('should be called for comment nodes', () => {
-        const nodes: parse5.Node[] = [];
+        const nodes: Parse5Node[] = [];
 
         result.analyzer.traverse({
           enterCommentNode: (node) => {
@@ -220,7 +221,7 @@ describe('TemplateAnalyzer', () => {
 
     describe('enterTextNode', () => {
       it('should be called for text nodes', () => {
-        const nodes: parse5.Node[] = [];
+        const nodes: Parse5Node[] = [];
 
         result.analyzer.traverse({
           enterTextNode: (node) => {
@@ -238,7 +239,7 @@ describe('TemplateAnalyzer', () => {
 
     describe('enterElement', () => {
       it('should be called for elements', () => {
-        const nodes: parse5.Node[] = [];
+        const nodes: Parse5Node[] = [];
 
         result.analyzer.traverse({
           enterElement: (node) => {
@@ -254,7 +255,7 @@ describe('TemplateAnalyzer', () => {
 
     describe('exit', () => {
       it('should be called for every node', () => {
-        const nodes: parse5.Node[] = [];
+        const nodes: Parse5Node[] = [];
 
         result.analyzer.traverse({
           exit: (node) => {
@@ -283,7 +284,7 @@ describe('TemplateAnalyzer', () => {
         \`;
       `);
 
-      const nodes: parse5.Node[] = [];
+      const nodes: Parse5Node[] = [];
 
       result.analyzer.traverse({
         enter: (node) => {
@@ -295,10 +296,10 @@ describe('TemplateAnalyzer', () => {
       expect(nodes[0].type).to.equal('root');
       expect(nodes[1].type).to.equal('text');
       expect(nodes[2].type).to.equal('tag');
-      expect((nodes[2] as parse5.Element).attribs['title']).to.equal('jeden');
+      expect((nodes[2] as Parse5Element).attribs['title']).to.equal('jeden');
       expect(nodes[3].type).to.equal('text');
       expect(nodes[4].type).to.equal('tag');
-      expect((nodes[4] as parse5.Element).attribs['title']).to.equal('dwa');
+      expect((nodes[4] as Parse5Element).attribs['title']).to.equal('dwa');
       expect(nodes[5].type).to.equal('text');
       expect(nodes[6].type).to.equal('text');
     });
@@ -309,7 +310,7 @@ describe('TemplateAnalyzer', () => {
       html\`<html><body>Foo</body></html>\`;
     `);
 
-    const nodes: parse5.Node[] = [];
+    const nodes: Parse5Node[] = [];
 
     result.analyzer.traverse({
       enter: (node) => {
@@ -317,16 +318,16 @@ describe('TemplateAnalyzer', () => {
       }
     });
 
-    const body = nodes[3] as parse5.Element;
+    const body = nodes[3] as Parse5Element;
 
     expect(nodes.length).to.equal(5);
     expect(nodes[0].type).to.equal('root');
     expect(nodes[1].type).to.equal('tag');
-    expect((nodes[1] as parse5.Element).name).to.equal('html');
+    expect((nodes[1] as Parse5Element).name).to.equal('html');
     expect(nodes[2].type).to.equal('tag');
-    expect((nodes[2] as parse5.Element).name).to.equal('head');
+    expect((nodes[2] as Parse5Element).name).to.equal('head');
     expect(nodes[3].type).to.equal('tag');
-    expect((nodes[3] as parse5.Element).name).to.equal('body');
+    expect((nodes[3] as Parse5Element).name).to.equal('body');
     expect(nodes[4].type).to.equal('text');
 
     expect(body.sourceCodeLocation).to.deep.equal({
@@ -334,8 +335,8 @@ describe('TemplateAnalyzer', () => {
       startCol: 7,
       startOffset: 6,
       endLine: 1,
-      endCol: 30,
-      endOffset: 29,
+      endCol: 23,
+      endOffset: 22,
       startTag: {
         startLine: 1,
         startCol: 7,
@@ -360,7 +361,7 @@ describe('TemplateAnalyzer', () => {
       html\`<HTML><body>Foo</body></HTML>\`;
     `);
 
-    const nodes: parse5.Node[] = [];
+    const nodes: Parse5Node[] = [];
 
     result.analyzer.traverse({
       enter: (node) => {
@@ -371,7 +372,7 @@ describe('TemplateAnalyzer', () => {
     expect(nodes.length).to.equal(5);
     expect(nodes[0].type).to.equal('root');
     expect(nodes[1].type).to.equal('tag');
-    expect((nodes[1] as parse5.Element).name).to.equal('html');
+    expect((nodes[1] as Parse5Element).name).to.equal('html');
   });
 
   it('should have correct position for normalised attributes', () => {
@@ -379,7 +380,7 @@ describe('TemplateAnalyzer', () => {
       html\`<div hidden></div>\`;
     `);
 
-    const nodes: parse5.Node[] = [];
+    const nodes: Parse5Node[] = [];
 
     result.analyzer.traverse({
       enter: (node) => {
@@ -391,8 +392,10 @@ describe('TemplateAnalyzer', () => {
     expect(nodes[0].type).to.equal('root');
     expect(nodes[1].type).to.equal('tag');
 
-    const div = nodes[1] as parse5.Element;
-    const attrLoc = div.sourceCodeLocation!.attrs['hidden'];
+    const div = nodes[1] as Parse5Element;
+    const attrLoc = (div.sourceCodeLocation as AttributeLocation).attrs[
+      'hidden'
+    ];
 
     expect(attrLoc).to.deep.equal({
       startLine: 1,
