@@ -27,6 +27,7 @@ export const configFactory = (plugin: ESLint.Plugin): Linter.FlatConfig => ({
     'lit/no-useless-template-literals': 'error',
     'lit/no-value-attribute': 'error',
     'lit/prefer-nothing': 'error',
+    'lit/prefer-query-decorators': 'error',
     'lit/prefer-static-styles': 'error',
     'lit/quoted-expressions': 'error',
     'lit/value-after-constraints': 'error'
