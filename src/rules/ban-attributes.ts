@@ -31,7 +31,7 @@ export const rule: Rule.RuleModule = {
   },
 
   create(context): Rule.RuleListener {
-    const source = context.sourceCode;
+    const source = context.sourceCode ?? context.getSourceCode();
     const userDisallowedAttributes = context.options as string[];
     const disallowedAttributes = userDisallowedAttributes.map((attr) =>
       attr.toLowerCase()

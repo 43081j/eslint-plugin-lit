@@ -27,7 +27,7 @@ export const rule: Rule.RuleModule = {
   },
 
   create(context): Rule.RuleListener {
-    const source = context.sourceCode;
+    const source = context.sourceCode ?? context.getSourceCode();
     const escapePattern = /(^|[^\\](?:\\\\)*)(\\([1-7][0-7]*|[0-7]{2,}))/g;
 
     return {
