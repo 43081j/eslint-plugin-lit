@@ -25,7 +25,7 @@ export const rule: Rule.RuleModule = {
   },
 
   create(context): Rule.RuleListener {
-    const source = context.sourceCode;
+    const source = context.sourceCode ?? context.getSourceCode();
 
     //----------------------------------------------------------------------
     // Helpers
