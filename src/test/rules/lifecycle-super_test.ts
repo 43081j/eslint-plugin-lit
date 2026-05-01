@@ -7,22 +7,23 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import {fileURLToPath} from 'node:url';
 import {rule} from '../../rules/lifecycle-super.js';
 import {RuleTester} from 'eslint';
+import parser from '@babel/eslint-parser';
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    sourceType: 'module',
-    ecmaVersion: 2015
+  languageOptions: {
+    parserOptions: {
+      sourceType: 'module',
+      ecmaVersion: 2015
+    }
   }
 });
 
-const parser = fileURLToPath(import.meta.resolve('@babel/eslint-parser'));
 const parserOptions = {
   requireConfigFile: false,
   babelOptions: {
@@ -221,8 +222,10 @@ ruleTester.run('lifecycle-super', rule, {
           super.foo.connectedCallback();
         }
       }`,
-      parser,
-      parserOptions,
+      languageOptions: {
+        parser,
+        parserOptions
+      },
       errors: [
         {
           messageId: 'callSuper',

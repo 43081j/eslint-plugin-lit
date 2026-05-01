@@ -25,14 +25,14 @@ export const rule: Rule.RuleModule = {
           private: {type: 'string', minLength: 1, format: 'regex'},
           protected: {type: 'string', minLength: 1, format: 'regex'}
         },
-        additionalProperties: false,
-        minProperties: 1
+        additionalProperties: false
       }
     ],
     messages: {
       noPrivate:
         'Private and protected properties should not be assigned in bindings'
-    }
+    },
+    defaultOptions: [{}]
   },
 
   create(context): Rule.RuleListener {
@@ -69,7 +69,6 @@ export const rule: Rule.RuleModule = {
 
           analyzer.traverse({
             enterElement: (element): void => {
-              // eslint-disable-next-line guard-for-in
               for (const attr in element.attribs) {
                 const loc = analyzer.getLocationForAttribute(
                   element,

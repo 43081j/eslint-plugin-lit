@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import type {Rule, ESLint} from 'eslint';
 import {configFactory as configAll} from './configs/all.js';
 import {config as configLegacyAll} from './configs/legacy-all.js';

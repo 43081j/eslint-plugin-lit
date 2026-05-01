@@ -38,7 +38,12 @@ export const rule: Rule.RuleModule = {
       casedAttributeConvention:
         'Attribute should be property name written in {{convention}} ' +
         'as "{{name}}"'
-    }
+    },
+    defaultOptions: [
+      {
+        convention: 'none'
+      }
+    ]
   },
 
   create(context): Rule.RuleListener {

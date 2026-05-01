@@ -15,9 +15,11 @@ import {RuleTester} from 'eslint';
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    sourceType: 'module',
-    ecmaVersion: 2015
+  languageOptions: {
+    parserOptions: {
+      sourceType: 'module',
+      ecmaVersion: 2015
+    }
   }
 });
 
@@ -31,7 +33,13 @@ ruleTester.run('prefer-nothing', rule, {
         {
           messageId: 'preferNothing',
           line: 1,
-          column: 1
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'useNothing',
+              output: 'nothing'
+            }
+          ]
         }
       ]
     },

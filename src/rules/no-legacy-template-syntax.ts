@@ -49,7 +49,6 @@ export const rule: Rule.RuleModule = {
 
           analyzer.traverse({
             enterElement: (element): void => {
-              // eslint-disable-next-line guard-for-in
               for (const attr in element.attribs) {
                 const loc = analyzer.getLocationForAttribute(
                   element,

@@ -27,7 +27,8 @@ export const rule: Rule.RuleModule = {
     messages: {
       always: 'Static styles should be used instead of inline style tags',
       never: 'Inline style tags should be used instead of static styles'
-    }
+    },
+    defaultOptions: ['always']
   },
 
   create(context): Rule.RuleListener {

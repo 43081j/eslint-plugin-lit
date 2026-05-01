@@ -91,7 +91,7 @@ export const rule: Rule.RuleModule = {
      * @return {void}
      */
     function assignmentFound(node: Rule.Node): void {
-      if (!inRender) {
+      if (!inRender || !node.parent) {
         return;
       }
 
