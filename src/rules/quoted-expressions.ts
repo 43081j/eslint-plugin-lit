@@ -31,7 +31,8 @@ export const rule: Rule.RuleModule = {
       neverQuote:
         'Expressions must not be quoted inside templates ' +
         ' (e.g. `foo="${bar}"`)'
-    }
+    },
+    defaultOptions: ['never']
   },
 
   create(context): Rule.RuleListener {

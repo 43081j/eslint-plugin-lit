@@ -3,18 +3,19 @@
  * @author James Garbutt <https://github.com/43081j>
  */
 
-import {fileURLToPath} from 'node:url';
 import {rule} from '../../rules/attribute-names.js';
 import {RuleTester} from 'eslint';
+import parser from '@babel/eslint-parser';
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    sourceType: 'module',
-    ecmaVersion: 2015
+  languageOptions: {
+    parserOptions: {
+      sourceType: 'module',
+      ecmaVersion: 2015
+    }
   }
 });
 
-const parser = fileURLToPath(import.meta.resolve('@babel/eslint-parser'));
 const parserOptions = {
   requireConfigFile: false,
   babelOptions: {
@@ -128,24 +129,30 @@ ruleTester.run('attribute-names', rule, {
         @property({ type: String })
         lowercase = 'foo';
       }`,
-      parser,
-      parserOptions
+      languageOptions: {
+        parser,
+        parserOptions
+      }
     },
     {
       code: `class Foo extends LitElement {
         @property({ type: String, attribute: 'lowercase' })
         camelCase = 'foo';
       }`,
-      parser,
-      parserOptions
+      languageOptions: {
+        parser,
+        parserOptions
+      }
     },
     {
       code: `class Foo extends LitElement {
         @property({ type: String, attribute: false })
         camelCase = 'foo';
       }`,
-      parser,
-      parserOptions
+      languageOptions: {
+        parser,
+        parserOptions
+      }
     }
   ],
 
@@ -308,8 +315,10 @@ ruleTester.run('attribute-names', rule, {
         @property({ type: String })
         camelCase = 'foo';
       }`,
-      parser,
-      parserOptions,
+      languageOptions: {
+        parser,
+        parserOptions
+      },
       errors: [
         {
           line: 3,
@@ -323,8 +332,10 @@ ruleTester.run('attribute-names', rule, {
         @property({ type: String })
         camelCase = 'foo';
       }`,
-      parser,
-      parserOptions,
+      languageOptions: {
+        parser,
+        parserOptions
+      },
       errors: [
         {
           line: 3,
@@ -344,8 +355,10 @@ ruleTester.run('attribute-names', rule, {
         @property({ type: String })
         camelCase = 'foo';
       }`,
-      parser,
-      parserOptions,
+      languageOptions: {
+        parser,
+        parserOptions
+      },
       errors: [
         {
           line: 4,
@@ -362,8 +375,10 @@ ruleTester.run('attribute-names', rule, {
         @property({ type: String })
         camelCase = 'foo';
       }`,
-      parser,
-      parserOptions,
+      languageOptions: {
+        parser,
+        parserOptions
+      },
       errors: [
         {
           line: 6,

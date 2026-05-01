@@ -7,22 +7,24 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import {fileURLToPath} from 'node:url';
 import {rule} from '../../rules/no-classfield-shadowing.js';
 import {RuleTester} from 'eslint';
+import parser from '@babel/eslint-parser';
+import {parser as tsParser} from 'typescript-eslint';
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    sourceType: 'module',
-    ecmaVersion: 'latest'
+  languageOptions: {
+    parserOptions: {
+      sourceType: 'module',
+      ecmaVersion: 'latest'
+    }
   }
 });
 
-const parser = fileURLToPath(import.meta.resolve('@babel/eslint-parser'));
 const parserOptions = {
   requireConfigFile: false,
   babelOptions: {
@@ -36,10 +38,6 @@ const parserOptions = {
     ]
   }
 };
-
-const tsParser = fileURLToPath(
-  import.meta.resolve('@typescript-eslint/parser')
-);
 
 ruleTester.run('no-classfield-shadowing', rule, {
   valid: [
@@ -65,16 +63,20 @@ ruleTester.run('no-classfield-shadowing', rule, {
         @property()
         foo;
       }`,
-      parser,
-      parserOptions
+      languageOptions: {
+        parser,
+        parserOptions
+      }
     },
     {
       code: `class MyElement extends LitElement {
         @property()
         accessor foo;
       }`,
-      parser,
-      parserOptions
+      languageOptions: {
+        parser,
+        parserOptions
+      }
     },
     {
       code: `class MyElement extends LitElement {
@@ -83,7 +85,9 @@ ruleTester.run('no-classfield-shadowing', rule, {
           foo: { type: String }
         };
       }`,
-      parser: tsParser
+      languageOptions: {
+        parser: tsParser
+      }
     }
   ],
 
