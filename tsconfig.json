@@ -21,7 +21,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "types": ["node", "mocha"],
+    "rootDir": "./src",
+    "skipLibCheck": true
   },
   "include": ["src/**/*.ts", "custom_types/*.d.ts"]
 }

@@ -7,22 +7,23 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import {fileURLToPath} from 'node:url';
 import {rule} from '../../rules/no-property-change-update.js';
 import {RuleTester} from 'eslint';
+import parser from '@babel/eslint-parser';
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    sourceType: 'module',
-    ecmaVersion: 2015
+  languageOptions: {
+    parserOptions: {
+      sourceType: 'module',
+      ecmaVersion: 2015
+    }
   }
 });
 
-const parser = fileURLToPath(import.meta.resolve('@babel/eslint-parser'));
 const parserOptions = {
   requireConfigFile: false,
   babelOptions: {
@@ -65,8 +66,10 @@ ruleTester.run('no-property-change-update', rule, {
           this.prop2 = 5;
         }
       }`,
-      parser,
-      parserOptions
+      languageOptions: {
+        parser,
+        parserOptions
+      }
     },
     `class Foo extends LitElement {
       static get properties() {
@@ -168,8 +171,10 @@ ruleTester.run('no-property-change-update', rule, {
           this.prop = 'bar';
         }
       }`,
-      parser,
-      parserOptions,
+      languageOptions: {
+        parser,
+        parserOptions
+      },
       errors: [
         {
           messageId: 'propertyChange',
@@ -187,8 +192,10 @@ ruleTester.run('no-property-change-update', rule, {
           this.prop = 'bar';
         }
       }`,
-      parser,
-      parserOptions,
+      languageOptions: {
+        parser,
+        parserOptions
+      },
       errors: [
         {
           messageId: 'propertyChange',
@@ -206,8 +213,10 @@ ruleTester.run('no-property-change-update', rule, {
           this.prop = 'bar';
         }
       }`,
-      parser,
-      parserOptions,
+      languageOptions: {
+        parser,
+        parserOptions
+      },
       errors: [
         {
           messageId: 'propertyChange',
@@ -225,8 +234,10 @@ ruleTester.run('no-property-change-update', rule, {
           this.prop = 'bar';
         }
       }`,
-      parser,
-      parserOptions,
+      languageOptions: {
+        parser,
+        parserOptions
+      },
       errors: [
         {
           messageId: 'propertyChange',
@@ -264,8 +275,10 @@ ruleTester.run('no-property-change-update', rule, {
           this.prop = 'foo';
         }
       }`,
-      parser,
-      parserOptions,
+      languageOptions: {
+        parser,
+        parserOptions
+      },
       errors: [
         {
           messageId: 'propertyChange',

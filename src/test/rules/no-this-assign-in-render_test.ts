@@ -7,22 +7,23 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import {fileURLToPath} from 'node:url';
 import {rule} from '../../rules/no-this-assign-in-render.js';
 import {RuleTester} from 'eslint';
+import parser from '@babel/eslint-parser';
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    sourceType: 'module',
-    ecmaVersion: 2015
+  languageOptions: {
+    parserOptions: {
+      sourceType: 'module',
+      ecmaVersion: 2015
+    }
   }
 });
 
-const parser = fileURLToPath(import.meta.resolve('@babel/eslint-parser'));
 const parserOptions = {
   requireConfigFile: false,
   babelOptions: {
@@ -143,8 +144,10 @@ ruleTester.run('no-this-assign-in-render', rule, {
           this['prop'] = 'foo';
         }
       }`,
-      parser,
-      parserOptions,
+      languageOptions: {
+        parser,
+        parserOptions
+      },
       errors: [
         {
           messageId: 'noThis',

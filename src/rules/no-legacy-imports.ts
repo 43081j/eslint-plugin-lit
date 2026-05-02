@@ -61,7 +61,10 @@ export const rule: Rule.RuleModule = {
       ImportDeclaration: (node: ESTree.ImportDeclaration): void => {
         if (node.source.value === 'lit-element') {
           for (const specifier of node.specifiers) {
-            if (specifier.type === 'ImportSpecifier') {
+            if (
+              specifier.type === 'ImportSpecifier' &&
+              specifier.imported.type === 'Identifier'
+            ) {
               const replacement = legacyDecorators[specifier.imported.name];
               if (replacement) {
                 context.report({

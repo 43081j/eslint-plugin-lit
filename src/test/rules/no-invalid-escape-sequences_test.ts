@@ -15,9 +15,11 @@ import {RuleTester} from 'eslint';
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    sourceType: 'module',
-    ecmaVersion: 2015
+  languageOptions: {
+    parserOptions: {
+      sourceType: 'module',
+      ecmaVersion: 2015
+    }
   }
 });
 
@@ -28,7 +30,10 @@ ruleTester.run('no-invalid-escape-sequences', rule, {
     'html`foo \\\\0o100 bar`',
     'html`foo \\0b1101 bar`',
     'html`foo \\u002c bar`',
-    {code: 'html`foo \\876 bar`', parserOptions: {ecmaVersion: 2018}},
+    {
+      code: 'html`foo \\876 bar`',
+      languageOptions: {parserOptions: {ecmaVersion: 2018}}
+    },
     'html`foo \\0 bar`'
   ],
 
@@ -36,7 +41,9 @@ ruleTester.run('no-invalid-escape-sequences', rule, {
     {
       code: 'html`foo \\0123 bar`',
       output: 'html`foo \\\\0123 bar`',
-      parserOptions: {ecmaVersion: 2018},
+      languageOptions: {
+        parserOptions: {ecmaVersion: 2018}
+      },
       errors: [
         {
           messageId: 'invalid',
@@ -50,7 +57,9 @@ ruleTester.run('no-invalid-escape-sequences', rule, {
     {
       code: 'html`foo \\3c bar`',
       output: 'html`foo \\\\3c bar`',
-      parserOptions: {ecmaVersion: 2018},
+      languageOptions: {
+        parserOptions: {ecmaVersion: 2018}
+      },
       errors: [
         {
           messageId: 'invalid',
@@ -64,7 +73,9 @@ ruleTester.run('no-invalid-escape-sequences', rule, {
     {
       code: 'html`foo \\3c bar \\33`',
       output: 'html`foo \\\\3c bar \\\\33`',
-      parserOptions: {ecmaVersion: 2018},
+      languageOptions: {
+        parserOptions: {ecmaVersion: 2018}
+      },
       errors: [
         {
           messageId: 'invalid',

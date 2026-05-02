@@ -27,7 +27,8 @@ export const rule: Rule.RuleModule = {
     },
     messages: {
       denied: 'The attribute "{{ attr }}" is not allowed in templates'
-    }
+    },
+    defaultOptions: []
   },
 
   create(context): Rule.RuleListener {
@@ -48,7 +49,6 @@ export const rule: Rule.RuleModule = {
 
           analyzer.traverse({
             enterElement: (element): void => {
-              // eslint-disable-next-line guard-for-in
               for (const attr in element.attribs) {
                 let attrNormalised = attr.toLowerCase();
 

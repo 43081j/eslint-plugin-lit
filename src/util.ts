@@ -347,7 +347,7 @@ export function getExpressionPlaceholder(
 ): string {
   const i = node.quasi.quasis.indexOf(quasi);
   // Just a rough guess at if this might be an attribute binding or not
-  const possibleAttr = /\s[^\s\/>"'=]+=$/;
+  const possibleAttr = /\s[^\s/>"'=]+=$/;
 
   if (possibleAttr.test(quasi.value.raw)) {
     return `"{{__Q:${i}__}}"`;
@@ -416,9 +416,12 @@ export function toKebabCase(camelCaseStr: string): string {
  */
 export function getElementBaseClasses(context: Rule.RuleContext): Set<string> {
   const bases = new Set<string>(['LitElement']);
+  const settings = context.settings.lit as
+    | {elementBaseClasses?: string[]}
+    | undefined;
 
-  if (Array.isArray(context.settings.lit?.elementBaseClasses)) {
-    const configuredBases = context.settings.lit.elementBaseClasses as string[];
+  if (Array.isArray(settings?.elementBaseClasses)) {
+    const configuredBases = settings.elementBaseClasses;
     for (const base of configuredBases) {
       bases.add(base);
     }

@@ -67,7 +67,7 @@ describe('TemplateAnalyzer', () => {
 
     it('should return expressions', () => {
       result = parseTemplate(`
-        html\`<div title=$\{808\}></div>\`;
+        html\`<div title=$\{808}></div>\`;
       `);
 
       result.analyzer.traverse({
@@ -86,7 +86,7 @@ describe('TemplateAnalyzer', () => {
 
     it('should return expression if mixed', () => {
       result = parseTemplate(`
-        html\`<div title="foo $\{808\}"></div>\`;
+        html\`<div title="foo $\{808}"></div>\`;
       `);
       result.analyzer.traverse({
         enterElement(element) {
@@ -104,7 +104,7 @@ describe('TemplateAnalyzer', () => {
 
     it('should return first expression if multiple', () => {
       result = parseTemplate(`
-        html\`<div title="$\{303\} $\{808\}"></div>\`;
+        html\`<div title="$\{303} $\{808}"></div>\`;
       `);
       result.analyzer.traverse({
         enterElement(element) {
@@ -139,7 +139,7 @@ describe('TemplateAnalyzer', () => {
 
     it('should return falsy expressions', () => {
       result = parseTemplate(`
-        html\`<div title=$\{null\}></div>\`;
+        html\`<div title=$\{null}></div>\`;
       `);
       result.analyzer.traverse({
         enterElement(element) {

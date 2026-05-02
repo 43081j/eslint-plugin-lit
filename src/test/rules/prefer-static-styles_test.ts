@@ -7,22 +7,23 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import {fileURLToPath} from 'node:url';
 import {rule} from '../../rules/prefer-static-styles.js';
 import {RuleTester} from 'eslint';
+import parser from '@babel/eslint-parser';
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    sourceType: 'module',
-    ecmaVersion: 2015
+  languageOptions: {
+    parserOptions: {
+      sourceType: 'module',
+      ecmaVersion: 2015
+    }
   }
 });
 
-const parser = fileURLToPath(import.meta.resolve('@babel/eslint-parser'));
 const parserOptions = {requireConfigFile: false};
 
 ruleTester.run('prefer-static-styles', rule, {
@@ -32,8 +33,10 @@ ruleTester.run('prefer-static-styles', rule, {
       code: `class Foo extends LitElement {
         static styles = css\`.foo {}\`;
       }`,
-      parser,
-      parserOptions
+      languageOptions: {
+        parser,
+        parserOptions
+      }
     },
     `class Foo extends LitElement {
         static get styles() { return css\`.foo {}\`; };
@@ -118,8 +121,10 @@ ruleTester.run('prefer-static-styles', rule, {
         static styles = css\`.foo {}\`;
       }`,
       options: ['never'],
-      parser,
-      parserOptions,
+      languageOptions: {
+        parser,
+        parserOptions
+      },
       errors: [
         {
           messageId: 'never',
