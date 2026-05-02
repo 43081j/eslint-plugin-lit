@@ -24,6 +24,7 @@ import {rule as ruleNoThisAssign} from './rules/no-this-assign-in-render.js';
 import {rule as ruleNoUselessTemplateLiterals} from './rules/no-useless-template-literals.js';
 import {rule as ruleNoValueAttribute} from './rules/no-value-attribute.js';
 import {rule as rulePreferNothing} from './rules/prefer-nothing.js';
+import {rule as rulePreferQueryDecorators} from './rules/prefer-query-decorators.js';
 import {rule as rulePreferStaticStyles} from './rules/prefer-static-styles.js';
 import {rule as ruleQuotedExpressions} from './rules/quoted-expressions.js';
 import {rule as ruleValueAfterConstraints} from './rules/value-after-constraints.js';
@@ -50,6 +51,7 @@ export const rules: Record<string, Rule.RuleModule> = {
   'no-useless-template-literals': ruleNoUselessTemplateLiterals,
   'no-value-attribute': ruleNoValueAttribute,
   'prefer-nothing': rulePreferNothing,
+  'prefer-query-decorators': rulePreferQueryDecorators,
   'prefer-static-styles': rulePreferStaticStyles,
   'quoted-expressions': ruleQuotedExpressions,
   'value-after-constraints': ruleValueAfterConstraints
