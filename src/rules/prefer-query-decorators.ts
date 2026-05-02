@@ -68,15 +68,15 @@ const defaultOptions: Options = {
   assignedNodes: true
 };
 
-const querySelectorMessageMap: Record<string, keyof Options> = {
-  querySelector: 'querySelector',
-  querySelectorAll: 'querySelectorAll'
-};
+const querySelectorMessageMap = new Map<string, keyof Options>([
+  ['querySelector', 'querySelector'],
+  ['querySelectorAll', 'querySelectorAll']
+]);
 
-const assignedMessageMap: Record<string, keyof Options> = {
-  assignedElements: 'assignedElements',
-  assignedNodes: 'assignedNodes'
-};
+const assignedMessageMap = new Map<string, keyof Options>([
+  ['assignedElements', 'assignedElements'],
+  ['assignedNodes', 'assignedNodes']
+]);
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -209,21 +209,28 @@ export const rule: Rule.RuleModule = {
     function handleQuerySelectorCall(
       node: ESTree.CallExpression & Rule.NodeParentExtension
     ): void {
-      if (litClassDepth === 0) return;
+      if (litClassDepth === 0) {
+        return;
+      }
       if (
         isChainedWithAssignedCall(node) ||
         node.callee.type !== 'MemberExpression'
-      )
+      ) {
         return;
+      }
 
       const callee = node.callee;
       const methodName = getMethodName(callee);
       const rootName = getRenderRootName(callee);
 
-      if (!methodName || !rootName) return;
+      if (!methodName || !rootName) {
+        return;
+      }
 
-      const optionKey = querySelectorMessageMap[methodName];
-      if (!optionKey || !options[optionKey]) return;
+      const optionKey = querySelectorMessageMap.get(methodName);
+      if (!optionKey || !options[optionKey]) {
+        return;
+      }
 
       const messageId =
         methodName === 'querySelector' ? 'preferQuery' : 'preferQueryAll';
@@ -244,18 +251,26 @@ export const rule: Rule.RuleModule = {
       const callee = node.callee;
       const methodName = getMethodName(callee);
 
-      if (!methodName || callee.object.type !== 'CallExpression') return;
+      if (!methodName || callee.object.type !== 'CallExpression') {
+        return;
+      }
 
       const querySelectorCallExpr = callee.object;
 
-      if (querySelectorCallExpr.callee.type !== 'MemberExpression') return;
+      if (querySelectorCallExpr.callee.type !== 'MemberExpression') {
+        return;
+      }
 
       const querySelectorCallee = querySelectorCallExpr.callee;
       const rootName = getRenderRootName(querySelectorCallee);
-      if (!rootName) return;
+      if (!rootName) {
+        return;
+      }
 
-      const optionKey = assignedMessageMap[methodName];
-      if (!optionKey || !options[optionKey]) return;
+      const optionKey = assignedMessageMap.get(methodName);
+      if (!optionKey || !options[optionKey]) {
+        return;
+      }
 
       const messageId =
         methodName === 'assignedElements'
