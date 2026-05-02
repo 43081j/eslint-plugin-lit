@@ -7,22 +7,23 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-import {fileURLToPath} from 'node:url';
 import {rule} from '../../rules/prefer-query-decorators.js';
 import {RuleTester} from 'eslint';
+import parser from '@babel/eslint-parser';
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    sourceType: 'module',
-    ecmaVersion: 'latest'
+  languageOptions: {
+    parserOptions: {
+      sourceType: 'module',
+      ecmaVersion: 'latest'
+    }
   }
 });
 
-const parser = fileURLToPath(import.meta.resolve('@babel/eslint-parser'));
 const parserOptions = {
   requireConfigFile: false,
   babelOptions: {
@@ -292,8 +293,10 @@ ruleTester.run('prefer-query-decorators', rule, {
           return this.shadowRoot.querySelector('.foo');
         }
       }`,
-      parser,
-      parserOptions,
+      languageOptions: {
+        parser,
+        parserOptions
+      },
       errors: [
         {
           messageId: 'preferQuery',

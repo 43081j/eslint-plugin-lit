@@ -86,17 +86,17 @@ const assignedMessageMap: Record<string, keyof Options> = {
  * Determines if a call expression is the inner querySelector of a chained
  * assignedElements/assignedNodes call, to avoid double-reporting.
  *
- * @param {ESTree.CallExpression} node Call expression to test
+ * @param {ESTree.CallExpression & Rule.NodeParentExtension} node Call expression to test
  * @return {boolean}
  */
-function isChainedWithAssignedCall(node: ESTree.CallExpression): boolean {
-  const parent = (node as Rule.Node).parent;
+function isChainedWithAssignedCall(
+  node: ESTree.CallExpression & Rule.NodeParentExtension
+): boolean {
+  const parent = node.parent;
   return (
     parent?.type === 'MemberExpression' &&
-    (parent as ESTree.MemberExpression).property.type === 'Identifier' &&
-    assignedMethodNames.has(
-      ((parent as ESTree.MemberExpression).property as ESTree.Identifier).name
-    )
+    parent.property.type === 'Identifier' &&
+    assignedMethodNames.has(parent.property.name)
   );
 }
 
@@ -108,9 +108,7 @@ function isChainedWithAssignedCall(node: ESTree.CallExpression): boolean {
  * @return {string|null}
  */
 function getMethodName(callee: ESTree.MemberExpression): string | null {
-  return callee.property.type === 'Identifier'
-    ? (callee.property as ESTree.Identifier).name
-    : null;
+  return callee.property.type === 'Identifier' ? callee.property.name : null;
 }
 
 /**
@@ -122,11 +120,11 @@ function getMethodName(callee: ESTree.MemberExpression): string | null {
  * @return {string|null}
  */
 function getRenderRootName(callee: ESTree.MemberExpression): string | null {
-  const obj = callee.object as ESTree.MemberExpression;
+  const obj = callee.object;
   if (obj.type !== 'MemberExpression' || obj.property.type !== 'Identifier') {
     return null;
   }
-  const name = (obj.property as ESTree.Identifier).name;
+  const name = obj.property.name;
   return renderRootProperties.has(name) ? name : null;
 }
 
@@ -166,7 +164,8 @@ export const rule: Rule.RuleModule = {
       preferQueryAssignedNodes:
         'Use @queryAssignedNodes decorator instead of' +
         ' this.{{ root }}.querySelector().assignedNodes()'
-    }
+    },
+    defaultOptions: [defaultOptions]
   },
 
   create(context): Rule.RuleListener {
@@ -207,11 +206,17 @@ export const rule: Rule.RuleModule = {
      * @param {ESTree.CallExpression} node Node entered
      * @return {void}
      */
-    function handleQuerySelectorCall(node: ESTree.CallExpression): void {
+    function handleQuerySelectorCall(
+      node: ESTree.CallExpression & Rule.NodeParentExtension
+    ): void {
       if (litClassDepth === 0) return;
-      if (isChainedWithAssignedCall(node)) return;
+      if (
+        isChainedWithAssignedCall(node) ||
+        node.callee.type !== 'MemberExpression'
+      )
+        return;
 
-      const callee = node.callee as ESTree.MemberExpression;
+      const callee = node.callee;
       const methodName = getMethodName(callee);
       const rootName = getRenderRootName(callee);
 
@@ -233,15 +238,19 @@ export const rule: Rule.RuleModule = {
      * @return {void}
      */
     function handleAssignedCall(node: ESTree.CallExpression): void {
-      if (litClassDepth === 0) return;
+      if (litClassDepth === 0 || node.callee.type !== 'MemberExpression')
+        return;
 
-      const callee = node.callee as ESTree.MemberExpression;
+      const callee = node.callee;
       const methodName = getMethodName(callee);
-      if (!methodName) return;
 
-      const querySelectorCallExpr = callee.object as ESTree.CallExpression;
-      const querySelectorCallee =
-        querySelectorCallExpr.callee as ESTree.MemberExpression;
+      if (!methodName || callee.object.type !== 'CallExpression') return;
+
+      const querySelectorCallExpr = callee.object;
+
+      if (querySelectorCallExpr.callee.type !== 'MemberExpression') return;
+
+      const querySelectorCallee = querySelectorCallExpr.callee;
       const rootName = getRenderRootName(querySelectorCallee);
       if (!rootName) return;
 
@@ -270,7 +279,9 @@ export const rule: Rule.RuleModule = {
       'ClassDeclaration:exit': (node: ESTree.Node): void =>
         classExit(node as ESTree.Class),
       [querySelectorCall]: (node: ESTree.Node): void =>
-        handleQuerySelectorCall(node as ESTree.CallExpression),
+        handleQuerySelectorCall(
+          node as ESTree.CallExpression & Rule.NodeParentExtension
+        ),
       [assignedCall]: (node: ESTree.Node): void =>
         handleAssignedCall(node as ESTree.CallExpression)
     };
