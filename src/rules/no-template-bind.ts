@@ -21,8 +21,7 @@ export const rule: Rule.RuleModule = {
     messages: {
       noBind:
         '`.bind` must not be used in templates, ' +
-        'a method should be passed directly like `${this.myMethod}` as it ' +
-        'will be bound automatically.'
+        'a method should be bound once in the constructor and passed directly like `${this.myMethod}`.'
     }
   },
 

@@ -20,9 +20,9 @@ export const rule: Rule.RuleModule = {
     schema: [],
     messages: {
       noArrow:
-        'Arrow functions must not be used in templates, ' +
-        'a method should be passed directly like `${this.myMethod}` as it ' +
-        'will be bound automatically.'
+        'Arrow functions should not be used in templates. ' +
+        'LitElement event bindings are bound automatically, ' + 
+        'otherwise a method/function should be bound outside the render method (e.g. in the constructor) beforehand'
     }
   },
 
