@@ -29,6 +29,23 @@ export type DecoratedNode = ESTree.Node & {
   decorators?: BabelDecorator[];
 };
 
+// As defined in https://github.com/estree/estree/blob/master/stage3/decorators.md
+export interface BabelAccessorProperty extends ESTree.BaseNode {
+  type: 'AccessorProperty';
+  key: ESTree.Expression | ESTree.PrivateIdentifier;
+  value: ESTree.Expression | null;
+  computed: boolean;
+  static: boolean;
+  decorators: [BabelDecorator] | null;
+}
+
+export type BabelClassBody = Array<
+  | ESTree.MethodDefinition
+  | ESTree.PropertyDefinition
+  | ESTree.StaticBlock
+  | BabelAccessorProperty
+>;
+
 /**
  * Returns if given node has a customElement decorator
  * @param {ESTree.Class} node
@@ -217,7 +234,7 @@ export function getPropertyMap(
 ): ReadonlyMap<string, PropertyMapEntry> {
   const result = new Map<string, PropertyMapEntry>();
 
-  for (const member of node.body.body) {
+  for (const member of node.body.body as BabelClassBody) {
     if (
       member.type === 'PropertyDefinition' &&
       member.static &&
@@ -265,7 +282,8 @@ export function getPropertyMap(
 
     if (
       member.type === 'MethodDefinition' ||
-      member.type === 'PropertyDefinition'
+      member.type === 'PropertyDefinition' ||
+      member.type === 'AccessorProperty'
     ) {
       const babelProp = member as BabelProperty;
       const key = member.key;
