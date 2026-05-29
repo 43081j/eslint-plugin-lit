@@ -25,7 +25,6 @@ export const rule: Rule.RuleModule = {
     docs: {
       description:
         'Enforces that `value` is bound on an input after constraints',
-      category: 'Best Practices',
       url: 'https://github.com/43081j/eslint-plugin-lit/blob/master/docs/rules/value-after-constraints.md'
     },
     schema: [],
