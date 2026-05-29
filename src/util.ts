@@ -39,12 +39,11 @@ export interface BabelAccessorProperty extends ESTree.BaseNode {
   decorators: [BabelDecorator] | null;
 }
 
-export type BabelClassBody = Array<
-  | ESTree.MethodDefinition
-  | ESTree.PropertyDefinition
-  | ESTree.StaticBlock
-  | BabelAccessorProperty
->;
+function isAccessorProperty(
+  node: ESTree.Node | BabelAccessorProperty
+): node is BabelAccessorProperty {
+  return node.type === 'AccessorProperty';
+}
 
 /**
  * Returns if given node has a customElement decorator
@@ -234,7 +233,7 @@ export function getPropertyMap(
 ): ReadonlyMap<string, PropertyMapEntry> {
   const result = new Map<string, PropertyMapEntry>();
 
-  for (const member of node.body.body as BabelClassBody) {
+  for (const member of node.body.body) {
     if (
       member.type === 'PropertyDefinition' &&
       member.static &&
@@ -283,7 +282,7 @@ export function getPropertyMap(
     if (
       member.type === 'MethodDefinition' ||
       member.type === 'PropertyDefinition' ||
-      member.type === 'AccessorProperty'
+      isAccessorProperty(member)
     ) {
       const babelProp = member as BabelProperty;
       const key = member.key;
