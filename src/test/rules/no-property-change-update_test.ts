@@ -185,6 +185,27 @@ ruleTester.run('no-property-change-update', rule, {
     },
     {
       code: `class Foo extends LitElement {
+        @property({ type: String })
+        accessor prop = 'foo';
+        update() {
+          super.update();
+          this.prop = 'bar';
+        }
+      }`,
+      languageOptions: {
+        parser,
+        parserOptions
+      },
+      errors: [
+        {
+          messageId: 'propertyChange',
+          line: 6,
+          column: 11
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
         @internalProperty()
         prop = 'foo';
         update() {
@@ -229,6 +250,27 @@ ruleTester.run('no-property-change-update', rule, {
       code: `class Foo extends LitElement {
         @state()
         prop = 'foo';
+        update() {
+          super.update();
+          this.prop = 'bar';
+        }
+      }`,
+      languageOptions: {
+        parser,
+        parserOptions
+      },
+      errors: [
+        {
+          messageId: 'propertyChange',
+          line: 6,
+          column: 11
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        @state()
+        accessor prop = 'foo';
         update() {
           super.update();
           this.prop = 'bar';

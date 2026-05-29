@@ -29,6 +29,22 @@ export type DecoratedNode = ESTree.Node & {
   decorators?: BabelDecorator[];
 };
 
+// As defined in https://github.com/estree/estree/blob/master/stage3/decorators.md
+export interface BabelAccessorProperty extends ESTree.BaseNode {
+  type: 'AccessorProperty';
+  key: ESTree.Expression | ESTree.PrivateIdentifier;
+  value: ESTree.Expression | null;
+  computed: boolean;
+  static: boolean;
+  decorators: [BabelDecorator] | null;
+}
+
+function isAccessorProperty(
+  node: ESTree.Node | BabelAccessorProperty
+): node is BabelAccessorProperty {
+  return node.type === 'AccessorProperty';
+}
+
 /**
  * Returns if given node has a customElement decorator
  * @param {ESTree.Class} node
@@ -265,7 +281,8 @@ export function getPropertyMap(
 
     if (
       member.type === 'MethodDefinition' ||
-      member.type === 'PropertyDefinition'
+      member.type === 'PropertyDefinition' ||
+      isAccessorProperty(member)
     ) {
       const babelProp = member as BabelProperty;
       const key = member.key;

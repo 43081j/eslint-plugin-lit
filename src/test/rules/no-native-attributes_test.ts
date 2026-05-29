@@ -9,6 +9,7 @@
 
 import {rule} from '../../rules/no-native-attributes.js';
 import {RuleTester} from 'eslint';
+import parser from '@babel/eslint-parser';
 
 //------------------------------------------------------------------------------
 // Tests
@@ -22,6 +23,13 @@ const ruleTester = new RuleTester({
     }
   }
 });
+
+const parserOptions = {
+  requireConfigFile: false,
+  babelOptions: {
+    plugins: [['@babel/plugin-proposal-decorators', {version: '2023-11'}]]
+  }
+};
 
 ruleTester.run('no-native-attributes', rule, {
   valid: [
@@ -74,6 +82,42 @@ ruleTester.run('no-native-attributes', rule, {
       }`,
       errors: [
         {
+          messageId: 'noNativeAttributes',
+          data: {prop: 'title'}
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        @property()
+        title;
+      }`,
+      languageOptions: {
+        parser,
+        parserOptions
+      },
+      errors: [
+        {
+          line: 3,
+          column: 9,
+          messageId: 'noNativeAttributes',
+          data: {prop: 'title'}
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        @property()
+        accessor title;
+      }`,
+      languageOptions: {
+        parser,
+        parserOptions
+      },
+      errors: [
+        {
+          line: 3,
+          column: 18,
           messageId: 'noNativeAttributes',
           data: {prop: 'title'}
         }

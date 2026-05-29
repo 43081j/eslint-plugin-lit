@@ -153,6 +153,16 @@ ruleTester.run('attribute-names', rule, {
         parser,
         parserOptions
       }
+    },
+    {
+      code: `class Foo extends LitElement {
+        @property({ type: String })
+        accessor lowercase = 'foo';
+      }`,
+      languageOptions: {
+        parser,
+        parserOptions
+      }
     }
   ],
 
@@ -383,6 +393,24 @@ ruleTester.run('attribute-names', rule, {
         {
           line: 6,
           column: 9,
+          messageId: 'casedPropertyWithoutAttribute'
+        }
+      ]
+    },
+    {
+      code: `@customElement('foo-bar')
+      class FooBar extends FooElement {
+        @property({ type: String })
+        accessor camelCase = 'foo';
+      }`,
+      languageOptions: {
+        parser,
+        parserOptions
+      },
+      errors: [
+        {
+          line: 4,
+          column: 18,
           messageId: 'casedPropertyWithoutAttribute'
         }
       ]
