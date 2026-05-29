@@ -7,6 +7,7 @@ import {rule as ruleAttributeNames} from './rules/attribute-names.js';
 import {rule as ruleAttributeValueEntities} from './rules/attribute-value-entities.js';
 import {rule as ruleBanAttributes} from './rules/ban-attributes.js';
 import {rule as ruleBindingPositions} from './rules/binding-positions.js';
+import {rule as ruleBooleanPropertyDefaultFalse} from './rules/boolean-property-default-false.js';
 import {rule as ruleLifecycleSuper} from './rules/lifecycle-super.js';
 import {rule as ruleNoClassfieldShadowing} from './rules/no-classfield-shadowing.js';
 import {rule as ruleNoDuplicateTemplateBindings} from './rules/no-duplicate-template-bindings.js';
@@ -34,6 +35,7 @@ export const rules: Record<string, Rule.RuleModule> = {
   'attribute-value-entities': ruleAttributeValueEntities,
   'ban-attributes': ruleBanAttributes,
   'binding-positions': ruleBindingPositions,
+  'boolean-property-default-false': ruleBooleanPropertyDefaultFalse,
   'lifecycle-super': ruleLifecycleSuper,
   'no-classfield-shadowing': ruleNoClassfieldShadowing,
   'no-duplicate-template-bindings': ruleNoDuplicateTemplateBindings,
