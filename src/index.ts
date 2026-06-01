@@ -28,6 +28,7 @@ import {rule as rulePreferNothing} from './rules/prefer-nothing.js';
 import {rule as rulePreferQueryDecorators} from './rules/prefer-query-decorators.js';
 import {rule as rulePreferStaticStyles} from './rules/prefer-static-styles.js';
 import {rule as ruleQuotedExpressions} from './rules/quoted-expressions.js';
+import {rule as ruleSerializableAttributesOnly} from './rules/serializable-attributes-only.js';
 import {rule as ruleValueAfterConstraints} from './rules/value-after-constraints.js';
 
 export const rules: Record<string, Rule.RuleModule> = {
@@ -56,6 +57,7 @@ export const rules: Record<string, Rule.RuleModule> = {
   'prefer-query-decorators': rulePreferQueryDecorators,
   'prefer-static-styles': rulePreferStaticStyles,
   'quoted-expressions': ruleQuotedExpressions,
+  'serializable-attributes-only': ruleSerializableAttributesOnly,
   'value-after-constraints': ruleValueAfterConstraints
 };
 

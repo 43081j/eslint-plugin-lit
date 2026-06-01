@@ -31,6 +31,7 @@ export const configFactory = (plugin: ESLint.Plugin): Linter.FlatConfig => ({
     'lit/prefer-query-decorators': 'error',
     'lit/prefer-static-styles': 'error',
     'lit/quoted-expressions': 'error',
+    'lit/serializable-attributes-only': 'error',
     'lit/value-after-constraints': 'error'
   }
 });
