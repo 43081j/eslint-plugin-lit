@@ -26,6 +26,7 @@ import {rule as ruleNoValueAttribute} from './rules/no-value-attribute.js';
 import {rule as rulePreferNothing} from './rules/prefer-nothing.js';
 import {rule as rulePreferQueryDecorators} from './rules/prefer-query-decorators.js';
 import {rule as rulePreferStaticStyles} from './rules/prefer-static-styles.js';
+import {rule as rulePrivateStates} from './rules/private-states.js';
 import {rule as ruleQuotedExpressions} from './rules/quoted-expressions.js';
 import {rule as ruleValueAfterConstraints} from './rules/value-after-constraints.js';
 
@@ -53,6 +54,7 @@ export const rules: Record<string, Rule.RuleModule> = {
   'prefer-nothing': rulePreferNothing,
   'prefer-query-decorators': rulePreferQueryDecorators,
   'prefer-static-styles': rulePreferStaticStyles,
+  'private-states': rulePrivateStates,
   'quoted-expressions': ruleQuotedExpressions,
   'value-after-constraints': ruleValueAfterConstraints
 };
