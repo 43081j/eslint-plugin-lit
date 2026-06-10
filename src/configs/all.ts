@@ -11,6 +11,7 @@ export const configFactory = (plugin: ESLint.Plugin): Linter.FlatConfig => ({
     'lit/ban-attributes': 'error',
     'lit/binding-positions': 'error',
     'lit/lifecycle-super': 'error',
+    'lit/missing-accessor-keyword': 'error',
     'lit/no-classfield-shadowing': 'error',
     'lit/no-duplicate-template-bindings': 'error',
     'lit/no-invalid-escape-sequences': 'error',

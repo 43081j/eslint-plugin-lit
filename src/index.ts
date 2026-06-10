@@ -8,6 +8,7 @@ import {rule as ruleAttributeValueEntities} from './rules/attribute-value-entiti
 import {rule as ruleBanAttributes} from './rules/ban-attributes.js';
 import {rule as ruleBindingPositions} from './rules/binding-positions.js';
 import {rule as ruleLifecycleSuper} from './rules/lifecycle-super.js';
+import {rule as ruleMissingAccessorKeyword} from './rules/missing-accessor-keyword.js';
 import {rule as ruleNoClassfieldShadowing} from './rules/no-classfield-shadowing.js';
 import {rule as ruleNoDuplicateTemplateBindings} from './rules/no-duplicate-template-bindings.js';
 import {rule as ruleNoInvalidEscapeSequences} from './rules/no-invalid-escape-sequences.js';
@@ -35,6 +36,7 @@ export const rules: Record<string, Rule.RuleModule> = {
   'ban-attributes': ruleBanAttributes,
   'binding-positions': ruleBindingPositions,
   'lifecycle-super': ruleLifecycleSuper,
+  'missing-accessor-keyword': ruleMissingAccessorKeyword,
   'no-classfield-shadowing': ruleNoClassfieldShadowing,
   'no-duplicate-template-bindings': ruleNoDuplicateTemplateBindings,
   'no-invalid-escape-sequences': ruleNoInvalidEscapeSequences,
