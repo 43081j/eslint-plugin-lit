@@ -148,8 +148,7 @@ ruleTester.run('serializable-attributes-only', rule, {
       code: `class Foo extends LitElement {
         static get properties() {
           return {
-            foo: { type: Object, attribute: 'foo' },
-            bar: { type: Object, converter: null },
+            foo: { type: Object, attribute: 'foo' }
           };
         }
       }`,
@@ -159,9 +158,38 @@ ruleTester.run('serializable-attributes-only', rule, {
           line: 4,
           column: 13,
           messageId: 'notSerializable'
-        },
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            foo: { type: Object, converter: null }
+          };
+        }
+      }`,
+      options: [{nativeTypes: ['String']}],
+      errors: [
         {
-          line: 5,
+          line: 4,
+          column: 13,
+          messageId: 'notSerializable'
+        }
+      ]
+    },
+    {
+      code: `class Foo extends LitElement {
+        static get properties() {
+          return {
+            foo: { type: Object, converter: undefined }
+          };
+        }
+      }`,
+      options: [{nativeTypes: ['String']}],
+      errors: [
+        {
+          line: 4,
           column: 13,
           messageId: 'notSerializable'
         }

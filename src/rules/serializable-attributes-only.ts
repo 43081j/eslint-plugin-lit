@@ -47,6 +47,31 @@ export const rule: Rule.RuleModule = {
   create(context): Rule.RuleListener {
     const nativeTypes = new Set(context.options[0]?.nativeTypes ?? []);
 
+    /**
+     * Determines if a given TemplateElement is contained within
+     * a HTML comment.
+     *
+     * @param {ESTree.Expression | ESTree.Pattern | undefined} converter Expression to test
+     * @return {boolean}
+     */
+    function isValidConverter(
+      converter: ESTree.Expression | ESTree.Pattern | undefined
+    ): boolean {
+      if (converter == undefined) {
+        return false;
+      }
+
+      if (converter.type == 'Literal' && converter.value == null) {
+        return false;
+      }
+
+      if (converter.type == 'Identifier' && converter.name == 'undefined') {
+        return false;
+      }
+
+      return true;
+    }
+
     return {
       ClassDeclaration: (node: ESTree.Class): void => {
         if (isLitClass(node, context)) {
@@ -56,7 +81,7 @@ export const rule: Rule.RuleModule = {
             if (
               propConfig.state ||
               !propConfig.attribute ||
-              propConfig.converter
+              isValidConverter(propConfig.converter)
             ) {
               continue;
             }

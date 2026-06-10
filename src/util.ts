@@ -153,11 +153,7 @@ export interface PropertyMapEntry {
   attributeName?: string;
   propertyType?: string;
   defaultValueResolver?: (() => ESTree.Expression | null) | undefined;
-  converter:
-    | ESTree.ObjectExpression
-    | ESTree.FunctionExpression
-    | ESTree.ArrowFunctionExpression
-    | undefined;
+  converter: ESTree.Expression | ESTree.Pattern | undefined;
 }
 
 /**
@@ -174,11 +170,7 @@ export function extractPropertyEntry(
   let attribute = true;
   let attributeName: string | undefined = undefined;
   let propertyType: string | undefined = undefined;
-  let converter:
-    | ESTree.ObjectExpression
-    | ESTree.FunctionExpression
-    | ESTree.ArrowFunctionExpression
-    | undefined = undefined;
+  let converter: ESTree.Expression | ESTree.Pattern | undefined = undefined;
 
   for (const prop of value.properties) {
     if (
@@ -203,14 +195,7 @@ export function extractPropertyEntry(
         propertyType = prop.value.name;
       }
 
-      if (
-        prop.key.name === 'converter' &&
-        (
-          prop.value.type === 'ObjectExpression' ||
-          prop.value.type === 'FunctionExpression' ||
-          prop.value.type === 'ArrowFunctionExpression'
-        )
-      ) {
+      if (prop.key.name === 'converter') {
         converter = prop.value;
       }
     }
