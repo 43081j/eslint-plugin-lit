@@ -151,6 +151,9 @@ export interface PropertyMapEntry {
   state: boolean;
   attribute: boolean;
   attributeName?: string;
+  propertyType?: string;
+  defaultValueResolver?: (() => ESTree.Expression | null) | undefined;
+  converter: ESTree.Expression | ESTree.Pattern | undefined;
 }
 
 /**
@@ -166,23 +169,34 @@ export function extractPropertyEntry(
   let state = false;
   let attribute = true;
   let attributeName: string | undefined = undefined;
+  let propertyType: string | undefined = undefined;
+  let converter: ESTree.Expression | ESTree.Pattern | undefined = undefined;
 
   for (const prop of value.properties) {
     if (
       prop.type === 'Property' &&
-      prop.key.type === 'Identifier' &&
-      prop.value.type === 'Literal'
+      prop.key.type === 'Identifier'
     ) {
-      if (prop.key.name === 'state' && prop.value.value === true) {
-        state = true;
+      if (prop.value.type === 'Literal') {
+        if (prop.key.name === 'state' && prop.value.value === true) {
+          state = true;
+        }
+
+        if (prop.key.name === 'attribute') {
+          if (prop.value.value === false) {
+            attribute = false;
+          } else if (typeof prop.value.value === 'string') {
+            attributeName = prop.value.value;
+          }
+        }
       }
 
-      if (prop.key.name === 'attribute') {
-        if (prop.value.value === false) {
-          attribute = false;
-        } else if (typeof prop.value.value === 'string') {
-          attributeName = prop.value.value;
-        }
+      if (prop.key.name === 'type' && prop.value.type === 'Identifier') {
+        propertyType = prop.value.name;
+      }
+
+      if (prop.key.name === 'converter') {
+        converter = prop.value;
       }
     }
   }
@@ -192,7 +206,9 @@ export function extractPropertyEntry(
     key,
     state,
     attribute,
-    attributeName
+    attributeName,
+    propertyType,
+    converter
   };
 }
 
@@ -246,7 +262,10 @@ export function getPropertyMap(
           const name = getIdentifierName(prop.key);
 
           if (name && prop.value.type === 'ObjectExpression') {
-            result.set(name, extractPropertyEntry(prop.key, prop.value));
+            const entry = extractPropertyEntry(prop.key, prop.value);
+            entry.defaultValueResolver = () =>
+              findPropertyInitInConstructor(node, name);
+            result.set(name, entry);
           }
         }
       }
@@ -272,18 +291,19 @@ export function getPropertyMap(
             const name = getIdentifierName(prop.key);
 
             if (name && prop.value.type === 'ObjectExpression') {
-              result.set(name, extractPropertyEntry(prop.key, prop.value));
+              const entry = extractPropertyEntry(prop.key, prop.value);
+              entry.defaultValueResolver = () =>
+                findPropertyInitInConstructor(node, name);
+              result.set(name, entry);
             }
           }
         }
       }
     }
 
-    if (
-      member.type === 'MethodDefinition' ||
-      member.type === 'PropertyDefinition' ||
-      isAccessorProperty(member)
-    ) {
+    const isProperty = member.type === 'PropertyDefinition' ||
+      isAccessorProperty(member);
+    if (member.type === 'MethodDefinition' || isProperty) {
       const babelProp = member as BabelProperty;
       const key = member.key;
       const memberName = getIdentifierName(key);
@@ -295,6 +315,16 @@ export function getPropertyMap(
             decorator.expression.callee.type === 'Identifier' &&
             propertyDecorators.includes(decorator.expression.callee.name)
           ) {
+            const defaultValueResolver = isProperty
+              ? () => {
+                if (member.value === undefined) {
+                  return null;
+                }
+
+                return member.value;
+              }
+              : undefined;
+
             const dArg = decorator.expression.arguments[0];
             if (dArg?.type === 'ObjectExpression') {
               const state = internalDecorators.includes(
@@ -304,6 +334,7 @@ export function getPropertyMap(
               if (state) {
                 entry.state = true;
               }
+              entry.defaultValueResolver = defaultValueResolver;
               result.set(memberName, entry);
             } else {
               const state = internalDecorators.includes(
@@ -313,7 +344,9 @@ export function getPropertyMap(
                 key,
                 expr: null,
                 state,
-                attribute: true
+                attribute: true,
+                defaultValueResolver,
+                converter: undefined,
               });
             }
           }
@@ -323,6 +356,40 @@ export function getPropertyMap(
   }
 
   return result;
+}
+
+/**
+ * Find property initialization in constructor
+ * @param {ESTree.Node} node Class to extract from
+ * @param {ESTree.ObjectExpression} propertyName Name of property to find
+ * initilization
+ * @return {ESTree.Expression | null}
+ */
+function findPropertyInitInConstructor(
+  node: ESTree.Class,
+  propertyName: string
+): ESTree.Expression | null {
+  for (const bodyItem of node.body.body) {
+    if (
+      bodyItem.type === 'MethodDefinition' &&
+      bodyItem.kind === 'constructor'
+    ) {
+      for (const statement of bodyItem.value.body.body) {
+        if (
+          statement.type === 'ExpressionStatement' &&
+          statement.expression.type === 'AssignmentExpression' &&
+          statement.expression.left.type === 'MemberExpression' &&
+          statement.expression.left.object.type === 'ThisExpression' &&
+          statement.expression.left.property.type === 'Identifier' &&
+          statement.expression.left.property.name === propertyName
+        ) {
+          return statement.expression.right;
+        }
+      }
+    }
+  }
+
+  return null;
 }
 
 /**
