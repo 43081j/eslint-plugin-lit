@@ -16,6 +16,7 @@ import {rule as ruleNoLegacyImports} from './rules/no-legacy-imports.js';
 import {rule as ruleNoLegacyTemplateSyntax} from './rules/no-legacy-template-syntax.js';
 import {rule as ruleNoNativeAttributes} from './rules/no-native-attributes.js';
 import {rule as ruleNoPrivateProperties} from './rules/no-private-properties.js';
+import {rule as ruleNoPrivatePropertiesDefinition} from './rules/no-private-properties-definition.js';
 import {rule as ruleNoPropertyChangeUpdate} from './rules/no-property-change-update.js';
 import {rule as ruleNoTemplateArrow} from './rules/no-template-arrow.js';
 import {rule as ruleNoTemplateBind} from './rules/no-template-bind.js';
@@ -43,6 +44,7 @@ export const rules: Record<string, Rule.RuleModule> = {
   'no-legacy-template-syntax': ruleNoLegacyTemplateSyntax,
   'no-native-attributes': ruleNoNativeAttributes,
   'no-private-properties': ruleNoPrivateProperties,
+  'no-private-properties-definition': ruleNoPrivatePropertiesDefinition,
   'no-property-change-update': ruleNoPropertyChangeUpdate,
   'no-template-arrow': ruleNoTemplateArrow,
   'no-template-bind': ruleNoTemplateBind,

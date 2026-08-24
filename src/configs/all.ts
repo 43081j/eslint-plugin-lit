@@ -19,6 +19,7 @@ export const configFactory = (plugin: ESLint.Plugin): Linter.FlatConfig => ({
     'lit/no-legacy-template-syntax': 'error',
     'lit/no-native-attributes': 'error',
     'lit/no-private-properties': 'error',
+    'lit/no-private-properties-definition': 'error',
     'lit/no-property-change-update': 'error',
     'lit/no-template-arrow': 'error',
     'lit/no-template-bind': 'error',

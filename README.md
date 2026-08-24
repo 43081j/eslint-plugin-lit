@@ -97,6 +97,7 @@ If you want more fine-grained configuration, you can instead add a snippet like 
 - [lit/no-legacy-template-syntax](docs/rules/no-legacy-template-syntax.md)
 - [lit/no-native-attributes](docs/rules/no-native-attributes.md)
 - [lit/no-private-properties](docs/rules/no-private-properties.md)
+- [lit/no-private-properties-definition](docs/rules/no-private-properties-definition.md)
 - [lit/no-property-change-update](docs/rules/no-property-change-update.md)
 - [lit/no-template-arrow](docs/rules/no-template-arrow.md)
 - [lit/no-template-bind](docs/rules/no-template-bind.md)
