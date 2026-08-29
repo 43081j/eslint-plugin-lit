@@ -57,7 +57,9 @@ describe('util', () => {
         expr: node,
         state: false,
         attribute: true,
-        attributeName: undefined
+        attributeName: undefined,
+        propertyType: undefined,
+        converter: undefined
       });
     });
 
@@ -78,7 +80,9 @@ describe('util', () => {
         expr: node,
         state: false,
         attribute: true,
-        attributeName: undefined
+        attributeName: undefined,
+        propertyType: undefined,
+        converter: undefined
       });
     });
 
@@ -114,7 +118,9 @@ describe('util', () => {
         expr: node,
         state: true,
         attribute: true,
-        attributeName: undefined
+        attributeName: undefined,
+        propertyType: undefined,
+        converter: undefined
       });
     });
 
@@ -150,7 +156,9 @@ describe('util', () => {
         expr: node,
         state: false,
         attribute: false,
-        attributeName: undefined
+        attributeName: undefined,
+        propertyType: undefined,
+        converter: undefined
       });
     });
 
@@ -186,7 +194,9 @@ describe('util', () => {
         expr: node,
         state: false,
         attribute: true,
-        attributeName: 'boop'
+        attributeName: 'boop',
+        propertyType: undefined,
+        converter: undefined
       });
     });
 
@@ -223,7 +233,98 @@ describe('util', () => {
         expr: node,
         state: false,
         attribute: true,
-        attributeName: undefined
+        attributeName: undefined,
+        propertyType: undefined,
+        converter: undefined
+      });
+    });
+
+    it('should extract type', () => {
+      const node: ESTree.ObjectExpression = {
+        type: 'ObjectExpression',
+        properties: [
+          {
+            type: 'Property',
+            kind: 'init',
+            method: false,
+            shorthand: false,
+            computed: false,
+            key: {
+              type: 'Identifier',
+              name: 'type'
+            },
+            value: {
+              type: 'Identifier',
+              name: 'Boolean'
+            }
+          }
+        ]
+      };
+      const key: ESTree.Identifier = {
+        type: 'Identifier',
+        name: 'foo'
+      };
+      const entry = util.extractPropertyEntry(key, node);
+
+      expect(entry).to.deep.equal({
+        key,
+        expr: node,
+        state: false,
+        attribute: true,
+        attributeName: undefined,
+        propertyType: 'Boolean',
+        converter: undefined
+      });
+    });
+
+    it('should extract converter', () => {
+      const node: ESTree.ObjectExpression = {
+        type: 'ObjectExpression',
+        properties: [
+          {
+            type: 'Property',
+            kind: 'init',
+            method: false,
+            shorthand: false,
+            computed: false,
+            key: {
+              type: 'Identifier',
+              name: 'converter'
+            },
+            value: {
+              type: 'ArrowFunctionExpression',
+              expression: false,
+              body: {
+                type: 'BlockStatement',
+                body: []
+              },
+              params: []
+            }
+          }
+        ]
+      };
+      const key: ESTree.Identifier = {
+        type: 'Identifier',
+        name: 'foo'
+      };
+      const entry = util.extractPropertyEntry(key, node);
+
+      expect(entry).to.deep.equal({
+        key,
+        expr: node,
+        state: false,
+        attribute: true,
+        attributeName: undefined,
+        propertyType: undefined,
+        converter: {
+          type: 'ArrowFunctionExpression',
+          expression: false,
+          body: {
+            type: 'BlockStatement',
+            body: []
+          },
+          params: []
+        }
       });
     });
   });
