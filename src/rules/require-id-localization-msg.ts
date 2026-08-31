@@ -3,9 +3,10 @@
  * @author Julien Pradelle <https://github.com/jpradelle>
  */
 
-import {Rule, Scope} from 'eslint';
+import {Rule} from 'eslint';
 import * as ESTree from 'estree';
 import crypto from 'crypto';
+import {findVariableInScope} from '../util.js';
 
 export const idGenerator = {
   generate(): string {
@@ -49,23 +50,6 @@ export const rule: Rule.RuleModule = {
 
   create(context): Rule.RuleListener {
     let importedMsgName: string | null = null;
-
-    function findVariableInScope(
-      name: string,
-      scope: Scope.Scope
-    ): Scope.Variable | null {
-      let currentScope: Scope.Scope | null = scope;
-
-      while (currentScope) {
-        if (currentScope.set.has(name)) {
-          return currentScope.set.get(name) ?? null;
-        }
-
-        currentScope = currentScope.upper;
-      }
-
-      return null;
-    }
 
     return {
       ImportDeclaration: (node: ESTree.ImportDeclaration): void => {

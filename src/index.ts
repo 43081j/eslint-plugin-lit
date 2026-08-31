@@ -27,6 +27,7 @@ import {rule as rulePreferNothing} from './rules/prefer-nothing.js';
 import {rule as rulePreferQueryDecorators} from './rules/prefer-query-decorators.js';
 import {rule as rulePreferStaticStyles} from './rules/prefer-static-styles.js';
 import {rule as ruleRequireIdLocalizationMsg} from './rules/require-id-localization-msg.js';
+import {rule as ruleRequireLocalizedAnnotation} from './rules/require-localized-annotation.js';
 import {rule as ruleQuotedExpressions} from './rules/quoted-expressions.js';
 import {rule as ruleValueAfterConstraints} from './rules/value-after-constraints.js';
 
@@ -55,6 +56,7 @@ export const rules: Record<string, Rule.RuleModule> = {
   'prefer-query-decorators': rulePreferQueryDecorators,
   'prefer-static-styles': rulePreferStaticStyles,
   'require-id-localization-msg': ruleRequireIdLocalizationMsg,
+  'require-localized-annotation': ruleRequireLocalizedAnnotation,
   'quoted-expressions': ruleQuotedExpressions,
   'value-after-constraints': ruleValueAfterConstraints
 };
