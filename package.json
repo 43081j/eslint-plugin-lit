@@ -61,7 +61,7 @@
     "eslint": "^10.9.1",
     "eslint-plugin-eslint-plugin": "^7.6.2",
     "espree": "^11.2.0",
-    "mocha": "^11.8.0",
+    "mocha": "^12.0.0",
     "premove": "^4.0.0",
     "prettier": "^3.9.6",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
