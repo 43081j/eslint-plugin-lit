@@ -107,6 +107,8 @@ If you want more fine-grained configuration, you can instead add a snippet like 
 - [lit/prefer-nothing](docs/rules/prefer-nothing.md)
 - [lit/prefer-query-decorators](docs/rules/prefer-query-decorators.md)
 - [lit/prefer-static-styles](docs/rules/prefer-static-styles.md)
+- [lit/require-id-localization-msg](docs/rules/require-id-localization-msg.md)
+- [lit/require-localized-annotation](docs/rules/require-localized-annotation.md)
 - [lit/quoted-expressions](docs/rules/quoted-expressions.md)
 - [lit/value-after-constraints](docs/rules/value-after-constraints.md)
 
