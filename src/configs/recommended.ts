@@ -8,6 +8,7 @@ export const configFactory = (plugin: ESLint.Plugin): Linter.FlatConfig => ({
   rules: {
     'lit/attribute-value-entities': 'error',
     'lit/binding-positions': 'error',
+    'lit/boolean-property-default-false': 'error',
     'lit/no-duplicate-template-bindings': 'error',
     'lit/no-invalid-html': 'error',
     'lit/no-legacy-template-syntax': 'error',
