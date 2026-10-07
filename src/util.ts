@@ -1,5 +1,5 @@
 import * as ESTree from 'estree';
-import {Rule} from 'eslint';
+import {Rule, Scope} from 'eslint';
 import {type Htmlparser2TreeAdapterMap} from 'parse5-htmlparser2-tree-adapter';
 
 export type Parse5Node = Htmlparser2TreeAdapterMap['node'];
@@ -445,4 +445,29 @@ export function getElementBaseClasses(context: Rule.RuleContext): Set<string> {
   }
 
   return bases;
+}
+
+/**
+ * Finds a variable by name in the given ESLint scope or one of its parent
+ * scopes.
+ *
+ * @param name - The name of the variable to find.
+ * @param scope - The ESLint scope where the lookup should start.
+ * @returns The matching ESLint variable if found; otherwise `null`.
+ */
+export function findVariableInScope(
+  name: string,
+  scope: Scope.Scope
+): Scope.Variable | null {
+  let currentScope: Scope.Scope | null = scope;
+
+  while (currentScope) {
+    if (currentScope.set.has(name)) {
+      return currentScope.set.get(name) ?? null;
+    }
+
+    currentScope = currentScope.upper;
+  }
+
+  return null;
 }
