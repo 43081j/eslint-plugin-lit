@@ -6,6 +6,7 @@
 import {Rule} from 'eslint';
 import * as ESTree from 'estree';
 import {TemplateAnalyzer} from '../template-analyzer.js';
+import {getPropertyMap, isLitClass} from '../util.js';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -23,32 +24,37 @@ export const rule: Rule.RuleModule = {
         type: 'object',
         properties: {
           private: {type: 'string', minLength: 1, format: 'regex'},
-          protected: {type: 'string', minLength: 1, format: 'regex'}
+          protected: {type: 'string', minLength: 1, format: 'regex'},
+          checkPropertyDefinitions: {type: 'boolean'}
         },
         additionalProperties: false
       }
     ],
     messages: {
       noPrivate:
-        'Private and protected properties should not be assigned in bindings'
+        'Private and protected properties should not be assigned in bindings',
+      noPrivateDefinition:
+        'Public reactive property should be made public or turned into an ' +
+        'internal reactive state'
     },
     defaultOptions: [{}]
   },
 
   create(context): Rule.RuleListener {
     const source = context.sourceCode;
-    const config: Partial<{private: string; protected: string}> =
-      context.options[0] || {};
-    const conventions = Object.entries(config).reduce<Record<string, RegExp>>(
-      (acc, [key, value]) => {
-        if (value) {
-          acc[key] = new RegExp(value);
-        }
-        return acc;
-      },
-      {}
-    );
-    const conventionRegexes = Object.values(conventions);
+    const config: Partial<{
+      private: string;
+      protected: string;
+      checkPropertyDefinitions: boolean;
+    }> = context.options[0] || {};
+
+    const conventionRegexes : RegExp[] = [];
+    if (config.private) {
+      conventionRegexes.push(new RegExp(config.private));
+    }
+    if (config.protected) {
+      conventionRegexes.push(new RegExp(config.protected));
+    }
 
     //----------------------------------------------------------------------
     // Helpers
@@ -98,6 +104,32 @@ export const rule: Rule.RuleModule = {
               }
             }
           });
+        }
+      },
+      ClassDeclaration: (node: ESTree.Class): void => {
+        if (
+          config.checkPropertyDefinitions &&
+          isLitClass(node, context) &&
+          conventionRegexes.length > 0
+        ) {
+          const propertyMap = getPropertyMap(node);
+
+          for (const [prop, propConfig] of propertyMap.entries()) {
+            if (propConfig.state) {
+              continue;
+            }
+
+            const invalidPropertyName = conventionRegexes.some((convention) =>
+              convention.test(prop)
+            );
+
+            if (invalidPropertyName) {
+              context.report({
+                node: propConfig.key,
+                messageId: 'noPrivateDefinition'
+              });
+            }
+          }
         }
       }
     };
