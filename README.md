@@ -88,6 +88,7 @@ If you want more fine-grained configuration, you can instead add a snippet like 
 - [lit/attribute-value-entities](docs/rules/attribute-value-entities.md)
 - [lit/ban-attributes](docs/rules/ban-attributes.md)
 - [lit/binding-positions](docs/rules/binding-positions.md)
+- [lit/boolean-property-default-false](docs/rules/boolean-property-default-false.md)
 - [lit/lifecycle-super](docs/rules/lifecycle-super.md)
 - [lit/missing-accessor-keyword](docs/rules/missing-accessor-keyword.md)
 - [lit/no-classfield-shadowing](docs/rules/no-classfield-shadowing.md)

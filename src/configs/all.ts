@@ -10,6 +10,7 @@ export const configFactory = (plugin: ESLint.Plugin): Linter.FlatConfig => ({
     'lit/attribute-value-entities': 'error',
     'lit/ban-attributes': 'error',
     'lit/binding-positions': 'error',
+    'lit/boolean-property-default-false': 'error',
     'lit/lifecycle-super': 'error',
     'lit/missing-accessor-keyword': 'error',
     'lit/no-classfield-shadowing': 'error',
