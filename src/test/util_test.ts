@@ -1,5 +1,6 @@
 import * as util from '../util.js';
 import * as ESTree from 'estree';
+import {Scope} from 'eslint';
 import {expect} from 'chai';
 
 describe('util', () => {
@@ -416,6 +417,85 @@ describe('util', () => {
       const map = util.getPropertyMap(node);
 
       expect(map.size).to.equal(0);
+    });
+  });
+
+  describe('findVariableInScope', () => {
+    function createVariable(name: string): Scope.Variable {
+      return {
+        name,
+        identifiers: [],
+        references: [],
+        defs: [],
+        scope: null as unknown as Scope.Scope,
+        writeable: false
+      } as Scope.Variable;
+    }
+
+    function createScope(
+      variables: Scope.Variable[],
+      upper: Scope.Scope | null = null
+    ): Scope.Scope {
+      const set = new Map<string, Scope.Variable>();
+      for (const v of variables) {
+        set.set(v.name, v);
+      }
+      return {
+        set,
+        upper
+      } as Scope.Scope;
+    }
+
+    it('should find a variable in the current scope', () => {
+      const variable = createVariable('msg');
+      const scope = createScope([variable]);
+
+      const result = util.findVariableInScope('msg', scope);
+      expect(result).to.equal(variable);
+    });
+
+    it('should find a variable in a parent scope', () => {
+      const variable = createVariable('msg');
+      const parentScope = createScope([variable]);
+      const childScope = createScope([], parentScope);
+
+      const result = util.findVariableInScope('msg', childScope);
+      expect(result).to.equal(variable);
+    });
+
+    it('should find a variable in a grandparent scope', () => {
+      const variable = createVariable('msg');
+      const grandparentScope = createScope([variable]);
+      const parentScope = createScope([], grandparentScope);
+      const childScope = createScope([], parentScope);
+
+      const result = util.findVariableInScope('msg', childScope);
+      expect(result).to.equal(variable);
+    });
+
+    it('should return null when variable is not found', () => {
+      const scope = createScope([]);
+
+      const result = util.findVariableInScope('msg', scope);
+      expect(result).to.equal(null);
+    });
+
+    it('should return null when variable is not found in any scope', () => {
+      const parentScope = createScope([createVariable('other')]);
+      const childScope = createScope([createVariable('foo')], parentScope);
+
+      const result = util.findVariableInScope('msg', childScope);
+      expect(result).to.equal(null);
+    });
+
+    it('should return the closest variable when shadowed', () => {
+      const parentVariable = createVariable('msg');
+      const childVariable = createVariable('msg');
+      const parentScope = createScope([parentVariable]);
+      const childScope = createScope([childVariable], parentScope);
+
+      const result = util.findVariableInScope('msg', childScope);
+      expect(result).to.equal(childVariable);
     });
   });
 });
