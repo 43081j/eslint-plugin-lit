@@ -10,6 +10,7 @@ export const configFactory = (plugin: ESLint.Plugin): Linter.FlatConfig => ({
     'lit/attribute-value-entities': 'error',
     'lit/ban-attributes': 'error',
     'lit/binding-positions': 'error',
+    'lit/boolean-property-default-false': 'error',
     'lit/lifecycle-super': 'error',
     'lit/missing-accessor-keyword': 'error',
     'lit/no-classfield-shadowing': 'error',
@@ -31,6 +32,7 @@ export const configFactory = (plugin: ESLint.Plugin): Linter.FlatConfig => ({
     'lit/prefer-query-decorators': 'error',
     'lit/prefer-static-styles': 'error',
     'lit/quoted-expressions': 'error',
+    'lit/serializable-attributes-only': 'error',
     'lit/value-after-constraints': 'error'
   }
 });

@@ -7,6 +7,7 @@ import {rule as ruleAttributeNames} from './rules/attribute-names.js';
 import {rule as ruleAttributeValueEntities} from './rules/attribute-value-entities.js';
 import {rule as ruleBanAttributes} from './rules/ban-attributes.js';
 import {rule as ruleBindingPositions} from './rules/binding-positions.js';
+import {rule as ruleBooleanPropertyDefaultFalse} from './rules/boolean-property-default-false.js';
 import {rule as ruleLifecycleSuper} from './rules/lifecycle-super.js';
 import {rule as ruleMissingAccessorKeyword} from './rules/missing-accessor-keyword.js';
 import {rule as ruleNoClassfieldShadowing} from './rules/no-classfield-shadowing.js';
@@ -28,6 +29,7 @@ import {rule as rulePreferNothing} from './rules/prefer-nothing.js';
 import {rule as rulePreferQueryDecorators} from './rules/prefer-query-decorators.js';
 import {rule as rulePreferStaticStyles} from './rules/prefer-static-styles.js';
 import {rule as ruleQuotedExpressions} from './rules/quoted-expressions.js';
+import {rule as ruleSerializableAttributesOnly} from './rules/serializable-attributes-only.js';
 import {rule as ruleValueAfterConstraints} from './rules/value-after-constraints.js';
 
 export const rules: Record<string, Rule.RuleModule> = {
@@ -35,6 +37,7 @@ export const rules: Record<string, Rule.RuleModule> = {
   'attribute-value-entities': ruleAttributeValueEntities,
   'ban-attributes': ruleBanAttributes,
   'binding-positions': ruleBindingPositions,
+  'boolean-property-default-false': ruleBooleanPropertyDefaultFalse,
   'lifecycle-super': ruleLifecycleSuper,
   'missing-accessor-keyword': ruleMissingAccessorKeyword,
   'no-classfield-shadowing': ruleNoClassfieldShadowing,
@@ -56,6 +59,7 @@ export const rules: Record<string, Rule.RuleModule> = {
   'prefer-query-decorators': rulePreferQueryDecorators,
   'prefer-static-styles': rulePreferStaticStyles,
   'quoted-expressions': ruleQuotedExpressions,
+  'serializable-attributes-only': ruleSerializableAttributesOnly,
   'value-after-constraints': ruleValueAfterConstraints
 };
 
